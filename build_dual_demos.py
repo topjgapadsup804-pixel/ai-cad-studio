@@ -1,13 +1,9 @@
 """
-雙語版本建置腳本（完整字體與語意在地化）：
-1. 繁體中文版本 (demo.html & demo-zh-tw.html)：
-   - 全介面（面板、圖庫、工項清單、導覽、標註、提示）100% 轉換為臺灣標準繁體中文
-   - 包含臺灣字體棧 ("PingFang TC", "Microsoft JhengHei", "Noto Sans TC")
-   - 房名符合臺灣建築圖說規範（客餐廳、雙衛、景觀陽台、工作陽台、主臥、次臥、書房）
-   - 報價幣別改為 NTD，項目欄位為工項/數量/小計
-2. 簡體中文版本 (demo-zh-cn.html)：
-   - 100% 符合大陸 GB/T 建築圖說標準（客餐厅、景观阳台、生活阳台、主卧、次卧、书房、主卫、公卫）
-3. 兩者頂部皆具備即時雙向切換導覽條。
+雙語版本建置腳本（全新整合式版面結構，非浮動疊套）：
+1. 頂部整合導覽列 (studio-global-nav) 做為 .app flex-direction: column 的首個子元素 (in-flow)。
+2. 不使用任何 position: fixed / absolute 疊套遮擋面板或標籤。
+3. 繁體版 (demo.html & demo-zh-tw.html) 全介面 100% 繁體中文與臺灣裝修圖說規範。
+4. 簡體版 (demo-zh-cn.html) 100% 符合大陸 GB/T 規範。
 """
 import copy
 import json
@@ -103,71 +99,176 @@ subprocess.run([sys.executable, build_py, "spec_zh_cn.json", "-o", "demo-zh-cn.h
 print("Building demo-zh-tw.html...")
 subprocess.run([sys.executable, build_py, "spec_zh_tw.json", "-o", "demo-zh-tw.html", "--template", tw_template_path], cwd=here, check=True)
 
-# 導覽切換條
-tw_bar = """<style>
-.studio-top-bar {
-  position: fixed; top: 12px; right: 16px; z-index: 99999;
-  background: rgba(15, 23, 42, 0.92); border: 1px solid #38bdf8;
-  backdrop-filter: blur(8px); border-radius: 999px;
-  padding: 6px 14px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
-  display: flex; gap: 10px; align-items: center; font-size: 13px; color: #f1f5f9;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+# 刪除臨時繁體模板
+if os.path.exists(tw_template_path):
+    os.remove(tw_template_path)
+
+# ==========================================
+# 5. 整合式頂部版面樣式 (In-flow Flex Item，非浮動疊套)
+# ==========================================
+nav_css = """
+<style>
+.studio-global-nav {
+  height: 38px;
+  background: #090d16;
+  border-bottom: 1px solid #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans TC", sans-serif;
+  font-size: 13px;
+  color: #94a3b8;
+  user-select: none;
+  box-sizing: border-box;
 }
-.studio-top-bar a { color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.15s; }
-.studio-top-bar a:hover { color: #38bdf8; }
-.studio-top-bar a.active { color: #38bdf8; font-weight: 700; }
-.studio-top-bar .sep { color: #475569; }
+.studio-global-nav .nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.studio-global-nav .nav-brand {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f8fafc;
+  font-size: 13px;
+}
+.studio-global-nav .nav-brand b {
+  color: #38bdf8;
+}
+.studio-global-nav .nav-badge {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.studio-global-nav .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.studio-global-nav .nav-lang {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #111726;
+  border: 1px solid #1e293b;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+.studio-global-nav .lang-txt {
+  font-size: 11px;
+  color: #64748b;
+  margin-right: 2px;
+  padding-left: 4px;
+}
+.studio-global-nav .lang-pill {
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  transition: all 0.15s ease;
+}
+.studio-global-nav .lang-pill:hover {
+  color: #f1f5f9;
+  background: rgba(255, 255, 255, 0.08);
+}
+.studio-global-nav .lang-pill.active {
+  color: #0369a1;
+  background: #38bdf8;
+  font-weight: 700;
+}
+.studio-global-nav .nav-link-home {
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  transition: all 0.15s ease;
+}
+.studio-global-nav .nav-link-home:hover {
+  background: #38bdf8;
+  color: #081018;
+}
+@media (max-width: 640px) {
+  .studio-global-nav .nav-badge, .studio-global-nav .lang-txt { display: none; }
+  .studio-global-nav { padding: 0 8px; }
+}
 </style>
-<div class="studio-top-bar">
-  <span style="color:#38bdf8;font-weight:700;">DraftPro 3D</span>
-  <span class="sep">|</span>
-  <a href="demo.html" class="active">🇹🇼 繁體版</a>
-  <a href="demo-zh-cn.html">🇨🇳 简体版</a>
-  <span class="sep">|</span>
-  <a href="index.html" style="color:#e2e8f0;">首頁服務報價 ➔</a>
-</div>
 """
 
-cn_bar = """<style>
-.studio-top-bar {
-  position: fixed; top: 12px; right: 16px; z-index: 99999;
-  background: rgba(15, 23, 42, 0.92); border: 1px solid #38bdf8;
-  backdrop-filter: blur(8px); border-radius: 999px;
-  padding: 6px 14px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
-  display: flex; gap: 10px; align-items: center; font-size: 13px; color: #f1f5f9;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-.studio-top-bar a { color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.15s; }
-.studio-top-bar a:hover { color: #38bdf8; }
-.studio-top-bar a.active { color: #38bdf8; font-weight: 700; }
-.studio-top-bar .sep { color: #475569; }
-</style>
-<div class="studio-top-bar">
-  <span style="color:#38bdf8;font-weight:700;">DraftPro 3D</span>
-  <span class="sep">|</span>
-  <a href="demo.html">🇹🇼 繁体版</a>
-  <a href="demo-zh-cn.html" class="active">🇨🇳 简体版</a>
-  <span class="sep">|</span>
-  <a href="index.html" style="color:#e2e8f0;">首页服务报价 ➔</a>
-</div>
+tw_nav_html = """
+<nav class="studio-global-nav">
+  <div class="nav-left">
+    <span class="nav-brand">DRAFT<b>PRO</b> STUDIO</span>
+    <span class="nav-badge">AI-CAD 3D 空間互動提案</span>
+  </div>
+  <div class="nav-right">
+    <div class="nav-lang">
+      <span class="lang-txt">語言切換：</span>
+      <a href="demo.html" class="lang-pill active">🇹🇼 臺灣繁體版</a>
+      <a href="demo-zh-cn.html" class="lang-pill">🇨🇳 大陸簡體版</a>
+    </div>
+    <a href="index.html" class="nav-link-home">官網服務報價 ➔</a>
+  </div>
+</nav>
 """
 
-# 寫入 demo-zh-tw.html 並加入導覽條與繁體語意修飾
-html_tw = open(os.path.join(here, "demo-zh-tw.html"), encoding="utf-8").read()
-html_tw = html_tw.replace("<body>", f"<body>\n{tw_bar}")
-html_tw = html_tw.replace("装修设计器</title>", "3D 空間互動提案</title>")
-html_tw = html_tw.replace("夾角里的", "夾角裡的")
-html_tw = html_tw.replace("」里加", "」裡加")
-html_tw = html_tw.replace("3D 里", "3D 裡")
-html_tw = html_tw.replace("圖層里", "圖層裡")
-open(os.path.join(here, "demo-zh-tw.html"), "w", encoding="utf-8").write(html_tw)
+cn_nav_html = """
+<nav class="studio-global-nav">
+  <div class="nav-left">
+    <span class="nav-brand">DRAFT<b>PRO</b> STUDIO</span>
+    <span class="nav-badge">AI-CAD 3D 空间交互提案</span>
+  </div>
+  <div class="nav-right">
+    <div class="nav-lang">
+      <span class="lang-txt">语言切换：</span>
+      <a href="demo.html" class="lang-pill">🇹🇼 台湾繁体版</a>
+      <a href="demo-zh-cn.html" class="lang-pill active">🇨🇳 大陆简体版</a>
+    </div>
+    <a href="index.html" class="nav-link-home">官网服务报价 ➔</a>
+  </div>
+</nav>
+"""
 
-# 同步為 demo.html（繁體中文為預設）
-open(os.path.join(here, "demo.html"), "w", encoding="utf-8").write(html_tw)
+def inject_in_flow_nav(file_path, nav_html, is_tw=False):
+    with open(file_path, "r", encoding="utf-8") as f:
+        html = f.read()
 
-# 寫入 demo-zh-cn.html 並加入導覽條
-html_cn = open(os.path.join(here, "demo-zh-cn.html"), encoding="utf-8").read()
-html_cn = html_cn.replace("<body>", f"<body>\n{cn_bar}")
-open(os.path.join(here, "demo-zh-cn.html"), "w", encoding="utf-8").write(html_cn)
+    # 1. 注入 CSS 到 </head> 前
+    html = html.replace("</head>", f"{nav_css}\n</head>")
 
-print("Successfully built fully-localized Traditional Chinese and Simplified Chinese editions.")
+    # 2. 將導覽列作為 .app 裡面的第一個正常文檔流元素，放置在 <header> 正前方（完全不疊套）
+    if '<div class="app">' in html:
+        html = html.replace('<div class="app">', f'<div class="app">\n{nav_html}')
+    else:
+        # fallback
+        html = html.replace('<body>', f'<body>\n{nav_html}')
+
+    # 3. 繁體版本語意與標題精修
+    if is_tw:
+        html = html.replace("装修设计器</title>", "3D 空間互動提案</title>")
+        html = html.replace("夾角里的", "夾角裡的")
+        html = html.replace("」里加", "」裡加")
+        html = html.replace("3D 里", "3D 裡")
+        html = html.replace("圖層里", "圖層裡")
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(html)
+
+# 處理繁體版 demo-zh-tw.html 與 demo.html
+inject_in_flow_nav(os.path.join(here, "demo-zh-tw.html"), tw_nav_html, is_tw=True)
+open(os.path.join(here, "demo.html"), "w", encoding="utf-8").write(open(os.path.join(here, "demo-zh-tw.html"), encoding="utf-8").read())
+
+# 處理簡體版 demo-zh-cn.html
+inject_in_flow_nav(os.path.join(here, "demo-zh-cn.html"), cn_nav_html, is_tw=False)
+
+print("Successfully injected integrated, in-flow navigation bars into both editions!")
