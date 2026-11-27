@@ -4,11 +4,11 @@
 
 ---
 
-## 一、1 分鐘把服務頁上線（零成本）
+## 一、已上線公開網址與聯絡方式
 
-1. 打開 [index.html](file:///C:/Users/jack5/.gemini/antigravity/scratch/ai-cad-studio/index.html)，搜尋 `your-email@example.com` 與 `YOUR_LINE_ID`，換成你自己的真實聯絡方式。
-2. 直接把整個 `ai-cad-studio` 資料夾拖進 [Netlify Drop](https://app.netlify.com/drop)（免綁卡、免指令），10 秒拿到公開網址。
-   - 若要走 GitHub Pages + `/ship` 流程：在 `ai-cad-studio` 內執行 `git init` 並綁定你的 GitHub Repo，之後就能直接用 `/ship` 一鍵部署更新。
+- **主報價官網**：https://topjgapadsup804-pixel.github.io/ai-cad-studio/
+- **30.2 坪 3D 互動 Demo**：https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo.html
+- **收單信箱**：`topjgapadsup804@gmail.com`
 
 ---
 

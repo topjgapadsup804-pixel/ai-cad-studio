@@ -334,7 +334,8 @@
         <h2 class="section-title">傳給我你的草圖，今天就能開始畫</h2>
         <p class="section-sub" style="margin:0 auto 28px;">在上方試算器勾選需求後，可直接線上建立詢價單並附上草圖，我會在 2 小時內回覆確認交期。</p>
         <div class="hero-actions" style="justify-content:center;">
-          <a id="directInquiryLink" href="https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?title=%5B%E8%A3%BD%E5%9C%96%E8%A9%A2%E5%83%B9%5D%20CAD%20%2F%203D%20%E6%88%B6%E5%9E%8B%E5%B0%88%E6%A1%88&body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E8%A9%A2%E5%95%8F%E8%A3%BD%E5%9C%96%E6%AA%94%E6%9C%9F%EF%BC%9A%0A-%20%E9%9C%80%E6%B1%82%E6%91%98%E8%A6%81%EF%BC%9A%0A-%20%E8%81%AF%E7%B5%A1%E6%96%B9%E5%BC%8F%EF%BC%88LINE%20%2F%20Email%EF%BC%89%EF%BC%9A" target="_blank" rel="noopener" class="btn btn-primary">線上填寫詢價單（支援直接貼草圖）</a>
+          <a id="emailInquiryLink" href="mailto:topjgapadsup804@gmail.com?subject=CAD%E8%A3%BD%E5%9C%96%E8%88%873D%E6%8F%90%E6%A1%88%E8%A9%A2%E5%83%B9" class="btn btn-primary">Email 傳圖詢價（topjgapadsup804@gmail.com）</a>
+          <a id="directInquiryLink" href="https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?title=%5B%E8%A3%BD%E5%9C%96%E8%A9%A2%E5%83%B9%5D%20CAD%20%2F%203D%20%E6%88%B6%E5%9E%8B%E5%B0%88%E6%A1%88&body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E8%A9%A2%E5%95%8F%E8%A3%BD%E5%9C%96%E6%AA%94%E6%9C%9F%EF%BC%9A%0A-%20%E9%9C%80%E6%B1%82%E6%91%98%E8%A6%81%EF%BC%9A%0A-%20%E8%81%AF%E7%B5%A1%E6%96%B9%E5%BC%8F%EF%BC%88LINE%20%2F%20Email%EF%BC%89%EF%BC%9A" target="_blank" rel="noopener" class="btn btn-outline">線上填寫詢價單（支援直接貼草圖）</a>
           <a href="demo.html" class="btn btn-outline">先看 30.2 坪 3D 互動範例</a>
         </div>
       </div>
@@ -384,7 +385,15 @@
 
       const svcName = serviceEl.selectedOptions[0].text.split('（')[0];
       const addonText = selectedAddons.length ? selectedAddons.join('、') : '無';
-      quoteSummary.textContent = `方案：${svcName}｜坪數：${area} 坪｜加值：${addonText}｜預估：NT$ ${total.toLocaleString('zh-TW')}`;
+      const summary = `方案：${svcName}｜坪數：${area} 坪｜加值：${addonText}｜預估：NT$ ${total.toLocaleString('zh-TW')}`;
+      quoteSummary.textContent = summary;
+
+      const emailLink = document.getElementById('emailInquiryLink');
+      if (emailLink) {
+        const subject = encodeURIComponent(`[製圖詢價] ${svcName} (${area}坪)`);
+        const body = encodeURIComponent(`你好，我想詢問製圖檔期與報價：\n\n${summary}\n\n（請附上草圖、格局圖或參考尺寸）`);
+        emailLink.href = `mailto:topjgapadsup804@gmail.com?subject=${subject}&body=${body}`;
+      }
     }
 
     serviceEl.addEventListener('change', updateQuote);
