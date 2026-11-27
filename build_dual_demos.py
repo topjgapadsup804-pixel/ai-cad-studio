@@ -1,8 +1,13 @@
 """
-產生繁體中文與簡體中文雙版本戶型 3D 互動設計器：
-1. demo-zh-tw.html & demo.html：臺灣繁體中文建築圖說規範（坪數、客餐廳、景觀陽台、工作陽台、主臥、主衛、客衛、書房、次臥、廚房）
-2. demo-zh-cn.html：簡體中文建築圖說規範（平米、客餐厅、景观阳台、生活阳台、主卧、主卫、公卫、书房、次卧、厨房）
-並在介面頂部加入便捷語言切換導覽條。
+雙語版本建置腳本（完整字體與語意在地化）：
+1. 繁體中文版本 (demo.html & demo-zh-tw.html)：
+   - 全介面（面板、圖庫、工項清單、導覽、標註、提示）100% 轉換為臺灣標準繁體中文
+   - 包含臺灣字體棧 ("PingFang TC", "Microsoft JhengHei", "Noto Sans TC")
+   - 房名符合臺灣建築圖說規範（客餐廳、雙衛、景觀陽台、工作陽台、主臥、次臥、書房）
+   - 報價幣別改為 NTD，項目欄位為工項/數量/小計
+2. 簡體中文版本 (demo-zh-cn.html)：
+   - 100% 符合大陸 GB/T 建築圖說標準（客餐厅、景观阳台、生活阳台、主卧、次卧、书房、主卫、公卫）
+3. 兩者頂部皆具備即時雙向切換導覽條。
 """
 import copy
 import json
@@ -10,15 +15,23 @@ import os
 import re
 import subprocess
 import sys
+from opencc import OpenCC
 
 here = os.path.dirname(os.path.abspath(__file__))
 skill_dir = r"C:\Users\jack5\.gemini\config\skills\house-plan-designer"
+template_src = os.path.join(skill_dir, "assets", "template.html")
 build_py = os.path.join(skill_dir, "scripts", "build.py")
+
+# 讀取原始 template.html
+with open(template_src, encoding="utf-8") as f:
+    orig_template = f.read()
 
 # 讀取基礎 spec.json
 base_spec = json.load(open(os.path.join(here, "spec.json"), encoding="utf-8"))
 
-# 繁體版本 Room 映射
+# ==========================================
+# 1. 繁體中文版 Spec (臺灣建築圖說規範)
+# ==========================================
 tw_room_names = {
     "客餐厅": "客餐廳",
     "景观阳台": "景觀陽台",
@@ -31,9 +44,8 @@ tw_room_names = {
     "公卫": "客衛",
 }
 
-# 1. 產生 spec_zh_tw.json
 spec_tw = copy.deepcopy(base_spec)
-spec_tw["name"] = "DraftPro Studio · 30.2 坪標準三房兩廳兩衛（繁體中文版）"
+spec_tw["name"] = "DraftPro Studio · 30.2 坪標準三房兩廳兩衛（臺灣繁體標準）"
 for r in spec_tw["rooms"]:
     if r["name"] in tw_room_names:
         r["name"] = tw_room_names[r["name"]]
@@ -41,60 +53,63 @@ for r in spec_tw["rooms"]:
 with open(os.path.join(here, "spec_zh_tw.json"), "w", encoding="utf-8") as f:
     json.dump(spec_tw, f, ensure_ascii=False, indent=2)
 
-# 2. 產生 spec_zh_cn.json
+# ==========================================
+# 2. 簡體中文版 Spec (大陸 GB/T 規範)
+# ==========================================
 spec_cn = copy.deepcopy(base_spec)
-spec_cn["name"] = "DraftPro Studio · 100㎡ 标准三室两厅两卫（简体中文版）"
+spec_cn["name"] = "DraftPro Studio · 100㎡ 标准三室两厅两卫（大陆标准）"
+
 with open(os.path.join(here, "spec_zh_cn.json"), "w", encoding="utf-8") as f:
     json.dump(spec_cn, f, ensure_ascii=False, indent=2)
 
-# 3. 使用 build.py 建置 HTML
+# ==========================================
+# 3. 繁體中文版 Template 生成 (OpenCC 全量轉換 + 專業詞彙精修)
+# ==========================================
+cc_tw = OpenCC("s2tw")
+tw_template = cc_tw.convert(orig_template)
+
+# 精修字體與臺灣專屬建築/裝修術語
+tw_template = tw_template.replace('"PingFang SC","Microsoft YaHei"', '"PingFang TC","Microsoft JhengHei","Noto Sans TC","PingFang SC"')
+tw_template = tw_template.replace("单价(元)", "單價(NTD)")
+tw_template = tw_template.replace("合价(元)", "小計(NTD)")
+tw_template = tw_template.replace("合价", "小計")
+tw_template = tw_template.replace("项目", "工項")
+tw_template = tw_template.replace("定制衣柜", "系統衣櫃")
+tw_template = tw_template.replace("定制鞋柜", "系統鞋櫃")
+tw_template = tw_template.replace("定制餐边柜", "系統餐邊櫃")
+tw_template = tw_template.replace("定制柜", "系統櫃")
+tw_template = tw_template.replace("拆改", "拆除隔間")
+tw_template = tw_template.replace("导出 CAD", "匯出 CAD")
+tw_template = tw_template.replace("导出 PDF", "匯出 PDF")
+tw_template = tw_template.replace("保存方案", "儲存方案")
+tw_template = tw_template.replace("燃气灶", "瓦斯爐")
+tw_template = tw_template.replace("集成灶", "瓦斯爐/集成爐")
+tw_template = tw_template.replace("油烟机", "抽油煙機")
+tw_template = tw_template.replace("台盆", "面盆")
+tw_template = tw_template.replace("花洒", "蓮蓬頭/花灑")
+tw_template = tw_template.replace("淋浴房", "淋浴拉門")
+
+# 存儲繁體模板
+tw_template_path = os.path.join(here, "template_zh_tw.html")
+with open(tw_template_path, "w", encoding="utf-8") as f:
+    f.write(tw_template)
+
+# ==========================================
+# 4. 建置 HTML
+# ==========================================
 print("Building demo-zh-cn.html...")
 subprocess.run([sys.executable, build_py, "spec_zh_cn.json", "-o", "demo-zh-cn.html"], cwd=here, check=True)
 
 print("Building demo-zh-tw.html...")
-subprocess.run([sys.executable, build_py, "spec_zh_tw.json", "-o", "demo-zh-tw.html"], cwd=here, check=True)
+subprocess.run([sys.executable, build_py, "spec_zh_tw.json", "-o", "demo-zh-tw.html", "--template", tw_template_path], cwd=here, check=True)
 
-# 4. 繁體中文 UI 詞庫替換
-tw_replacements = [
-    (r"户型装修设计器", r"戶型裝修設計器"),
-    (r"装修设计器", r"3D 空間互動提案設計器"),
-    (r"“我的造型”", r"「我的造型」"),
-    (r"从模型库删除", r"從模型庫刪除"),
-    (r"点击放到视图中心", r"點擊放到視圖中心"),
-    (r"点击添加到视图中心", r"點擊添加到視圖中心"),
-    (r"拖到平面 / 3D 里", r"拖到平面 / 3D 空間內"),
-    (r"已替换为：", r"已替換為："),
-    (r"画场地", r"繪製場地"),
-    (r"画吊顶造型", r"繪製天花吊頂造型"),
-    (r"顶面图层", r"天花圖層"),
-    (r"工程直接费", r"工程直接費"),
-    (r"管理费", r"管理費"),
-    (r"合计", r"合計"),
-    (r"合价\(元\)", r"小計(NTD)"),
-    (r"单价\(元\)", r"單價(NTD)"),
-    (r"明细", r"明細"),
-    (r"项目", r"工項"),
-    (r"分类", r"類別"),
-    (r"单位", r"單位"),
-    (r"数量", r"數量"),
-    (r"家具软装", r"家具軟裝"),
-    (r"定制柜", r"系統櫃"),
-    (r"拆改", r"拆除隔間"),
-    (r"水电", r"水電管線"),
-    (r"地面", r"地坪鋪貼"),
-    (r"墙面", r"牆面配置"),
-    (r"顶面", r"天花吊頂"),
-    (r"原始结构", r"原始結構圖"),
-    (r"方案图", r"平面配置圖"),
-]
-
-# 導覽條 HTML
+# 導覽切換條
 tw_bar = """<style>
 .studio-top-bar {
   position: fixed; top: 12px; right: 16px; z-index: 99999;
   background: rgba(15, 23, 42, 0.92); border: 1px solid #38bdf8;
   backdrop-filter: blur(8px); border-radius: 999px;
-  padding: 6px 14px; font-family: -apple-system, sans-serif;
+  padding: 6px 14px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
   display: flex; gap: 10px; align-items: center; font-size: 13px; color: #f1f5f9;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
@@ -118,7 +133,7 @@ cn_bar = """<style>
   position: fixed; top: 12px; right: 16px; z-index: 99999;
   background: rgba(15, 23, 42, 0.92); border: 1px solid #38bdf8;
   backdrop-filter: blur(8px); border-radius: 999px;
-  padding: 6px 14px; font-family: -apple-system, sans-serif;
+  padding: 6px 14px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   display: flex; gap: 10px; align-items: center; font-size: 13px; color: #f1f5f9;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
@@ -137,19 +152,22 @@ cn_bar = """<style>
 </div>
 """
 
-# 處理 demo-zh-tw.html
+# 寫入 demo-zh-tw.html 並加入導覽條與繁體語意修飾
 html_tw = open(os.path.join(here, "demo-zh-tw.html"), encoding="utf-8").read()
-for pat, rep in tw_replacements:
-    html_tw = re.sub(pat, rep, html_tw)
 html_tw = html_tw.replace("<body>", f"<body>\n{tw_bar}")
+html_tw = html_tw.replace("装修设计器</title>", "3D 空間互動提案</title>")
+html_tw = html_tw.replace("夾角里的", "夾角裡的")
+html_tw = html_tw.replace("」里加", "」裡加")
+html_tw = html_tw.replace("3D 里", "3D 裡")
+html_tw = html_tw.replace("圖層里", "圖層裡")
 open(os.path.join(here, "demo-zh-tw.html"), "w", encoding="utf-8").write(html_tw)
 
-# 同步至 demo.html（繁體為預設）
+# 同步為 demo.html（繁體中文為預設）
 open(os.path.join(here, "demo.html"), "w", encoding="utf-8").write(html_tw)
 
-# 處理 demo-zh-cn.html
+# 寫入 demo-zh-cn.html 並加入導覽條
 html_cn = open(os.path.join(here, "demo-zh-cn.html"), encoding="utf-8").read()
 html_cn = html_cn.replace("<body>", f"<body>\n{cn_bar}")
 open(os.path.join(here, "demo-zh-cn.html"), "w", encoding="utf-8").write(html_cn)
 
-print("Both demo-zh-tw.html, demo.html, and demo-zh-cn.html built successfully with language bars.")
+print("Successfully built fully-localized Traditional Chinese and Simplified Chinese editions.")
