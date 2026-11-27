@@ -3,482 +3,563 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>30 坪三房兩廳｜2D CAD × 3D 互動戶型展示 Demo</title>
+  <title>30.2 坪現代極簡三房兩廳｜高階 3D 空間漫遊 × 2D 建築施工圖</title>
+  <!-- Three.js & OrbitControls from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <style>
     :root {
-      --bg: #0b0f17;
-      --panel: #131926;
-      --panel-2: #1a2233;
-      --border: #263248;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
+      --bg: #0b0f19;
+      --panel: rgba(18, 25, 41, 0.88);
+      --panel-border: rgba(56, 189, 248, 0.2);
       --accent: #38bdf8;
-      --elec: #f59e0b;
-      --plumb: #3b82f6;
-      --success: #34d399;
+      --text: #f8fafc;
+      --muted: #94a3b8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
       background: var(--bg); color: var(--text);
-      height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+      height: 100vh; overflow: hidden; display: flex; flex-direction: column;
     }
+
     header {
-      height: 56px; padding: 0 20px; background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      flex-shrink: 0;
+      height: 60px; padding: 0 24px; background: rgba(11, 15, 25, 0.95);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--panel-border);
+      display: flex; align-items: center; justify-content: space-between; z-index: 10;
     }
-    .title-group { display: flex; align-items: center; gap: 12px; }
-    .back-link {
+    .brand-title { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 1.05rem; }
+    .brand-title span { color: var(--accent); }
+    .back-btn {
       font-size: 0.85rem; color: var(--muted); text-decoration: none;
-      padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px;
+      padding: 6px 12px; border: 1px solid var(--panel-border); border-radius: 6px;
+      transition: all 0.2s;
     }
-    .back-link:hover { color: var(--text); border-color: var(--accent); }
-    .title { font-weight: 700; font-size: 0.98rem; }
-    .title span { color: var(--accent); }
-    .mode-switch {
-      display: flex; background: var(--bg); padding: 4px; border-radius: 8px; border: 1px solid var(--border);
+    .back-btn:hover { color: var(--text); border-color: var(--accent); }
+
+    .view-modes {
+      display: flex; gap: 6px; background: #070a12; padding: 4px; border-radius: 8px; border: 1px solid #1e293b;
     }
     .mode-btn {
-      background: transparent; color: var(--muted); border: none;
-      padding: 6px 14px; border-radius: 6px; font-size: 0.86rem; font-weight: 600; cursor: pointer;
+      background: transparent; color: var(--muted); border: none; padding: 7px 16px;
+      border-radius: 6px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
     }
-    .mode-btn.active { background: var(--accent); color: #081018; }
+    .mode-btn.active { background: var(--accent); color: #081018; box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
 
-    .workspace { flex: 1; display: grid; grid-template-columns: 280px 1fr; min-height: 0; }
-    @media (max-width: 820px) {
-      .workspace { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
-      aside { max-height: 40vh; overflow-y: auto; border-right: none; border-top: 1px solid var(--border); }
+    .main-stage { flex: 1; position: relative; overflow: hidden; }
+    #webgl-canvas { width: 100%; height: 100%; display: block; }
+    #cad2d-canvas {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; background: #0a0e17;
     }
-    aside {
-      background: var(--panel); border-right: 1px solid var(--border);
-      padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px;
+
+    /* Floating UI Controls */
+    .floating-panel {
+      position: absolute; top: 20px; left: 20px; z-index: 5;
+      background: var(--panel); backdrop-filter: blur(16px);
+      border: 1px solid var(--panel-border); border-radius: 14px;
+      padding: 20px; width: 280px; box-shadow: 0 12px 32px rgba(0,0,0,0.5);
     }
-    .panel-section h3 {
-      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--muted); margin-bottom: 10px;
-    }
-    .toggle-list { display: grid; gap: 8px; }
-    .toggle {
+    .panel-group { margin-bottom: 16px; }
+    .panel-group:last-child { margin-bottom: 0; }
+    .panel-title { font-size: 0.76rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 10px; }
+
+    .toggle-row {
       display: flex; align-items: center; justify-content: space-between;
-      background: var(--panel-2); border: 1px solid var(--border);
-      padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 0.88rem;
+      padding: 8px 10px; background: rgba(30, 41, 59, 0.5); border-radius: 8px; margin-bottom: 6px;
+      font-size: 0.88rem; cursor: pointer; border: 1px solid transparent;
     }
-    .toggle input { accent-color: var(--accent); width: 16px; height: 16px; }
-    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; }
+    .toggle-row:hover { border-color: rgba(56, 189, 248, 0.3); }
+    .toggle-row input { accent-color: var(--accent); width: 16px; height: 16px; }
 
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .stat-card {
-      background: var(--panel-2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px;
+    .lighting-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .light-btn {
+      padding: 8px; border: 1px solid var(--panel-border); background: rgba(30,41,59,0.6);
+      color: var(--text); border-radius: 6px; cursor: pointer; font-size: 0.84rem; text-align: center;
     }
-    .stat-card small { display: block; color: var(--muted); font-size: 0.76rem; }
-    .stat-card strong { font-size: 1.05rem; color: var(--accent); }
+    .light-btn.active { background: rgba(56, 189, 248, 0.18); border-color: var(--accent); color: var(--accent); }
 
-    .room-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-    .room-table td { padding: 5px 0; border-bottom: 1px solid rgba(38,50,72,0.6); }
-    .room-table td:last-child { text-align: right; color: var(--muted); }
+    /* Bottom HUD */
+    .hud-controls {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; background: var(--panel); backdrop-filter: blur(16px);
+      padding: 8px 16px; border-radius: 999px; border: 1px solid var(--panel-border); z-index: 5;
+    }
+    .hud-pill {
+      background: transparent; color: var(--text); border: none; font-size: 0.84rem;
+      padding: 6px 12px; border-radius: 999px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+    }
+    .hud-pill:hover { background: rgba(255,255,255,0.08); }
+    .hud-pill.active { background: var(--accent); color: #081018; font-weight: 600; }
 
-    .canvas-wrap { position: relative; background: radial-gradient(circle at 50% 35%, #131c2e 0%, #090d14 75%); overflow: hidden; }
-    canvas { width: 100%; height: 100%; display: block; cursor: grab; }
-    canvas:active { cursor: grabbing; }
-    .hud {
-      position: absolute; bottom: 16px; left: 16px;
-      background: rgba(19, 25, 38, 0.86); border: 1px solid var(--border);
-      padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; color: var(--muted);
-      backdrop-filter: blur(6px); pointer-events: none;
+    /* Room Label Overlay */
+    .room-badge {
+      position: absolute; bottom: 24px; right: 24px;
+      background: var(--panel); backdrop-filter: blur(16px); border: 1px solid var(--panel-border);
+      padding: 14px 20px; border-radius: 12px; z-index: 5; font-size: 0.86rem;
     }
-    .hud-right {
-      position: absolute; bottom: 16px; right: 16px; display: flex; gap: 8px;
+    .room-badge strong { color: var(--accent); font-size: 1.1rem; display: block; margin-bottom: 2px; }
+
+    @media (max-width: 768px) {
+      .floating-panel { display: none; }
+      .room-badge { display: none; }
     }
-    .hud-btn {
-      background: rgba(19, 25, 38, 0.9); color: var(--text); border: 1px solid var(--border);
-      padding: 7px 12px; border-radius: 8px; font-size: 0.82rem; cursor: pointer;
-    }
-    .hud-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .cta-mini {
-      display: block; text-align: center; background: var(--accent); color: #081018;
-      font-weight: 700; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-size: 0.88rem;
-    }
-    .cta-mini:hover { background: #7dd3fc; }
   </style>
 </head>
 <body>
   <header>
-    <div class="title-group">
-      <a href="index.html" class="back-link">← 返回報價頁</a>
-      <div class="title"><span>DRAFTPRO</span> 30.2 坪標準三房兩廳兩衛｜互動展示 Demo</div>
+    <div class="brand-title">
+      <a href="index.html" class="back-btn">← 返回服務首頁</a>
+      <div>DRAFT<span>PRO</span> STUDIO ｜ 30.2 坪三房兩廳互動展示</div>
     </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="btn3D">3D 互動鳥瞰</button>
-      <button class="mode-btn" id="btn2D">2D CAD 平面圖</button>
+    <div class="view-modes">
+      <button class="mode-btn active" id="modeOrbit">3D 鳥瞰漫遊</button>
+      <button class="mode-btn" id="modeFPS">第一人稱視角</button>
+      <button class="mode-btn" id="modeCAD">2D 建築施工圖</button>
     </div>
   </header>
 
-  <div class="workspace">
-    <aside>
-      <div class="panel-section">
-        <h3>圖層開關（即時切換）</h3>
-        <div class="toggle-list">
-          <label class="toggle"><span><span class="dot" style="background:#94a3b8;"></span>家具與廚衛配置</span><input type="checkbox" id="layerFurn" checked /></label>
-          <label class="toggle"><span><span class="dot" style="background:#38bdf8;"></span>CAD 尺寸與房名標註</span><input type="checkbox" id="layerDim" checked /></label>
-          <label class="toggle"><span><span class="dot" style="background:#f59e0b;"></span>強電 / 迴路管線</span><input type="checkbox" id="layerElec" checked /></label>
-          <label class="toggle"><span><span class="dot" style="background:#3b82f6;"></span>給排水管路系統</span><input type="checkbox" id="layerPlumb" /></label>
+  <div class="main-stage">
+    <!-- WebGL Canvas for Realistic 3D -->
+    <canvas id="webgl-canvas"></canvas>
+    <!-- 2D Canvas for Clean CAD Plan -->
+    <canvas id="cad2d-canvas"></canvas>
+
+    <!-- Interactive Toggles Panel -->
+    <div class="floating-panel" id="floatingPanel">
+      <div class="panel-group">
+        <div class="panel-title">即時圖層切換</div>
+        <label class="toggle-row">
+          <span>🛋️ 實木家具與廚衛設備</span>
+          <input type="checkbox" id="chkFurniture" checked />
+        </label>
+        <label class="toggle-row">
+          <span>⚡ 弱電迴路與插座管線</span>
+          <input type="checkbox" id="chkElectrical" checked />
+        </label>
+        <label class="toggle-row">
+          <span>💧 給水 / 排水管路系統</span>
+          <input type="checkbox" id="chkPlumbing" checked />
+        </label>
+        <label class="toggle-row">
+          <span>📐 CAD 尺寸標註與房名</span>
+          <input type="checkbox" id="chkLabels" checked />
+        </label>
+      </div>
+
+      <div class="panel-group">
+        <div class="panel-title">光影氛圍情境</div>
+        <div class="lighting-opts">
+          <button class="light-btn active" id="btnDay">☀️ 自然採光</button>
+          <button class="light-btn" id="btnNight">🌙 晚間溫馨光</button>
         </div>
       </div>
+    </div>
 
-      <div class="panel-section">
-        <h3>空間指標</h3>
-        <div class="stats-grid">
-          <div class="stat-card"><small>室內實坪</small><strong>30.2 坪</strong></div>
-          <div class="stat-card"><small>格局配置</small><strong>3房 2廳 2衛</strong></div>
-          <div class="stat-card"><small>參考面寬 × 進深</small><strong>11.4m × 8.8m</strong></div>
-          <div class="stat-card"><small>初估基礎工程</small><strong>NT$ 145 萬</strong></div>
-        </div>
-      </div>
+    <!-- HUD Action Bar -->
+    <div class="hud-controls">
+      <button class="hud-pill" id="btnResetCam">🎯 重設視角</button>
+      <button class="hud-pill" id="btnAutoSpin">🔄 360° 自動旋轉</button>
+      <button class="hud-pill" id="btnRoomLiving">客廳</button>
+      <button class="hud-pill" id="btnRoomMaster">主臥</button>
+      <button class="hud-pill" id="btnRoomDining">餐廚</button>
+    </div>
 
-      <div class="panel-section">
-        <h3>各空間面積清單</h3>
-        <table class="room-table" id="roomList"></table>
-      </div>
-
-      <a href="index.html#estimator" class="cta-mini">把我的格局圖也做成這樣 →</a>
-    </aside>
-
-    <div class="canvas-wrap">
-      <canvas id="viewport"></canvas>
-      <div class="hud" id="hudHint">拖曳旋轉視角｜滾輪縮放｜右上切換 2D CAD / 3D 鳥瞰</div>
-      <div class="hud-right">
-        <button class="hud-btn" id="btnReset">重設視角</button>
-        <button class="hud-btn" id="btnRotate">自動旋轉</button>
-      </div>
+    <!-- Info Overlay -->
+    <div class="room-badge">
+      <strong>30.2 坪 (100.3 m²)</strong>
+      <span>3 房 2 廳 2 衛 ｜ 挑高 2.8m 現代簡約</span>
     </div>
   </div>
 
   <script>
-    // 11.4m x 8.8m = ~100.32 m2 (~30.3 坪)
-    const PLAN_W = 11.4, PLAN_D = 8.8, WALL_H = 2.7;
+    // ----------------------------------------------------
+    // CONSTANTS & ROOM DATA (Units in Meters: 11.4m x 8.8m)
+    // ----------------------------------------------------
+    const PLAN_W = 11.4, PLAN_D = 8.8, WALL_H = 2.4, WALL_THICK = 0.16;
 
     const ROOMS = [
-      { name: '客廳', x: 0, y: 0, w: 4.8, d: 4.6, color: '#1e293b', floor3d: '#2c3a4f' },
-      { name: '餐廳', x: 4.8, y: 0, w: 3.2, d: 3.4, color: '#1e293b', floor3d: '#283548' },
-      { name: '玄關', x: 4.8, y: 3.4, w: 3.2, d: 1.2, color: '#243044', floor3d: '#334155' },
-      { name: '廚房', x: 8.0, y: 0, w: 3.4, d: 3.4, color: '#1b2b34', floor3d: '#243b47' },
-      { name: '工作陽台', x: 8.0, y: 3.4, w: 3.4, d: 1.2, color: '#1a2723', floor3d: '#213630' },
-      { name: '主臥室', x: 0, y: 4.6, w: 4.6, d: 4.2, color: '#22283d', floor3d: '#2f3854' },
-      { name: '主衛', x: 4.6, y: 4.6, w: 2.0, d: 2.2, color: '#182b3a', floor3d: '#1f3b4f' },
-      { name: '客衛', x: 4.6, y: 6.8, w: 2.0, d: 2.0, color: '#182b3a', floor3d: '#1f3b4f' },
-      { name: '次臥', x: 6.6, y: 4.6, w: 2.6, d: 4.2, color: '#23293c', floor3d: '#313a52' },
-      { name: '書房 / 客房', x: 9.2, y: 4.6, w: 2.2, d: 4.2, color: '#252a3a', floor3d: '#333b4f' }
+      { name: "客廳", x: 0, z: 0, w: 4.8, d: 4.6, floorColor: 0xe2dcd5 },
+      { name: "餐廳", x: 4.8, z: 0, w: 3.2, d: 3.4, floorColor: 0xdfd8d0 },
+      { name: "玄關", x: 4.8, z: 3.4, w: 3.2, d: 1.2, floorColor: 0x94a3b8 },
+      { name: "廚房", x: 8.0, z: 0, w: 3.4, d: 3.4, floorColor: 0xcfd8dc },
+      { name: "陽台", x: 8.0, z: 3.4, w: 3.4, d: 1.2, floorColor: 0xb0bec5 },
+      { name: "主臥室", x: 0, z: 4.6, w: 4.6, d: 4.2, floorColor: 0xd7ccc8 },
+      { name: "主衛", x: 4.6, z: 4.6, w: 2.0, d: 2.2, floorColor: 0xb0bec5 },
+      { name: "客衛", x: 4.6, z: 6.8, w: 2.0, d: 2.0, floorColor: 0xb0bec5 },
+      { name: "次臥", x: 6.6, z: 4.6, w: 2.6, d: 4.2, floorColor: 0xd7ccc8 },
+      { name: "書房", x: 9.2, z: 4.6, w: 2.2, d: 4.2, floorColor: 0xd7ccc8 }
     ];
 
-    // Furniture boxes: [x, y, w, d, h, color, label]
-    const FURNITURE = [
-      // 客廳沙發、茶几、電視櫃
-      [0.4, 0.5, 2.8, 0.95, 0.85, '#475569', '沙發'],
-      [1.0, 1.9, 1.4, 0.75, 0.42, '#64748b', '茶几'],
-      [0.6, 3.9, 2.6, 0.45, 0.55, '#334155', '電視櫃'],
-      // 餐廳餐桌
-      [5.5, 1.1, 1.7, 0.95, 0.75, '#7c5c43', '餐桌'],
-      // 廚房流理台
-      [8.2, 0.2, 3.0, 0.65, 0.88, '#475569', '廚具'],
-      [10.4, 1.5, 0.75, 0.75, 1.75, '#64748b', '冰箱'],
-      // 主臥雙人床、衣櫃
-      [0.5, 5.4, 1.9, 2.1, 0.55, '#6366f1', '主臥床'],
-      [3.7, 5.0, 0.65, 3.2, 2.2, '#475569', '衣櫃'],
-      // 次臥單人床、書桌
-      [6.9, 6.4, 1.2, 2.0, 0.52, '#38bdf8', '單人床'],
-      [8.4, 5.1, 0.6, 1.3, 0.75, '#64748b', '書桌'],
-      // 書房書桌
-      [9.5, 5.2, 1.6, 0.65, 0.75, '#7c5c43', '工作桌'],
-      // 衛浴
-      [4.8, 4.9, 0.7, 0.55, 0.45, '#cbd5e1', '馬桶'],
-      [5.8, 4.8, 0.65, 1.5, 0.82, '#94a3b8', '洗手台'],
-      [4.8, 7.1, 0.7, 0.55, 0.45, '#cbd5e1', '馬桶']
-    ];
+    // ----------------------------------------------------
+    // THREE.JS INITIALIZATION
+    // ----------------------------------------------------
+    const canvas3d = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0c111d);
+    scene.fog = new THREE.FogExp2(0x0c111d, 0.025);
 
-    // Electrical conduits (from panel at entrance 5.0, 3.5)
-    const ELEC_LINES = [
-      [[5.0, 3.6], [5.0, 2.0], [2.0, 2.0], [2.0, 4.1]],
-      [[5.0, 3.6], [6.4, 1.6], [9.5, 0.6]],
-      [[5.0, 3.6], [2.2, 4.6], [2.2, 6.4]],
-      [[5.0, 3.6], [7.8, 4.6], [7.8, 6.6]],
-      [[5.0, 3.6], [10.2, 4.6], [10.2, 5.6]]
-    ];
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 14, 15);
 
-    // Plumbing lines (wet zones: kitchen + two baths + balcony)
-    const PLUMB_LINES = [
-      [[9.6, 3.9], [9.6, 0.5], [8.5, 0.5]],
-      [[9.6, 3.9], [5.6, 3.9], [5.6, 5.5], [5.6, 7.8]],
-      [[5.6, 5.5], [4.9, 5.2]],
-      [[5.6, 7.8], [4.9, 7.4]]
-    ];
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas3d, antialias: true, powerPreference: "high-performance" });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Populate room table
-    const roomListEl = document.getElementById('roomList');
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxPolarAngle = Math.PI / 2 - 0.05; // Don't go below ground
+    controls.target.set(0, 0, 0);
+
+    // ----------------------------------------------------
+    // LIGHTING SETUP (Day / Night Support)
+    // ----------------------------------------------------
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(0xfff8eb, 0.9);
+    sunLight.position.set(10, 20, 12);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 2048;
+    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.camera.near = 0.5;
+    sunLight.shadow.camera.far = 40;
+    sunLight.shadow.camera.left = -12;
+    sunLight.shadow.camera.right = 12;
+    sunLight.shadow.camera.top = 12;
+    sunLight.shadow.camera.bottom = -12;
+    scene.add(sunLight);
+
+    const warmPoints = [];
+    function addWarmPoint(x, y, z) {
+      const p = new THREE.PointLight(0xff9933, 0.8, 6);
+      p.position.set(x, y, z);
+      scene.add(p);
+      warmPoints.push(p);
+    }
+    // Living, Dining, Master lights
+    addWarmPoint(-2.5, 2.2, -2.0);
+    addWarmPoint(1.0, 2.2, -2.0);
+    addWarmPoint(-2.5, 2.2, 2.5);
+
+    // ----------------------------------------------------
+    // ARCHITECTURAL ELEMENTS & PROCEDURAL TEXTURING
+    // ----------------------------------------------------
+    const offsetOriginX = -PLAN_W / 2;
+    const offsetOriginZ = -PLAN_D / 2;
+
+    // Ground platform
+    const slabGeo = new THREE.BoxGeometry(PLAN_W + 1.2, 0.3, PLAN_D + 1.2);
+    const slabMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.8 });
+    const slabMesh = new THREE.Mesh(slabGeo, slabMat);
+    slabMesh.position.set(0, -0.15, 0);
+    slabMesh.receiveShadow = true;
+    scene.add(slabMesh);
+
+    // Floors
     ROOMS.forEach(r => {
-      const ping = ((r.w * r.d) / 3.305785).toFixed(1);
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${r.name}</td><td>${r.w.toFixed(1)}×${r.d.toFixed(1)}m (${ping}坪)</td>`;
-      roomListEl.appendChild(tr);
+      const w = r.w, d = r.d;
+      const geo = new THREE.BoxGeometry(w, 0.04, d);
+      const mat = new THREE.MeshStandardMaterial({
+        color: r.floorColor,
+        roughness: 0.45,
+        metalness: 0.1
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(offsetOriginX + r.x + w/2, 0.02, offsetOriginZ + r.z + d/2);
+      mesh.receiveShadow = true;
+      scene.add(mesh);
     });
 
-    const canvas = document.getElementById('viewport');
-    const ctx = canvas.getContext('2d');
+    // Walls
+    const wallMat = new THREE.MeshStandardMaterial({
+      color: 0xf1f5f9,
+      roughness: 0.7,
+      transparent: true,
+      opacity: 0.95
+    });
 
-    let mode = '3D';
-    let yaw = -0.62, pitch = 0.68, zoom = 1.0;
-    let dragging = false, lastX = 0, lastY = 0;
-    let autoRotate = false;
+    const WALL_SEGS = [
+      // Outer border
+      [0, 0, PLAN_W, 0], [PLAN_W, 0, PLAN_W, PLAN_D], [0, PLAN_D, PLAN_W, PLAN_D], [0, 0, 0, PLAN_D],
+      // Inner partitions
+      [0, 4.6, PLAN_W, 4.6],
+      [4.8, 0, 4.8, 4.6],
+      [8.0, 0, 8.0, 4.6],
+      [4.6, 4.6, 4.6, 8.8],
+      [6.6, 4.6, 6.6, 8.8],
+      [9.2, 4.6, 9.2, 8.8],
+      [4.6, 6.8, 6.6, 6.8]
+    ];
 
-    const layers = {
-      furn: document.getElementById('layerFurn'),
-      dim: document.getElementById('layerDim'),
-      elec: document.getElementById('layerElec'),
-      plumb: document.getElementById('layerPlumb')
-    };
+    WALL_SEGS.forEach(([x1, z1, x2, z2]) => {
+      const len = Math.hypot(x2 - x1, z2 - z1);
+      const angle = Math.atan2(z2 - z1, x2 - x1);
+      const geo = new THREE.BoxGeometry(len, WALL_H * 0.65, WALL_THICK);
+      const mesh = new THREE.Mesh(geo, wallMat);
+      const midX = (x1 + x2) / 2 + offsetOriginX;
+      const midZ = (z1 + z2) / 2 + offsetOriginZ;
+      mesh.position.set(midX, (WALL_H * 0.65) / 2, midZ);
+      mesh.rotation.y = -angle;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add(mesh);
+    });
 
-    function resize() {
+    // ----------------------------------------------------
+    // DETAILED FURNITURE LAYER
+    // ----------------------------------------------------
+    const furnitureGroup = new THREE.Group();
+    scene.add(furnitureGroup);
+
+    function createDetailedBox(w, h, d, color, x, y, z, rotY = 0) {
+      const geo = new THREE.BoxGeometry(w, h, d);
+      const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0.05 });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(offsetOriginX + x, y + h/2, offsetOriginZ + z);
+      mesh.rotation.y = rotY;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      furnitureGroup.add(mesh);
+      return mesh;
+    }
+
+    // Modern Sofa
+    createDetailedBox(2.8, 0.45, 0.95, 0x475569, 1.8, 0, 1.0); // Cushion base
+    createDetailedBox(2.8, 0.45, 0.25, 0x334155, 1.8, 0.45, 0.6); // Backrest
+    createDetailedBox(0.3, 0.35, 0.95, 0x334155, 0.3, 0.3, 1.0); // Arm L
+    createDetailedBox(0.3, 0.35, 0.95, 0x334155, 3.3, 0.3, 1.0); // Arm R
+
+    // Coffee Table (Wood & Glass style)
+    createDetailedBox(1.3, 0.35, 0.7, 0x854d0e, 1.8, 0, 2.3);
+
+    // TV Unit & Big Flat TV
+    createDetailedBox(2.6, 0.45, 0.4, 0x1e293b, 1.8, 0, 4.2);
+    createDetailedBox(1.8, 1.0, 0.06, 0x0f172a, 1.8, 0.6, 4.3); // TV Screen
+
+    // Dining Table & Chairs
+    createDetailedBox(1.8, 0.75, 0.95, 0xa16207, 6.4, 0, 1.8);
+    for (let dx = -0.5; dx <= 0.5; dx += 1.0) {
+      createDetailedBox(0.45, 0.85, 0.45, 0x334155, 6.4 + dx, 0, 1.0);
+      createDetailedBox(0.45, 0.85, 0.45, 0x334155, 6.4 + dx, 0, 2.6);
+    }
+
+    // Kitchen Counter & Island
+    createDetailedBox(3.1, 0.88, 0.65, 0x475569, 9.6, 0, 0.6);
+    createDetailedBox(0.75, 1.8, 0.75, 0x94a3b8, 11.0, 0, 2.0); // Fridge
+
+    // Master Bedroom Suite (Bed, Pillows, Wardrobe)
+    createDetailedBox(2.0, 0.5, 2.1, 0x3730a3, 1.6, 0, 6.8); // King bed
+    createDetailedBox(2.2, 0.85, 0.2, 0x1e1b4b, 1.6, 0.4, 5.7); // Headboard
+    createDetailedBox(0.65, 2.2, 3.2, 0x334155, 4.1, 0, 6.4); // Full-height closet
+
+    // Secondary Bedroom & Study Desks
+    createDetailedBox(1.3, 0.45, 2.0, 0x0284c7, 7.6, 0, 7.6); // Single bed
+    createDetailedBox(1.6, 0.75, 0.7, 0x854d0e, 10.3, 0, 6.8); // Study desk
+
+    // ----------------------------------------------------
+    // ELECTRICAL & PLUMBING PIPELINE LAYERS
+    // ----------------------------------------------------
+    const electricalGroup = new THREE.Group();
+    const plumbingGroup = new THREE.Group();
+    scene.add(electricalGroup);
+    scene.add(plumbingGroup);
+
+    function createPipe(points, color, radius, group) {
+      const curve = new THREE.CatmullRomCurve3(points.map(([x,y,z]) => new THREE.Vector3(offsetOriginX + x, y, offsetOriginZ + z)));
+      const geo = new THREE.TubeGeometry(curve, 32, radius, 8, false);
+      const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.3, emissive: color, emissiveIntensity: 0.3 });
+      const mesh = new THREE.Mesh(geo, mat);
+      group.add(mesh);
+    }
+
+    // Electric circuits (Amber Glowing tubes)
+    createPipe([[5.0, 0.15, 3.6], [5.0, 0.15, 1.8], [1.8, 0.15, 1.8], [1.8, 0.15, 4.2]], 0xf59e0b, 0.04, electricalGroup);
+    createPipe([[5.0, 0.15, 3.6], [6.4, 0.15, 1.8], [9.6, 0.15, 0.8]], 0xf59e0b, 0.04, electricalGroup);
+    createPipe([[5.0, 0.15, 3.6], [1.6, 0.15, 6.8]], 0xf59e0b, 0.04, electricalGroup);
+    createPipe([[5.0, 0.15, 3.6], [10.3, 0.15, 6.8]], 0xf59e0b, 0.04, electricalGroup);
+
+    // Plumbing conduits (Cyan & Blue tubes)
+    createPipe([[9.6, 0.1, 3.6], [9.6, 0.1, 0.8], [8.2, 0.1, 0.8]], 0x0ea5e9, 0.05, plumbingGroup);
+    createPipe([[9.6, 0.1, 3.6], [5.6, 0.1, 3.6], [5.6, 0.1, 5.5], [4.8, 0.1, 5.5]], 0x0284c7, 0.05, plumbingGroup);
+    createPipe([[5.6, 0.1, 5.5], [5.6, 0.1, 7.8], [4.8, 0.1, 7.8]], 0x0284c7, 0.05, plumbingGroup);
+
+    // ----------------------------------------------------
+    // 2D CAD CANVAS RENDERING (Crisp Blueprint View)
+    // ----------------------------------------------------
+    const canvas2d = document.getElementById('cad2d-canvas');
+    const ctx2d = canvas2d.getContext('2d');
+
+    function render2DCAD() {
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = canvas.clientWidth * dpr;
-      canvas.height = canvas.clientHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw();
-    }
-    window.addEventListener('resize', resize);
+      canvas2d.width = canvas2d.clientWidth * dpr;
+      canvas2d.height = canvas2d.clientHeight * dpr;
+      ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    function project3D(x, y, z) {
-      const cx = x - PLAN_W / 2;
-      const cy = y - PLAN_D / 2;
-      const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
-      const rx = cx * cosY - cy * sinY;
-      const ry = cx * sinY + cy * cosY;
+      const w = canvas2d.clientWidth, h = canvas2d.clientHeight;
+      ctx2d.clearRect(0, 0, w, h);
 
-      const cosP = Math.cos(pitch), sinP = Math.sin(pitch);
-      const py = ry * cosP - z * sinP;
-      const scale = Math.min(canvas.clientWidth, canvas.clientHeight) * 0.062 * zoom;
-      return {
-        x: canvas.clientWidth / 2 + rx * scale,
-        y: canvas.clientHeight / 2 + py * scale
-      };
-    }
-
-    function poly3D(pts, fill, stroke, lw = 1) {
-      ctx.beginPath();
-      pts.forEach((p, i) => {
-        const s = project3D(p[0], p[1], p[2]);
-        if (i === 0) ctx.moveTo(s.x, s.y); else ctx.lineTo(s.x, s.y);
-      });
-      ctx.closePath();
-      if (fill) { ctx.fillStyle = fill; ctx.fill(); }
-      if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke(); }
-    }
-
-    function drawBox3D(x, y, w, d, h, topCol, sideCol) {
-      // Top
-      poly3D([[x,y,h],[x+w,y,h],[x+w,y+d,h],[x,y+d,h]], topCol, 'rgba(255,255,255,0.12)', 0.8);
-      // Visible sides (painter's simple approximation)
-      poly3D([[x,y+d,0],[x+w,y+d,0],[x+w,y+d,h],[x,y+d,h]], sideCol, 'rgba(0,0,0,0.25)', 0.7);
-      poly3D([[x+w,y,0],[x+w,y+d,0],[x+w,y+d,h],[x+w,y,h]], sideCol, 'rgba(0,0,0,0.25)', 0.7);
-      poly3D([[x,y,0],[x+w,y,0],[x+w,y,h],[x,y,h]], sideCol, 'rgba(0,0,0,0.2)', 0.6);
-      poly3D([[x,y,0],[x,y+d,0],[x,y+d,h],[x,y,h]], sideCol, 'rgba(0,0,0,0.2)', 0.6);
-    }
-
-    function draw3D() {
-      // Base slab
-      poly3D([[-0.2,-0.2,-0.25],[PLAN_W+0.2,-0.2,-0.25],[PLAN_W+0.2,PLAN_D+0.2,-0.25],[-0.2,PLAN_D+0.2,-0.25]], '#0f172a', '#334155', 1.5);
-
-      // Room floors
-      ROOMS.forEach(r => {
-        poly3D([[r.x,r.y,0],[r.x+r.w,r.y,0],[r.x+r.w,r.y+r.d,0],[r.x,r.y+r.d,0]], r.floor3d, '#3b4c66', 1);
-      });
-
-      // Outer & inner semi-transparent architectural walls
-      const wallSegs = [
-        [0,0,PLAN_W,0], [PLAN_W,0,PLAN_W,PLAN_D], [PLAN_W,PLAN_D,0,PLAN_D], [0,PLAN_D,0,0],
-        [0,4.6,PLAN_W,4.6], [4.8,0,4.8,4.6], [8.0,0,8.0,4.6], [4.6,4.6,4.6,8.8],
-        [6.6,4.6,6.6,8.8], [9.2,4.6,9.2,8.8], [4.6,6.8,6.6,6.8], [4.8,3.4,11.4,3.4]
-      ];
-      wallSegs.forEach(([x1,y1,x2,y2]) => {
-        poly3D([[x1,y1,0],[x2,y2,0],[x2,y2,WALL_H*0.52],[x1,y1,WALL_H*0.52]], 'rgba(148,163,184,0.22)', 'rgba(203,213,225,0.55)', 1.2);
-      });
-
-      // Furniture
-      if (layers.furn.checked) {
-        FURNITURE.forEach(([x,y,w,d,h,col]) => drawBox3D(x, y, w, d, h, col, 'rgba(15,23,42,0.75)'));
-      }
-
-      // Electrical
-      if (layers.elec.checked) {
-        ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2.2;
-        ELEC_LINES.forEach(path => {
-          ctx.beginPath();
-          path.forEach(([x,y], i) => {
-            const p = project3D(x, y, 0.15);
-            if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-          });
-          ctx.stroke();
-        });
-      }
-
-      // Plumbing
-      if (layers.plumb.checked) {
-        ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2.6;
-        PLUMB_LINES.forEach(path => {
-          ctx.beginPath();
-          path.forEach(([x,y], i) => {
-            const p = project3D(x, y, 0.08);
-            if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-          });
-          ctx.stroke();
-        });
-      }
-
-      // Labels
-      if (layers.dim.checked) {
-        ctx.font = '600 12px "Noto Sans TC", sans-serif';
-        ctx.textAlign = 'center';
-        ROOMS.forEach(r => {
-          const p = project3D(r.x + r.w / 2, r.y + r.d / 2, 0.2);
-          ctx.fillStyle = 'rgba(15,23,42,0.75)';
-          ctx.fillRect(p.x - 28, p.y - 11, 56, 18);
-          ctx.fillStyle = '#e2e8f0';
-          ctx.fillText(r.name, p.x, p.y + 2);
-        });
-      }
-    }
-
-    function draw2D() {
-      const pad = 64;
-      const scale = Math.min((canvas.clientWidth - pad * 2) / PLAN_W, (canvas.clientHeight - pad * 2) / PLAN_D) * zoom;
-      const ox = (canvas.clientWidth - PLAN_W * scale) / 2;
-      const oy = (canvas.clientHeight - PLAN_D * scale) / 2;
+      const scale = Math.min((w - 120) / PLAN_W, (h - 120) / PLAN_D);
+      const ox = (w - PLAN_W * scale) / 2;
+      const oy = (h - PLAN_D * scale) / 2;
       const sx = x => ox + x * scale;
-      const sy = y => oy + y * scale;
+      const sy = z => oy + z * scale;
 
-      // CAD grid
-      ctx.strokeStyle = 'rgba(56,189,248,0.06)'; ctx.lineWidth = 1;
-      for (let gx = 0; gx <= PLAN_W + 0.1; gx += 1) {
-        ctx.beginPath(); ctx.moveTo(sx(gx), sy(0)); ctx.lineTo(sx(gx), sy(PLAN_D)); ctx.stroke();
+      // Architectural Grid
+      ctx2d.strokeStyle = "rgba(56, 189, 248, 0.08)";
+      ctx2d.lineWidth = 1;
+      for (let x = 0; x <= PLAN_W; x += 1) {
+        ctx2d.beginPath(); ctx2d.moveTo(sx(x), sy(0)); ctx2d.lineTo(sx(x), sy(PLAN_D)); ctx2d.stroke();
       }
-      for (let gy = 0; gy <= PLAN_D + 0.1; gy += 1) {
-        ctx.beginPath(); ctx.moveTo(sx(0), sy(gy)); ctx.lineTo(sx(PLAN_W), sy(gy)); ctx.stroke();
+      for (let z = 0; z <= PLAN_D; z += 1) {
+        ctx2d.beginPath(); ctx2d.moveTo(sx(0), sy(z)); ctx2d.lineTo(sx(PLAN_W), sy(z)); ctx2d.stroke();
       }
 
       // Rooms
       ROOMS.forEach(r => {
-        ctx.fillStyle = r.color;
-        ctx.fillRect(sx(r.x), sy(r.y), r.w * scale, r.d * scale);
-        ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2.4;
-        ctx.strokeRect(sx(r.x), sy(r.y), r.w * scale, r.d * scale);
+        ctx2d.fillStyle = "#131b2e";
+        ctx2d.fillRect(sx(r.x), sy(r.z), r.w * scale, r.d * scale);
+        ctx2d.strokeStyle = "#38bdf8";
+        ctx2d.lineWidth = 2;
+        ctx2d.strokeRect(sx(r.x), sy(r.z), r.w * scale, r.d * scale);
+
+        // Labels
+        ctx2d.fillStyle = "#f8fafc";
+        ctx2d.font = "600 13px 'Noto Sans TC', sans-serif";
+        ctx2d.textAlign = "center";
+        ctx2d.fillText(r.name, sx(r.x + r.w/2), sy(r.z + r.d/2) - 4);
+        ctx2d.fillStyle = "#94a3b8";
+        ctx2d.font = "11px monospace";
+        ctx2d.fillText(`${(r.w * 1000).toFixed(0)} × ${(r.d * 1000).toFixed(0)} mm`, sx(r.x + r.w/2), sy(r.z + r.d/2) + 14);
       });
 
-      // Outer structural wall
-      ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 4;
-      ctx.strokeRect(sx(0), sy(0), PLAN_W * scale, PLAN_D * scale);
+      // Outer Structural Walls
+      ctx2d.strokeStyle = "#ffffff";
+      ctx2d.lineWidth = 4;
+      ctx2d.strokeRect(sx(0), sy(0), PLAN_W * scale, PLAN_D * scale);
 
-      // Furniture
-      if (layers.furn.checked) {
-        FURNITURE.forEach(([x,y,w,d,,col,label]) => {
-          ctx.fillStyle = col; ctx.globalAlpha = 0.55;
-          ctx.fillRect(sx(x), sy(y), w * scale, d * scale);
-          ctx.globalAlpha = 1;
-          ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
-          ctx.strokeRect(sx(x), sy(y), w * scale, d * scale);
-          ctx.fillStyle = '#e2e8f0'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
-          ctx.fillText(label, sx(x + w / 2), sy(y + d / 2) + 3);
-        });
-      }
-
-      // Electrical
-      if (layers.elec.checked) {
-        ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
-        ELEC_LINES.forEach(path => {
-          ctx.beginPath();
-          path.forEach(([x,y], i) => i === 0 ? ctx.moveTo(sx(x), sy(y)) : ctx.lineTo(sx(x), sy(y)));
-          ctx.stroke();
-        });
-        ctx.setLineDash([]);
-      }
-
-      // Plumbing
-      if (layers.plumb.checked) {
-        ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2.5;
-        PLUMB_LINES.forEach(path => {
-          ctx.beginPath();
-          path.forEach(([x,y], i) => i === 0 ? ctx.moveTo(sx(x), sy(y)) : ctx.lineTo(sx(x), sy(y)));
-          ctx.stroke();
-        });
-      }
-
-      // Dimensions & room labels
-      if (layers.dim.checked) {
-        ctx.fillStyle = '#38bdf8'; ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 1;
-        // Top total dimension
-        const yDim = sy(0) - 22;
-        ctx.beginPath(); ctx.moveTo(sx(0), yDim); ctx.lineTo(sx(PLAN_W), yDim); ctx.stroke();
-        ctx.font = '600 12px monospace'; ctx.textAlign = 'center';
-        ctx.fillText('11,400 mm', sx(PLAN_W / 2), yDim - 6);
-
-        // Left total dimension
-        const xDim = sx(0) - 22;
-        ctx.beginPath(); ctx.moveTo(xDim, sy(0)); ctx.lineTo(xDim, sy(PLAN_D)); ctx.stroke();
-        ctx.save(); ctx.translate(xDim - 8, sy(PLAN_D / 2)); ctx.rotate(-Math.PI / 2);
-        ctx.fillText('8,800 mm', 0, 0); ctx.restore();
-
-        ROOMS.forEach(r => {
-          ctx.fillStyle = '#f8fafc'; ctx.font = '600 12px "Noto Sans TC", sans-serif';
-          ctx.fillText(r.name, sx(r.x + r.w / 2), sy(r.y + r.d / 2) - 4);
-          ctx.fillStyle = '#94a3b8'; ctx.font = '11px monospace';
-          ctx.fillText(`${(r.w*1000).toFixed(0)}×${(r.d*1000).toFixed(0)}`, sx(r.x + r.w / 2), sy(r.y + r.d / 2) + 12);
-        });
-      }
+      // Total dimensions
+      ctx2d.strokeStyle = "#38bdf8";
+      ctx2d.fillStyle = "#38bdf8";
+      ctx2d.lineWidth = 1.2;
+      ctx2d.font = "bold 13px monospace";
+      // Top
+      ctx2d.beginPath(); ctx2d.moveTo(sx(0), sy(0) - 26); ctx2d.lineTo(sx(PLAN_W), sy(0) - 26); ctx2d.stroke();
+      ctx2d.fillText("11,400 mm", sx(PLAN_W / 2), sy(0) - 34);
+      // Left
+      ctx2d.beginPath(); ctx2d.moveTo(sx(0) - 26, sy(0)); ctx2d.lineTo(sx(0) - 26, sy(PLAN_D)); ctx2d.stroke();
+      ctx2d.save(); ctx2d.translate(sx(0) - 36, sy(PLAN_D / 2)); ctx2d.rotate(-Math.PI / 2);
+      ctx2d.fillText("8,800 mm", 0, 0); ctx2d.restore();
     }
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-      if (mode === '3D') draw3D(); else draw2D();
+    // ----------------------------------------------------
+    // INTERACTION & CAMERA ANIMATION
+    // ----------------------------------------------------
+    let autoRotate = false;
+    let targetCamPos = null, targetLookAt = null;
+
+    function moveCameraTo(x, y, z, tx, ty, tz) {
+      targetCamPos = new THREE.Vector3(x, y, z);
+      targetLookAt = new THREE.Vector3(tx, ty, tz);
     }
 
-    // Interactions
-    canvas.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; autoRotate = false; });
-    window.addEventListener('mouseup', () => dragging = false);
-    window.addEventListener('mousemove', e => {
-      if (!dragging || mode !== '3D') return;
-      yaw += (e.clientX - lastX) * 0.008;
-      pitch = Math.max(0.25, Math.min(1.25, pitch + (e.clientY - lastY) * 0.006));
-      lastX = e.clientX; lastY = e.clientY;
-      draw();
-    });
-    canvas.addEventListener('wheel', e => {
-      e.preventDefault();
-      zoom = Math.max(0.6, Math.min(2.0, zoom - e.deltaY * 0.001));
-      draw();
-    }, { passive: false });
-
-    document.getElementById('btn3D').onclick = () => {
-      mode = '3D';
-      document.getElementById('btn3D').classList.add('active');
-      document.getElementById('btn2D').classList.remove('active');
-      draw();
+    document.getElementById('btnResetCam').onclick = () => {
+      moveCameraTo(0, 14, 15, 0, 0, 0);
+      autoRotate = false;
     };
-    document.getElementById('btn2D').onclick = () => {
-      mode = '2D'; autoRotate = false;
-      document.getElementById('btn2D').classList.add('active');
-      document.getElementById('btn3D').classList.remove('active');
-      draw();
+    document.getElementById('btnAutoSpin').onclick = () => {
+      autoRotate = !autoRotate;
+      document.getElementById('btnAutoSpin').classList.toggle('active', autoRotate);
     };
-    document.getElementById('btnReset').onclick = () => { yaw = -0.62; pitch = 0.68; zoom = 1.0; autoRotate = false; draw(); };
-    document.getElementById('btnRotate').onclick = () => { autoRotate = !autoRotate; };
-    Object.values(layers).forEach(el => el.addEventListener('change', draw));
 
-    function loop() {
-      if (autoRotate && mode === '3D') { yaw += 0.005; draw(); }
-      requestAnimationFrame(loop);
+    // Quick Room Focus
+    document.getElementById('btnRoomLiving').onclick = () => moveCameraTo(-3.5, 3.2, 2.5, -2.5, 0.8, -1.5);
+    document.getElementById('btnRoomMaster').onclick = () => moveCameraTo(-2.8, 3.0, 7.5, -2.5, 0.6, 4.0);
+    document.getElementById('btnRoomDining').onclick = () => moveCameraTo(2.5, 3.5, 2.5, 1.2, 0.8, -1.8);
+
+    // Mode Switch
+    const modeOrbit = document.getElementById('modeOrbit');
+    const modeFPS = document.getElementById('modeFPS');
+    const modeCAD = document.getElementById('modeCAD');
+
+    modeOrbit.onclick = () => {
+      modeOrbit.classList.add('active'); modeFPS.classList.remove('active'); modeCAD.classList.remove('active');
+      canvas3d.style.display = 'block'; canvas2d.style.display = 'none';
+      moveCameraTo(0, 14, 15, 0, 0, 0);
+    };
+    modeFPS.onclick = () => {
+      modeFPS.classList.add('active'); modeOrbit.classList.remove('active'); modeCAD.classList.remove('active');
+      canvas3d.style.display = 'block'; canvas2d.style.display = 'none';
+      // Walk into Entrance looking toward Living Room
+      moveCameraTo(0.2, 1.6, 0.5, -3.5, 1.2, -1.5);
+    };
+    modeCAD.onclick = () => {
+      modeCAD.classList.add('active'); modeOrbit.classList.remove('active'); modeFPS.classList.remove('active');
+      canvas3d.style.display = 'none'; canvas2d.style.display = 'block';
+      render2DCAD();
+    };
+
+    // Layer Controls
+    document.getElementById('chkFurniture').onchange = e => furnitureGroup.visible = e.target.checked;
+    document.getElementById('chkElectrical').onchange = e => electricalGroup.visible = e.target.checked;
+    document.getElementById('chkPlumbing').onchange = e => plumbingGroup.visible = e.target.checked;
+
+    // Day/Night switch
+    const btnDay = document.getElementById('btnDay');
+    const btnNight = document.getElementById('btnNight');
+    btnDay.onclick = () => {
+      btnDay.classList.add('active'); btnNight.classList.remove('active');
+      scene.background.set(0x0c111d);
+      sunLight.intensity = 0.9;
+      ambientLight.intensity = 0.65;
+      warmPoints.forEach(p => p.intensity = 0.4);
+    };
+    btnNight.onclick = () => {
+      btnNight.classList.add('active'); btnDay.classList.remove('active');
+      scene.background.set(0x04060a);
+      sunLight.intensity = 0.08;
+      ambientLight.intensity = 0.2;
+      warmPoints.forEach(p => p.intensity = 1.4);
+    };
+
+    // ----------------------------------------------------
+    // RESIZE & RENDER LOOP
+    // ----------------------------------------------------
+    function onResize() {
+      const w = window.innerWidth, h = window.innerHeight - 60;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+      if (canvas2d.style.display === 'block') render2DCAD();
     }
-    resize();
-    loop();
+    window.addEventListener('resize', onResize);
+    onResize();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (autoRotate && modeOrbit.classList.contains('active')) {
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1.2;
+      } else {
+        controls.autoRotate = false;
+      }
+
+      // Smooth camera lerp
+      if (targetCamPos && targetLookAt) {
+        camera.position.lerp(targetCamPos, 0.06);
+        controls.target.lerp(targetLookAt, 0.06);
+        if (camera.position.distanceTo(targetCamPos) < 0.05) {
+          targetCamPos = null; targetLookAt = null;
+        }
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
   </script>
 </body>
 </html>
