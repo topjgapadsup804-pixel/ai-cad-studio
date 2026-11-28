@@ -1,5 +1,5 @@
 {
-  "name": "DraftPro Studio · 100㎡ 标准三室两厅两卫（大陆标准）",
+  "name": "DraftPro Studio · 100㎡ (1,076 sq ft) 3BR/2BA Floor Plan",
   "height": 2850,
   "phase": "renovate",
   "north": 0,
@@ -371,7 +371,7 @@
         6000,
         5800
       ],
-      "name": "客餐厅",
+      "name": "Living & Dining",
       "mat": "marble",
       "wallMat": "latexWarm",
       "ceil": {
@@ -398,7 +398,7 @@
         6000,
         8800
       ],
-      "name": "景观阳台",
+      "name": "Front Balcony",
       "mat": "deck"
     },
     {
@@ -406,7 +406,7 @@
         1900,
         7400
       ],
-      "name": "主卧",
+      "name": "Master Bedroom",
       "mat": "herring",
       "wallMat": "latexWarm",
       "ceil": {
@@ -422,7 +422,7 @@
         950,
         4200
       ],
-      "name": "主卫",
+      "name": "Master Bath",
       "mat": "bath",
       "wallMat": "wallTile",
       "ceil": {
@@ -435,7 +435,7 @@
         2800,
         4200
       ],
-      "name": "公卫",
+      "name": "Guest Bath",
       "mat": "bath",
       "wallMat": "wallTile",
       "ceil": {
@@ -448,7 +448,7 @@
         1900,
         1600
       ],
-      "name": "书房",
+      "name": "Study",
       "mat": "oak",
       "wallMat": "latexSage",
       "ceil": {
@@ -463,7 +463,7 @@
         9800,
         7200
       ],
-      "name": "次卧",
+      "name": "Bedroom 2",
       "mat": "oak",
       "wallMat": "latexWarm",
       "ceil": {
@@ -479,7 +479,7 @@
         9800,
         3000
       ],
-      "name": "厨房",
+      "name": "Kitchen",
       "mat": "bath",
       "wallMat": "wallTile",
       "ceil": {
@@ -492,7 +492,7 @@
         9800,
         850
       ],
-      "name": "生活阳台",
+      "name": "Utility Balcony",
       "mat": "bath"
     }
   ],

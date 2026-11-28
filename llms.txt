@@ -11,13 +11,13 @@
 - Accurate structural bearing walls (240mm / 200mm) and interior partitions (120mm).
 - Code-compliant door swings, window sills/heads, and clear passage widths (>= 1,800mm main circulation).
 - Automated spatial collision and electrical/plumbing (MEP) clearance verification (0 errors, 0 warnings).
-- Supports Taiwan Traditional Chinese (坪 / mm), Mainland Simplified Chinese (㎡ / GB/T), and International English (sq ft / m²).
+- Supports Taiwan Traditional Chinese (坪 / mm) and International English (sq ft / m²).
 
 ## Live Interactive Demos & Pages
 - [English Service & Instant USD Quote](https://topjgapadsup804-pixel.github.io/ai-cad-studio/en.html): International landing page and USD calculator.
 - [Traditional Chinese Service & TWD Quote](https://topjgapadsup804-pixel.github.io/ai-cad-studio/): Taiwan/HK landing page and TWD calculator.
 - [Live 3D Interactive Demo (Traditional Chinese — 30.2 Ping)](https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo.html): Standalone 2D CAD + 3D walkthrough web app.
-- [Live 3D Interactive Demo (Simplified Chinese — 100㎡)](https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo-zh-cn.html): Standalone 2D CAD + 3D walkthrough web app.
+- [Live 3D Interactive Demo (English — 100㎡ / 1,076 sq ft)](https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo-en.html): Standalone 2D CAD + 3D walkthrough web app in English.
 
 ## Direct Order & Contact
 - Email: topjgapadsup804@gmail.com

@@ -17,8 +17,8 @@
 - 🇹🇼 **[3D 互動戶型 Demo（臺灣繁體中文版）](https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo.html)**
   - 30.2 坪標準三房兩廳兩衛（客餐廳、雙陽台、主臥、次臥、書房、雙衛浴）
   - 完整 2D 平面配置圖層、天花吊頂、地坪鋪貼、水電管線與 3D 自由漫遊
-- 🇨🇳 **[3D 交互户型 Demo（大陆简体中文版）](https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo-zh-cn.html)**
-  - 100.01 ㎡ 标准三室两厅两卫（符合 GB/T 制图与水暖电走线规范）
+- 🌐 **[3D Interactive Floor Plan Demo (English — 100㎡ / 1,076 sq ft)](https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo-en.html)**
+  - International 3BR/2BA interactive 2D CAD + 3D walkthrough, MEP X-Ray, and DXF/PDF export.
 
 ---
 

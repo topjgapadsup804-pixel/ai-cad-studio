@@ -24,7 +24,6 @@ body:
       label: Drawing Standard & Language (圖說規範與語言)
       options:
         - "Traditional Chinese — Taiwan Standard (繁體中文 / 坪 / mm)"
-        - "Simplified Chinese — GB/T Standard (简体中文 / ㎡ / mm)"
         - "English — International (sq ft or m²)"
     validations:
       required: true
