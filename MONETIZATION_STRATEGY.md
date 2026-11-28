@@ -18,7 +18,7 @@
 
 ## 二、 雙版本定位與受眾市場 (Dual-Language Strategy)
 
-專案全面支援繁簡雙版本，覆蓋跨區域市場：
+專案全面支援繁體中文與英文雙版本，覆蓋臺灣/香港與全球高客單市場：
 
 1. **臺灣 / 香港市場（繁體版 `demo.html` / `demo-zh-tw.html`）**
    - **計量單位**：坪（Ping）、毫米（mm）
@@ -26,11 +26,11 @@
    - **鎖定客群**：臺灣室內設計工作室、統包工程行、老屋翻修統包商、房仲代銷
    - **主要接案管道**：Pro360 達人網、Tasker 104 出任務、Facebook 設計裝修社團、直接開發信
 
-2. **大陸 / 國際華人市場（簡體版 `demo-zh-cn.html`）**
-   - **計量單位**：平方米（㎡）、毫米（mm）
-   - **標準圖說命名**：客餐厅、景观阳台、生活阳台、主卧、次卧、书房、主卫、公卫
-   - **鎖定客群**：獨立設計師、裝修工作室、房地產海外展示
-   - **主要接案管道**：小紅書作品展示、知乎專案分享、豬八戒/淘寶製圖店鋪合作
+2. **海外國際市場（英文版 `demo-en.html` & `en.html`）**
+   - **計量單位**：平方英尺（sq ft）/ 平方米（㎡）、毫米（mm）
+   - **標準圖說命名**：Living & Dining, Front Balcony, Utility Balcony, Master Bedroom, Bedroom 2, Study, Master Bath, Guest Bath, Kitchen
+   - **鎖定客群**：歐美、新加坡、澳洲室內設計工作室、房產仲介與翻修承包商
+   - **主要接案管道**：Upwork、Fiverr Pro、IndieHackers、Reddit (r/InteriorDesign, r/RealEstate)、AI 搜尋（llms.txt）
 
 ---
 
