@@ -101,6 +101,10 @@ tw_terms = [
     ("台盆", "面盆"),
     ("花洒", "蓮蓬頭/花灑"),
     ("淋浴房", "淋浴拉門"),
+    ("⚡ 管線", "管線透視"),
+    ("🎨 風格", "視覺風格"),
+    ("🏠 智能中控", "空間中控"),
+    ("▶ 日照演示", "日照模擬"),
 ]
 for src, dst in tw_terms:
     tw_template = tw_template.replace(src, dst)
@@ -184,13 +188,13 @@ en_replacements = [
     ("正在准备 3D 场景…", "Preparing 3D Scene…"),
     (">鸟瞰</button>", ">Bird's-Eye</button>"),
     (">漫游</button>", ">Walkthrough</button>"),
-    ("⚡ 管线", "⚡ MEP X-Ray"),
-    ("🎨 风格", "🎨 Style"),
-    ("🏠 智能中控", "🏠 Smart Home"),
+    ("⚡ 管线", "MEP X-Ray"),
+    ("🎨 风格", "Visual Style"),
+    ("🏠 智能中控", "Scene Control"),
     (">渲染出图</button>", ">Render HD</button>"),
     (">720° 全景</button>", ">720° Pano</button>"),
     ("重置视角", "Reset Camera"),
-    ("▶ 日照演示（日出到深夜）", "▶ Sunlight Simulation"),
+    ("▶ 日照演示（日出到深夜）", "Sun Study (Dawn–Dusk)"),
     ("打开全部室内灯光（夜晚自动打开）", "Turn on all interior lights"),
     ("实时画面（几秒）", "Real-time (Fast)"),
     ("光线追踪（约 1~3 分钟，最真实）", "Path Tracing (1–3 min, Photorealistic)"),
@@ -307,22 +311,41 @@ for tmp in (tw_template_path, en_template_path):
         os.remove(tmp)
 
 # ==========================================
-# 6. 整合式頂部導覽列 + 登入系統 + Pro 授權解鎖模組
+# 6. 建築圖紙暖白風（Architectural Paper）頂部導覽列 + OAuth 登入 + Pro 授權模組
 # ==========================================
 nav_and_auth_css = """
 <style>
+:root {
+  --bg: #F6F4EF !important;
+  --panel: #FDFCFA !important;
+  --line: #DFDAD0 !important;
+  --text: #18181B !important;
+  --muted: #6E6A63 !important;
+  --accent: #18181B !important;
+  --accent-soft: #ECE8DF !important;
+  --danger: #9A4A2B !important;
+  --new: #9A4A2B !important;
+}
+header { background: #FAF8F4 !important; border-bottom: 1px solid #DFDAD0 !important; }
+.logo { border-radius: 3px !important; background: #18181B !important; }
+.phase { border-radius: 2px !important; background: #ECE8DF !important; color: #57534E !important; }
+.phase.renovate { background: #F5E9E2 !important; color: #9A4A2B !important; }
+.btn, .seg, .seg button, .iconbtn, .dropdown { border-radius: 3px !important; }
+.btn.primary { background: #18181B !important; border-color: #18181B !important; color: #FAF8F5 !important; }
+.btn.primary:hover { background: #2E2D2A !important; }
+
 .studio-global-nav {
-  height: 40px;
-  background: #090d16;
-  border-bottom: 1px solid #1e293b;
+  height: 36px;
+  background: #EFECE4;
+  border-bottom: 1px solid #D5CFC2;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
   flex: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Noto Sans TC", sans-serif;
-  font-size: 13px;
-  color: #94a3b8;
+  font-family: "Inter", "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: #57534E;
   user-select: none;
   box-sizing: border-box;
 }
@@ -333,175 +356,177 @@ nav_and_auth_css = """
 }
 .studio-global-nav .nav-brand {
   font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #f8fafc;
-  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #18181B;
+  font-size: 12px;
 }
-.studio-global-nav .nav-brand b { color: #38bdf8; }
-.studio-global-nav .nav-badge {
-  background: rgba(56, 189, 248, 0.12);
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  border-radius: 4px;
-  padding: 1px 7px;
+.studio-global-nav .nav-brand b { color: #9A4A2B; font-weight: 700; }
+.studio-global-nav .nav-spec {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color: #6E6A63;
+  border-left: 1px solid #CFC8BA;
+  padding-left: 10px;
   font-size: 11px;
-  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 .studio-global-nav .nav-lang {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 3px;
-  background: #111726;
-  border: 1px solid #1e293b;
-  padding: 2px 4px;
-  border-radius: 6px;
+  border: 1px solid #CFC8BA;
+  background: #FAF8F4;
+  border-radius: 3px;
+  overflow: hidden;
 }
 .studio-global-nav .lang-pill {
-  color: #94a3b8;
+  color: #57534E;
   text-decoration: none;
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-size: 12px;
-  transition: all 0.15s ease;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.12s ease, color 0.12s ease;
 }
-.studio-global-nav .lang-pill:hover { color: #f1f5f9; background: rgba(255,255,255,0.08); }
-.studio-global-nav .lang-pill.active { color: #0369a1; background: #38bdf8; font-weight: 700; }
+.studio-global-nav .lang-pill:hover { color: #18181B; background: #EFECE4; }
+.studio-global-nav .lang-pill.active { color: #FAF8F5; background: #18181B; }
 .studio-global-nav .nav-btn {
-  border: 1px solid #334155;
-  background: #131c2e;
-  color: #e2e8f0;
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 12px;
+  border: 1px solid #CFC8BA;
+  background: #FAF8F4;
+  color: #18181B;
+  border-radius: 3px;
+  padding: 3px 10px;
+  font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  transition: all 0.15s ease;
+  gap: 6px;
+  transition: border-color 0.12s ease, background 0.12s ease;
 }
-.studio-global-nav .nav-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+.studio-global-nav .nav-btn:hover { border-color: #18181B; background: #fff; }
 .studio-global-nav .nav-btn-pro {
-  background: linear-gradient(135deg, #f59e0b, #ea580c);
-  color: #fff;
-  border: none;
+  background: #9A4A2B;
+  color: #FAF8F5;
+  border: 1px solid #843D22;
 }
-.studio-global-nav .nav-btn-pro:hover { filter: brightness(1.08); color: #fff; }
+.studio-global-nav .nav-btn-pro:hover { background: #843D22; color: #fff; border-color: #6E311A; }
 .studio-global-nav .nav-btn-pro.unlocked {
-  background: rgba(16, 185, 129, 0.16);
-  color: #34d399;
-  border: 1px solid rgba(52, 211, 153, 0.45);
+  background: #234236;
+  color: #FAF8F5;
+  border: 1px solid #1B332A;
 }
 .studio-global-nav .nav-link-home {
-  color: #38bdf8;
+  color: #18181B;
   text-decoration: none;
   font-weight: 600;
-  font-size: 12px;
-  padding: 3px 9px;
-  border-radius: 6px;
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-size: 11.5px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  border: 1px solid #CFC8BA;
+  background: transparent;
 }
-.studio-global-nav .nav-link-home:hover { background: #38bdf8; color: #081018; }
+.studio-global-nav .nav-link-home:hover { background: #FAF8F4; border-color: #18181B; }
 .dp-pro-tag {
   display: inline-block;
   margin-left: 6px;
   padding: 1px 5px;
-  font-size: 10px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 9.5px;
   font-weight: 700;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #f59e0b, #ea580c);
-  color: #fff;
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  background: #9A4A2B;
+  color: #FAF8F5;
   vertical-align: middle;
 }
 .dp-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(6, 10, 18, 0.78);
-  backdrop-filter: blur(6px);
+  background: rgba(24, 24, 27, 0.48);
   z-index: 100000;
   display: none;
   align-items: center;
   justify-content: center;
   padding: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Noto Sans TC", sans-serif;
+  font-family: "Inter", "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 .dp-modal-backdrop.open { display: flex; }
 .dp-modal {
   width: 100%;
-  max-width: 440px;
-  background: #0f1623;
-  border: 1px solid #263349;
-  border-radius: 14px;
-  color: #f1f5f9;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  max-width: 420px;
+  background: #FDFCFA;
+  border: 1px solid #C7C0B2;
+  border-radius: 4px;
+  color: #18181B;
+  box-shadow: 0 20px 50px rgba(24, 24, 27, 0.18);
   overflow: hidden;
 }
 .dp-modal-hdr {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid #1e293b;
+  padding: 14px 20px;
+  background: #F6F4EF;
+  border-bottom: 1px solid #DFDAD0;
 }
-.dp-modal-hdr h3 { margin: 0; font-size: 16px; font-weight: 700; }
+.dp-modal-hdr h3 { margin: 0; font-size: 14.5px; font-weight: 700; letter-spacing: 0.01em; color: #18181B; }
 .dp-modal-close {
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: #6E6A63;
   font-size: 20px;
   cursor: pointer;
   line-height: 1;
 }
-.dp-modal-close:hover { color: #fff; }
+.dp-modal-close:hover { color: #18181B; }
 .dp-tabs {
   display: flex;
-  border-bottom: 1px solid #1e293b;
-  background: #0b101b;
+  border-bottom: 1px solid #DFDAD0;
+  background: #F6F4EF;
 }
 .dp-tabs button {
   flex: 1;
-  padding: 11px 8px;
+  padding: 10px 8px;
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  color: #94a3b8;
-  font-size: 13px;
+  color: #6E6A63;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
 }
-.dp-tabs button.active { color: #38bdf8; border-bottom-color: #38bdf8; }
+.dp-tabs button.active { color: #18181B; border-bottom-color: #18181B; background: #FDFCFA; }
 .dp-modal-body { padding: 20px; }
 .dp-alert {
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 12.5px;
+  padding: 9px 12px;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.5;
   margin-bottom: 14px;
   display: none;
 }
-.dp-alert.info { display: block; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.35); color: #bae6fd; }
-.dp-alert.err { display: block; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); color: #fecaca; }
-.dp-alert.ok { display: block; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.4); color: #a7f3d0; }
-.dp-field { margin-bottom: 14px; }
-.dp-field label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 5px; font-weight: 600; }
+.dp-alert.info { display: block; background: #F4EFE6; border: 1px solid #D8CEBE; color: #44403C; }
+.dp-alert.err { display: block; background: #FBEAE5; border: 1px solid #E2B4A6; color: #7F2D15; }
+.dp-alert.ok { display: block; background: #E9F2EE; border: 1px solid #B5D1C4; color: #1B3B2E; }
+.dp-field { margin-bottom: 13px; }
+.dp-field label { display: block; font-size: 11.5px; color: #57534E; margin-bottom: 5px; font-weight: 600; }
 .dp-field input {
   width: 100%;
   box-sizing: border-box;
-  background: #172133;
-  border: 1px solid #2b3a55;
-  color: #f8fafc;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 14px;
+  background: #FFFFFF;
+  border: 1px solid #CFC8BA;
+  color: #18181B;
+  border-radius: 3px;
+  padding: 9px 11px;
+  font-size: 13.5px;
 }
-.dp-field input:focus { outline: none; border-color: #38bdf8; }
+.dp-field input:focus { outline: none; border-color: #18181B; }
 .dp-btn {
   width: 100%;
-  padding: 11px 16px;
-  border-radius: 8px;
-  border: none;
-  font-size: 14px;
-  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -510,56 +535,49 @@ nav_and_auth_css = """
   text-decoration: none;
   box-sizing: border-box;
 }
-.dp-btn-primary { background: #38bdf8; color: #081018; }
-.dp-btn-primary:hover { background: #7dd3fc; }
-.dp-btn-gold { background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; margin-bottom: 12px; }
-.dp-btn-gold:hover { filter: brightness(1.08); }
-.dp-btn-ghost { background: #172133; color: #cbd5e1; border: 1px solid #2b3a55; margin-top: 8px; }
-.dp-pro-list { list-style: none; padding: 0; margin: 0 0 16px; font-size: 13px; color: #cbd5e1; }
-.dp-pro-list li { padding: 4px 0; }
-.dp-pro-list li::before { content: "✓ "; color: #34d399; font-weight: 700; }
-.dp-divider { border: none; border-top: 1px solid #1e293b; margin: 16px 0; }
-.dp-oauth-group { display: grid; gap: 9px; margin-bottom: 14px; }
+.dp-btn-primary { background: #18181B; color: #FAF8F5; border-color: #18181B; }
+.dp-btn-primary:hover { background: #2E2D2A; }
+.dp-btn-gold { background: #9A4A2B; color: #FAF8F5; border-color: #843D22; margin-bottom: 12px; }
+.dp-btn-gold:hover { background: #843D22; }
+.dp-btn-ghost { background: #F6F4EF; color: #44403C; border: 1px solid #CFC8BA; margin-top: 8px; }
+.dp-btn-ghost:hover { border-color: #18181B; color: #18181B; }
+.dp-pro-list { list-style: none; padding: 0; margin: 0 0 16px; font-size: 12.5px; color: #292524; }
+.dp-pro-list li { padding: 5px 0; border-bottom: 1px solid #EFECE4; display: flex; gap: 8px; }
+.dp-pro-list li::before { content: "—"; color: #9A4A2B; font-weight: 700; }
+.dp-divider { border: none; border-top: 1px solid #E5E0D5; margin: 16px 0; }
+.dp-oauth-group { display: grid; gap: 8px; margin-bottom: 14px; }
 .dp-oauth-btn {
   width: 100%;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #2b3a55;
-  background: #141d2e;
-  color: #f1f5f9;
-  font-size: 13.5px;
+  padding: 9px 12px;
+  border-radius: 3px;
+  border: 1px solid #CFC8BA;
+  background: #FFFFFF;
+  color: #18181B;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: all 0.15s ease;
+  gap: 9px;
+  transition: border-color 0.12s ease, background 0.12s ease;
 }
-.dp-oauth-btn:hover { background: #1c2840; border-color: #38bdf8; }
-.dp-oauth-btn.google { background: #ffffff; color: #1f2937; border-color: #e2e8f0; }
-.dp-oauth-btn.google:hover { background: #f8fafc; border-color: #38bdf8; }
-.dp-oauth-btn svg { width: 18px; height: 18px; flex: none; }
+.dp-oauth-btn:hover { background: #F6F4EF; border-color: #18181B; }
+.dp-oauth-btn svg { width: 16px; height: 16px; flex: none; }
 .dp-or {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 14px 0;
-  color: #64748b;
-  font-size: 12px;
+  margin: 13px 0;
+  color: #78716C;
+  font-size: 11.5px;
 }
-.dp-or::before, .dp-or::after { content: ""; flex: 1; height: 1px; background: #1e293b; }
-.dp-avatar {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.dp-acct-card { background: #141d2e; border: 1px solid #24324d; border-radius: 10px; padding: 14px; margin-bottom: 14px; font-size: 13px; }
-.dp-acct-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.dp-or::before, .dp-or::after { content: ""; flex: 1; height: 1px; background: #E5E0D5; }
+.dp-acct-card { background: #F6F4EF; border: 1px solid #DFDAD0; border-radius: 3px; padding: 12px 14px; margin-bottom: 14px; font-size: 12.5px; }
+.dp-acct-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E5E0D5; }
 .dp-acct-row:last-child { border-bottom: none; }
 @media (max-width: 720px) {
-  .studio-global-nav .nav-badge, .studio-global-nav .nav-link-home { display: none; }
+  .studio-global-nav .nav-spec, .studio-global-nav .nav-link-home { display: none; }
   .studio-global-nav { padding: 0 8px; }
 }
 </style>
@@ -569,48 +587,48 @@ nav_and_auth_css = """
 def build_nav_and_auth_html(lang: str) -> str:
     is_en = lang == "en"
     t = {
-        "badge": "AI-CAD 3D Floor Plan Demo" if is_en else "AI-CAD 3D 空間互動提案",
+        "spec": "DWG 2018 · A3 1:50 · 2D/3D" if is_en else "DWG 2018 · A3 1:50 · 平立剖 3D",
         "home_url": "en.html" if is_en else "index.html",
-        "home_txt": "Pricing ➔" if is_en else "服務報價 ➔",
-        "upgrade_btn": "⚡ Upgrade Pro ($19)" if is_en else "⚡ 升級 Pro (NT$590)",
-        "pro_active": "👑 PRO Active" if is_en else "👑 PRO 已啟用",
-        "login_btn": "👤 Sign In" if is_en else "👤 登入 / 註冊",
-        "modal_title": "DraftPro Account & Pro License" if is_en else "DraftPro 帳號登入與 Pro 授權",
+        "home_txt": "Studio & Fees" if is_en else "返回事務所報價",
+        "upgrade_btn": "Upgrade Pro · $19" if is_en else "升級 Pro · NT$590",
+        "pro_active": "PRO Active" if is_en else "PRO 已授權",
+        "login_btn": "Sign In" if is_en else "登入 / 註冊",
+        "modal_title": "Account & Pro License" if is_en else "帳號登入與 Pro 圖紙授權",
         "tab_login": "Sign In" if is_en else "登入",
-        "tab_signup": "Create Account" if is_en else "註冊帳號",
-        "tab_pro": "Activate Pro" if is_en else "啟用 Pro 授權",
-        "email_lbl": "Email Address" if is_en else "電子信箱 (Email)",
-        "pwd_lbl": "Password (min 6 chars)" if is_en else "密碼（至少 6 碼）",
-        "btn_login": "Sign In" if is_en else "立即登入",
-        "btn_signup": "Create Free Account" if is_en else "免費註冊帳號",
-        "pro_p1": "Export editable AutoCAD DXF (3-tier / 4-tier / MEP)" if is_en else "匯出可編輯 AutoCAD DXF（國標/裝修/水電圖）",
-        "pro_p2": "Export watermark-free A3 Construction PDF Set" if is_en else "匯出無浮水印 A3 整套施工圖 PDF",
-        "pro_p3": "Generate shareable client review link" if is_en else "產生客戶專用免安裝分享審圖檔",
-        "pro_p4": "Commercial usage rights for client proposals" if is_en else "含商業專案提案使用授權",
-        "buy_btn": "🛒 Buy Pro License Key — $19 USD" if is_en else "🛒 購買 Pro 永久授權碼 — NT$590 ($19 USD)",
-        "key_lbl": "Already have a License Key?" if is_en else "已有 Pro 授權碼？立即輸入解鎖：",
+        "tab_signup": "Register" if is_en else "建立帳號",
+        "tab_pro": "Pro License" if is_en else "Pro 授權啟用",
+        "email_lbl": "Email" if is_en else "電子信箱",
+        "pwd_lbl": "Password (min 6 characters)" if is_en else "密碼（至少 6 碼）",
+        "btn_login": "Sign In" if is_en else "登入",
+        "btn_signup": "Create Account" if is_en else "建立免費帳號",
+        "pro_p1": "Editable AutoCAD DXF export (Standard / Interior / MEP)" if is_en else "可編輯 AutoCAD DXF 匯出（標準軸線／裝修四道尺寸／水電圖）",
+        "pro_p2": "Full A3 Construction Drawing Set PDF (watermark-free)" if is_en else "整套 A3 施工圖冊 PDF 匯出（無浮水印）",
+        "pro_p3": "Standalone client review & markup package" if is_en else "業主審圖專用獨立分享檔匯出",
+        "pro_p4": "Commercial proposal & construction usage license" if is_en else "商業提案與工程放樣授權",
+        "buy_btn": "Purchase Pro License Key — $19 USD" if is_en else "購買 Pro 永久授權金鑰 — NT$590 ($19 USD)",
+        "key_lbl": "Enter License Key" if is_en else "輸入授權金鑰解鎖",
         "key_ph": "DPRO-XXXX-XXXX-XXXX",
-        "activate_btn": "Verify & Unlock Pro" if is_en else "驗證並立即解鎖 Pro",
+        "activate_btn": "Verify & Activate" if is_en else "驗證並啟用授權",
         "logout_btn": "Sign Out" if is_en else "登出帳號",
-        "acct_email": "Account" if is_en else "登入帳號",
-        "acct_plan": "Current Plan" if is_en else "目前方案",
-        "acct_key": "License Key" if is_en else "授權金鑰",
-        "msg_need_login": "Please sign in or create a free account to export CAD/PDF files." if is_en else "請先登入或免費註冊帳號，以使用商業圖紙匯出功能。",
-        "msg_need_pro": "AutoCAD DXF, A3 PDF sets, and Shareable Client Files require a Pro License." if is_en else "匯出 AutoCAD DXF、整套 A3 施工圖 PDF 與客戶分享檔需啟用 Pro 授權。",
-        "msg_bad_cred": "Invalid email or password." if is_en else "信箱或密碼錯誤，請重新確認。",
-        "msg_exists": "This email is already registered. Please sign in." if is_en else "此信箱已註冊，請直接切換至「登入」。",
-        "msg_short_pwd": "Please enter a valid email and password (6+ characters)." if is_en else "請輸入有效的 Email 與至少 6 碼密碼。",
-        "msg_signed_in": "Signed in successfully!" if is_en else "登入成功！",
-        "msg_signed_up": "Account created! You are now signed in." if is_en else "註冊完成並已自動登入！",
-        "msg_bad_key": "Invalid license key format or checksum. Purchase a key or contact topjgapadsup804@gmail.com." if is_en else "授權碼無效或校驗失敗。請點擊上方購買，或聯繫 topjgapadsup804@gmail.com 取得授權碼。",
-        "msg_unlocked": "🎉 Pro License Activated! All CAD DXF & A3 PDF exports are now unlocked." if is_en else "🎉 Pro 授權已成功啟用！所有 CAD DXF、A3 PDF 與分享匯出功能已全面解鎖。",
-        "oauth_google": "Continue with Google" if is_en else "使用 Google 帳號繼續",
-        "oauth_github": "Continue with GitHub" if is_en else "使用 GitHub 帳號繼續",
-        "oauth_apple": "Continue with Apple" if is_en else "使用 Apple 帳號繼續",
-        "oauth_or": "or continue with email" if is_en else "或使用電子信箱",
-        "msg_oauth_setup": "OAuth keys (Supabase or Google Client ID) are not configured yet. Add them in DRAFTPRO_CONFIG (see OAUTH_SETUP_GUIDE.md), or sign in with Email below right now." if is_en else "尚未填入 Google / Supabase OAuth 金鑰（請參閱 OAUTH_SETUP_GUIDE.md 填入 2 行設定即可啟用一鍵登入）；您目前可直接用下方 Email 註冊登入。",
-        "msg_oauth_loading": "Redirecting to provider..." if is_en else "正在連線第三方登入驗證...",
-        "buy_url": "mailto:topjgapadsup804@gmail.com?subject=%5BPro%20License%5D%20Purchase%20DraftPro%20Pro%20Key%20(%2419%20USD)&body=Hi%20DraftPro%20Studio%2C%0A%0AI%20would%20like%20to%20purchase%20a%20DraftPro%20Pro%20License%20Key%20(%2419%20USD).%0AMy%20account%20email%3A%20" if is_en else "mailto:topjgapadsup804@gmail.com?subject=%5B%E8%B3%BC%E8%B2%B7%E6%8E%88%E6%AC%8A%5D%20DraftPro%20Pro%20%E6%B0%B8%E4%B9%85%E6%8E%88%E6%AC%8A%E7%A2%BC%20(NT%24590)&body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E8%B3%BC%E8%B2%B7%20DraftPro%20Pro%20%E6%8E%88%E6%AC%8A%E7%A2%BC%EF%BC%88NT%24590%20%2F%20%2419%20USD%EF%BC%89%E3%80%82%0A%E6%88%91%E7%9A%84%E7%99%BB%E5%85%A5%E4%BF%A1%E7%AE%B1%EF%BC%9A",
+        "acct_email": "Account" if is_en else "帳號",
+        "acct_plan": "License Tier" if is_en else "授權等級",
+        "acct_key": "License Key" if is_en else "金鑰編號",
+        "msg_need_login": "Sign in or register an account before exporting CAD/PDF drawings." if is_en else "匯出商業施工圖檔前，請先登入或建立帳號。",
+        "msg_need_pro": "AutoCAD DXF, A3 PDF sets, and Client Review packages require an active Pro License." if is_en else "匯出 AutoCAD DXF、整套 A3 施工圖冊與業主分享檔需具備 Pro 授權。",
+        "msg_bad_cred": "Incorrect email or password." if is_en else "信箱或密碼不正確。",
+        "msg_exists": "Email already registered. Switch to Sign In." if is_en else "此信箱已註冊，請切換至「登入」。",
+        "msg_short_pwd": "Enter a valid email and at least 6 characters for password." if is_en else "請填寫有效信箱與至少 6 位字元密碼。",
+        "msg_signed_in": "Signed in." if is_en else "已登入。",
+        "msg_signed_up": "Account created and signed in." if is_en else "帳號已建立並自動登入。",
+        "msg_bad_key": "Invalid license key. Purchase a license above or contact topjgapadsup804@gmail.com." if is_en else "金鑰格式或校驗不符。請點擊上方購買，或來信 topjgapadsup804@gmail.com。",
+        "msg_unlocked": "Pro License activated. All CAD DXF and A3 PDF exports are now unlocked." if is_en else "Pro 授權已啟用，所有 DXF 與 A3 PDF 施工圖匯出功能已解鎖。",
+        "oauth_google": "Continue with Google" if is_en else "透過 Google 繼續",
+        "oauth_github": "Continue with GitHub" if is_en else "透過 GitHub 繼續",
+        "oauth_apple": "Continue with Apple" if is_en else "透過 Apple 繼續",
+        "oauth_or": "or with email" if is_en else "或使用信箱",
+        "msg_oauth_setup": "OAuth client keys are not yet configured in DRAFTPRO_CONFIG (see OAUTH_SETUP_GUIDE.md). Please sign in with Email below." if is_en else "尚未設定第三方 OAuth 金鑰（設定方式見 OAUTH_SETUP_GUIDE.md），請先使用下方信箱登入。",
+        "msg_oauth_loading": "Connecting to provider..." if is_en else "正在連線驗證服務...",
+        "buy_url": "mailto:topjgapadsup804@gmail.com?subject=%5BPro%20License%5D%20DraftPro%20Pro%20Key%20(%2419%20USD)&body=Hello%2C%0A%0AI%20would%20like%20to%20purchase%20a%20DraftPro%20Pro%20License%20Key%20(%2419%20USD).%0AAccount%20email%3A%20" if is_en else "mailto:topjgapadsup804@gmail.com?subject=%5BPro%20%E6%8E%88%E6%AC%8A%E7%94%B3%E8%B3%BC%5D%20DraftPro%20%E6%B0%B8%E4%B9%85%E6%8E%88%E6%AC%8A%E9%87%91%E9%91%B0%20(NT%24590)&body=%E6%82%A8%E5%A5%BD%EF%BC%8C%E6%88%91%E6%AC%B2%E7%94%B3%E8%B3%BC%20DraftPro%20Pro%20%E6%8E%88%E6%AC%8A%E9%87%91%E9%91%B0%EF%BC%88NT%24590%20%2F%20%2419%20USD%EF%BC%89%E3%80%82%0A%E8%A8%BB%E5%86%8A%E4%BF%A1%E7%AE%B1%EF%BC%9A",
     }
 
     tw_active = "" if is_en else " active"
@@ -619,13 +637,13 @@ def build_nav_and_auth_html(lang: str) -> str:
     return f"""
 <nav class="studio-global-nav">
   <div class="nav-left">
-    <span class="nav-brand">DRAFT<b>PRO</b> STUDIO</span>
-    <span class="nav-badge">{t['badge']}</span>
+    <span class="nav-brand">DRAFT<b>PRO</b></span>
+    <span class="nav-spec">{t['spec']}</span>
   </div>
   <div class="nav-right">
     <div class="nav-lang">
-      <a href="demo.html" class="lang-pill{tw_active}">🇹🇼 繁體中文</a>
-      <a href="demo-en.html" class="lang-pill{en_active}">🌐 English</a>
+      <a href="demo.html" class="lang-pill{tw_active}">繁體</a>
+      <a href="demo-en.html" class="lang-pill{en_active}">EN</a>
     </div>
     <button type="button" class="nav-btn nav-btn-pro" id="dpProBtn">{t['upgrade_btn']}</button>
     <button type="button" class="nav-btn" id="dpAuthBtn">{t['login_btn']}</button>
@@ -650,7 +668,7 @@ def build_nav_and_auth_html(lang: str) -> str:
         <div class="dp-acct-card">
           <div class="dp-acct-row"><span>{t['acct_email']}</span><b id="dpAcctEmail"></b></div>
           <div class="dp-acct-row"><span>{t['acct_plan']}</span><b id="dpAcctPlan"></b></div>
-          <div class="dp-acct-row"><span>{t['acct_key']}</span><code id="dpAcctKey" style="color:#38bdf8;">—</code></div>
+          <div class="dp-acct-row"><span>{t['acct_key']}</span><code id="dpAcctKey" style="color:#9A4A2B;font-weight:600;">—</code></div>
         </div>
         <button type="button" class="dp-btn dp-btn-gold" id="dpGoProFromAcct">{t['tab_pro']}</button>
         <button type="button" class="dp-btn dp-btn-ghost" id="dpLogoutBtn">{t['logout_btn']}</button>
@@ -820,8 +838,8 @@ def build_nav_and_auth_html(lang: str) -> str:
     }});
     if (user) {{
       $("dpAcctEmail").textContent = user.email;
-      $("dpAcctPlan").textContent = user.pro ? "PRO" : "FREE";
-      $("dpAcctPlan").style.color = user.pro ? "#34d399" : "#fbbf24";
+      $("dpAcctPlan").textContent = user.pro ? "PRO" : "STANDARD";
+      $("dpAcctPlan").style.color = user.pro ? "#234236" : "#57534E";
       $("dpAcctKey").textContent = user.licenseKey || "—";
       $("dpGoProFromAcct").style.display = user.pro ? "none" : "inline-flex";
     }}
@@ -839,7 +857,7 @@ def build_nav_and_auth_html(lang: str) -> str:
     const authBtn = $("dpAuthBtn");
     const proBtn = $("dpProBtn");
     if (user) {{
-      authBtn.textContent = "👤 " + user.email.split("@")[0];
+      authBtn.textContent = user.email.split("@")[0];
       if (user.pro) {{
         proBtn.textContent = MSG.pro_active;
         proBtn.classList.add("unlocked");
@@ -862,8 +880,8 @@ def build_nav_and_auth_html(lang: str) -> str:
         tag.className = "dp-pro-tag";
         btn.appendChild(tag);
       }}
-      tag.textContent = (user && user.pro) ? "PRO ✓" : "PRO 🔒";
-      tag.style.background = (user && user.pro) ? "#059669" : "";
+      tag.textContent = "PRO";
+      tag.style.background = (user && user.pro) ? "#234236" : "#9A4A2B";
     }});
   }}
 

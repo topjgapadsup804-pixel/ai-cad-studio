@@ -3,378 +3,555 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DraftPro Studio — Floor Plan Sketch to AutoCAD DWG & Interactive 3D Web App in 48h</title>
-  <meta name="description" content="Turn hand sketches, PDFs, or legacy floor plans into clean AutoCAD DWG construction drawings, A3 PDFs, and interactive 3D browser walkthroughs in 48–72 hours. Fixed transparent pricing from $120 USD." />
+  <title>DraftPro Studio — Architectural AutoCAD Drafting &amp; 3D Spatial Models</title>
+  <meta name="description" content="Convert field sketches, builder PDFs, and legacy plans into layered AutoCAD 2018 DWGs, A3 construction sets, and standalone WebGL 3D spatial models in 48–72 hours. Fixed schedule of fees from $120 USD." />
   <link rel="canonical" href="https://topjgapadsup804-pixel.github.io/ai-cad-studio/en.html" />
   <link rel="alternate" hreflang="en" href="https://topjgapadsup804-pixel.github.io/ai-cad-studio/en.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://topjgapadsup804-pixel.github.io/ai-cad-studio/" />
-  <meta property="og:title" content="DraftPro Studio — AutoCAD Drafting & Interactive 3D Floor Plans in 48h" />
-  <meta property="og:description" content="Fixed-price CAD redraws ($120) and interactive single-file 3D floor plan web apps ($300) with MEP routing, furniture layout, and DXF/PDF export." />
+  <meta property="og:title" content="DraftPro Studio — Architectural AutoCAD &amp; 3D Spatial Models" />
+  <meta property="og:description" content="Production CAD drafting and standalone 3D browser models for interior design practices, contractors, and property teams. Fixed pricing from $120 USD." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://topjgapadsup804-pixel.github.io/ai-cad-studio/en.html" />
+  <meta property="og:image" content="https://topjgapadsup804-pixel.github.io/ai-cad-studio/assets/plan-en.png" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "DraftPro Studio — AutoCAD Redraw & Interactive 3D Floor Plan Service",
+    "name": "DraftPro Studio — Architectural AutoCAD Redraw & 3D Floor Plan Service",
     "provider": {
       "@type": "Organization",
       "name": "DraftPro Studio",
       "email": "topjgapadsup804@gmail.com",
       "url": "https://topjgapadsup804-pixel.github.io/ai-cad-studio/"
     },
-    "serviceType": "Architectural CAD Drafting & 3D Interactive Floor Plan Visualization",
+    "serviceType": "Architectural CAD Drafting & 3D Spatial Modeling",
     "areaServed": "Worldwide",
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "CAD & 3D Floor Plan Packages",
+      "name": "Schedule of Drafting Fees",
       "itemListElement": [
-        {
-          "@type": "Offer",
-          "name": "Single Sheet CAD Redraw",
-          "price": "120",
-          "priceCurrency": "USD",
-          "description": "Convert hand sketch, PDF, or scan into layered AutoCAD DWG + A3 PDF in 48 hours."
-        },
-        {
-          "@type": "Offer",
-          "name": "2D CAD + Interactive 3D Web Floor Plan Pack",
-          "price": "300",
-          "priceCurrency": "USD",
-          "description": "Complete 2D dimensioned DWG plus standalone interactive 3D HTML walkthrough with furniture, ceiling, and MEP layers in 72 hours."
-        },
-        {
-          "@type": "Offer",
-          "name": "Monthly Studio Drafting Retainer",
-          "price": "890",
-          "priceCurrency": "USD",
-          "description": "Up to 10 CAD construction sheets + 2 interactive 3D floor plan web apps per month with 24h priority turnaround."
-        }
+        { "@type": "Offer", "name": "Single Sheet CAD Redraw", "price": "120", "priceCurrency": "USD" },
+        { "@type": "Offer", "name": "2D CAD + Interactive 3D Spatial Model", "price": "300", "priceCurrency": "USD" },
+        { "@type": "Offer", "name": "Monthly Studio Drafting Retainer", "price": "890", "priceCurrency": "USD" }
       ]
     }
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Can you work from a phone photo of a hand-drawn sketch or blurry builder PDF?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. As long as you provide at least one reference dimension (such as entry door width or overall room length), we reconstruct accurate wall thicknesses, openings, and proportions in AutoCAD DWG and 3D."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Are the delivered DWG files editable in standard AutoCAD?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Files are delivered in AutoCAD 2018 DWG format (or any requested version) with standardized architectural layers, lineweights, unlocked blocks, and clean A3 print layouts."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does the 3D interactive floor plan require monthly hosting fees?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. You receive a standalone single-file HTML web app that runs offline in any desktop or mobile browser and can be hosted free on any static host."
-        }
-      }
-    ]
-  }
-  </script>
   <style>
     :root {
-      --bg: #0c0f14;
-      --surface: #141923;
-      --surface-2: #1b2230;
-      --border: #273142;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --success: #34d399;
+      --paper: #F6F4EF;
+      --vellum: #FDFCFA;
+      --paper-tint: #EFECE4;
+      --rule: #DFDAD0;
+      --rule-strong: #C7C0B2;
+      --ink: #18181B;
+      --ink-2: #44403C;
+      --muted: #78716C;
+      --terracotta: #9A4A2B;
+      --pine: #234236;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+      --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.62;
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
     header {
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(12, 15, 20, 0.88);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(246, 244, 239, 0.94);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--rule);
     }
-    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.03em; }
-    .brand span { color: var(--accent); }
-    .nav-links { display: flex; gap: 20px; align-items: center; font-size: 0.9rem; color: var(--muted); }
-    .nav-links a:hover { color: var(--text); }
+    .topbar { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand-lockup { display: flex; align-items: baseline; gap: 12px; }
+    .brand-mark { font-weight: 700; font-size: 0.96rem; letter-spacing: 0.1em; color: var(--ink); }
+    .brand-mark b { color: var(--terracotta); font-weight: 700; }
+    .brand-sub {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+      letter-spacing: 0.04em; border-left: 1px solid var(--rule-strong); padding-left: 12px;
+    }
+    .nav { display: flex; align-items: center; gap: 24px; font-size: 0.88rem; color: var(--ink-2); }
+    .nav a:hover { color: var(--ink); }
+    .lang-switch {
+      font-family: var(--mono); font-size: 0.76rem; padding: 3px 8px;
+      border: 1px solid var(--rule-strong); border-radius: 2px; color: var(--ink-2);
+    }
+    .lang-switch:hover { border-color: var(--ink); background: var(--vellum); }
+
     .btn {
       display: inline-flex; align-items: center; justify-content: center;
-      padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 0.95rem;
-      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-      cursor: pointer; border: 1px solid transparent;
+      padding: 11px 20px; border-radius: 3px; font-weight: 600; font-size: 0.88rem;
+      border: 1px solid var(--ink); cursor: pointer; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
     }
-    .btn-primary { background: var(--accent); color: #081018; }
-    .btn-primary:hover { background: #7dd3fc; transform: translateY(-1px); }
-    .btn-outline { border-color: var(--border); color: var(--text); background: transparent; }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-sm { padding: 8px 14px; font-size: 0.86rem; }
-    .hero { padding: 84px 0 64px; border-bottom: 1px solid var(--border); }
-    .badge {
-      display: inline-block; padding: 5px 12px; border-radius: 999px;
-      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35);
-      color: var(--accent); font-size: 0.84rem; font-weight: 600; margin-bottom: 20px;
+    .btn-ink { background: var(--ink); color: var(--vellum); }
+    .btn-ink:hover { background: #2E2D2A; border-color: #2E2D2A; }
+    .btn-paper { background: var(--vellum); color: var(--ink); border-color: var(--rule-strong); }
+    .btn-paper:hover { border-color: var(--ink); background: #fff; }
+    .btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+
+    .hero { padding: 64px 0 72px; border-bottom: 1px solid var(--rule); }
+    .hero-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
+    .spec-kicker {
+      font-family: var(--mono); font-size: 0.75rem; color: var(--terracotta);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 10px;
     }
-    .hero h1 { font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.18; letter-spacing: -0.02em; max-width: 840px; margin-bottom: 20px; }
-    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 680px; margin-bottom: 32px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 40px; }
-    .trust-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; padding-top: 28px; border-top: 1px solid var(--border); }
-    .trust-item strong { display: block; font-size: 1rem; color: var(--text); }
-    .trust-item span { font-size: 0.88rem; color: var(--muted); }
-    section { padding: 72px 0; border-bottom: 1px solid var(--border); }
-    .section-kicker { color: var(--accent); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-    .section-title { font-size: clamp(1.5rem, 3vw, 2.15rem); margin-bottom: 12px; }
-    .section-sub { color: var(--muted); max-width: 640px; margin-bottom: 40px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 22px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; display: flex; flex-direction: column; }
-    .card.featured { border-color: var(--accent); background: linear-gradient(180deg, rgba(56,189,248,0.08) 0%, var(--surface) 45%); }
-    .pill { display: inline-block; align-self: flex-start; font-size: 0.76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--accent); color: #081018; margin-bottom: 14px; }
-    .price { font-size: 2rem; font-weight: 800; margin: 12px 0 6px; }
-    .price small { font-size: 0.92rem; font-weight: 500; color: var(--muted); }
-    .card-desc { color: var(--muted); font-size: 0.94rem; margin-bottom: 20px; }
-    .checklist { list-style: none; margin-bottom: 26px; flex: 1; }
-    .checklist li { padding: 6px 0; font-size: 0.92rem; color: #dbe5f1; display: flex; gap: 10px; }
-    .checklist li::before { content: "✓"; color: var(--success); font-weight: 700; }
-    .estimator { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; }
-    @media (max-width: 780px) { .estimator { grid-template-columns: 1fr; } .nav-links { display: none; } }
-    .field { margin-bottom: 20px; }
-    .field label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 8px; }
-    .field select, .field input[type="range"] { width: 100%; }
-    select { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 0.95rem; }
-    .checks { display: grid; gap: 10px; }
-    .check-opt { display: flex; align-items: center; gap: 10px; background: var(--surface-2); border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 0.92rem; }
-    .quote-box { background: #0f1722; border: 1px solid rgba(56,189,248,0.4); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
-    .quote-total { font-size: 2.3rem; font-weight: 800; color: var(--accent); margin: 8px 0; }
-    .quote-meta { font-size: 0.9rem; color: var(--muted); margin-bottom: 18px; }
-    .guarantee { background: rgba(52, 211, 153, 0.07); border: 1px solid rgba(52, 211, 153, 0.35); border-radius: 14px; padding: 28px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
-    @media (max-width: 720px) { .guarantee { grid-template-columns: 1fr; } }
-    .faq-list { display: grid; gap: 14px; max-width: 820px; }
-    details { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
-    summary { font-weight: 600; cursor: pointer; }
-    details p { color: var(--muted); margin-top: 10px; font-size: 0.94rem; }
-    footer { padding: 48px 0; text-align: center; color: var(--muted); font-size: 0.9rem; }
+    .spec-kicker::before { content: ""; width: 22px; height: 1px; background: var(--terracotta); }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.95rem, 3.3vw, 2.75rem);
+      line-height: 1.18; letter-spacing: -0.015em; margin-bottom: 20px; color: var(--ink);
+    }
+    .hero-lead { font-size: 0.98rem; color: var(--ink-2); margin-bottom: 28px; line-height: 1.7; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 36px; }
+    .spec-strip {
+      border-top: 1px solid var(--rule-strong); padding-top: 20px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .spec-cell dt { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .spec-cell dd { font-size: 0.8rem; color: var(--muted); line-height: 1.45; }
+
+    .sheet-frame { background: var(--vellum); border: 1px solid var(--rule-strong); border-radius: 3px; overflow: hidden; }
+    .sheet-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 14px; background: var(--paper-tint); border-bottom: 1px solid var(--rule); font-size: 0.78rem;
+    }
+    .sheet-tabs { display: inline-flex; border: 1px solid var(--rule-strong); border-radius: 2px; overflow: hidden; background: var(--vellum); }
+    .sheet-tabs button {
+      border: none; background: transparent; padding: 4px 11px; font-size: 0.75rem;
+      font-weight: 600; color: var(--ink-2); cursor: pointer; font-family: var(--sans);
+    }
+    .sheet-tabs button.active { background: var(--ink); color: var(--vellum); }
+    .sheet-open { font-family: var(--mono); font-size: 0.74rem; color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--ink); padding-bottom: 1px; }
+    .sheet-open:hover { color: var(--terracotta); border-color: var(--terracotta); }
+    .sheet-canvas { aspect-ratio: 16 / 10.5; background: #F4F2EC; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .sheet-canvas img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .sheet-titleblock {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
+      border-top: 1px solid var(--rule); background: var(--vellum);
+      font-family: var(--mono); font-size: 0.7rem; color: var(--muted);
+    }
+    .sheet-titleblock > div { padding: 8px 12px; border-right: 1px solid var(--rule); }
+    .sheet-titleblock > div:last-child { border-right: none; }
+    .sheet-titleblock strong { display: block; color: var(--ink); font-size: 0.74rem; margin-top: 1px; }
+
+    section { padding: 72px 0; border-bottom: 1px solid var(--rule); }
+    .sec-head { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: end; margin-bottom: 40px; }
+    .sec-num { font-family: var(--mono); font-size: 0.76rem; color: var(--terracotta); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .sec-title { font-family: var(--serif); font-weight: 400; font-size: clamp(1.55rem, 2.6vw, 2.1rem); line-height: 1.25; color: var(--ink); }
+    .sec-desc { color: var(--ink-2); font-size: 0.94rem; }
+
+    .ledger { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule-strong); background: var(--vellum); }
+    .ledger-hdr {
+      display: grid; grid-template-columns: 2.3fr 3.6fr 1.2fr 1.8fr;
+      padding: 11px 20px; background: var(--paper-tint); border-bottom: 1px solid var(--rule-strong);
+      font-family: var(--mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .ledger-row {
+      display: grid; grid-template-columns: 2.3fr 3.6fr 1.2fr 1.8fr;
+      padding: 26px 20px; border-bottom: 1px solid var(--rule); gap: 20px; align-items: start;
+    }
+    .ledger-row:last-child { border-bottom: none; }
+    .ledger-code { font-family: var(--mono); font-size: 0.74rem; color: var(--terracotta); margin-bottom: 4px; }
+    .ledger-name { font-size: 1.06rem; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+    .ledger-fit { font-size: 0.84rem; color: var(--muted); }
+    .ledger-deliverables { list-style: none; font-size: 0.88rem; color: var(--ink-2); }
+    .ledger-deliverables li { padding: 3px 0; display: flex; gap: 8px; }
+    .ledger-deliverables li::before { content: "—"; color: var(--muted); }
+    .ledger-turnaround { font-family: var(--mono); font-size: 0.84rem; color: var(--ink-2); padding-top: 2px; }
+    .ledger-turnaround span { display: block; font-family: var(--sans); font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+    .ledger-fee { text-align: right; }
+    .ledger-price { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+    .ledger-unit { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 12px; }
+
+    .worksheet { display: grid; grid-template-columns: 6fr 6fr; gap: 36px; align-items: start; }
+    .ws-controls { background: var(--vellum); border: 1px solid var(--rule-strong); border-radius: 3px; padding: 28px; }
+    .field { margin-bottom: 22px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.88rem; margin-bottom: 8px; color: var(--ink); }
+    select {
+      width: 100%; background: #fff; color: var(--ink); border: 1px solid var(--rule-strong);
+      border-radius: 2px; padding: 10px 12px; font-size: 0.9rem; font-family: var(--sans);
+    }
+    select:focus { outline: none; border-color: var(--ink); }
+    input[type="range"] { width: 100%; accent-color: var(--ink); }
+    .addon-list { display: grid; gap: 8px; }
+    .addon-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 12px; border: 1px solid var(--rule); background: var(--paper); border-radius: 2px; cursor: pointer; font-size: 0.87rem;
+    }
+    .addon-item:hover { border-color: var(--rule-strong); }
+    .addon-left { display: flex; align-items: center; gap: 9px; }
+    .addon-cost { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); }
+
+    .ws-slip { background: var(--vellum); border: 1px solid var(--ink); border-radius: 3px; padding: 28px; }
+    .slip-hdr { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--ink); margin-bottom: 16px; }
+    .slip-hdr strong { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em; }
+    .slip-hdr span { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
+    .slip-lines { font-size: 0.86rem; border-bottom: 1px solid var(--rule-strong); padding-bottom: 14px; margin-bottom: 16px; }
+    .slip-line { display: flex; justify-content: space-between; padding: 5px 0; color: var(--ink-2); }
+    .slip-line b { font-family: var(--mono); font-weight: 600; color: var(--ink); }
+    .slip-total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .slip-total-row span { font-weight: 700; font-size: 0.92rem; }
+    .slip-total { font-family: var(--mono); font-size: 1.9rem; font-weight: 700; color: var(--ink); }
+    .slip-terms { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
+    .slip-actions { display: grid; gap: 8px; }
+
+    .split-2 { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
+    .steps-list { list-style: none; border-top: 1px solid var(--rule-strong); }
+    .steps-list li { padding: 18px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 44px 1fr; gap: 8px; }
+    .step-no { font-family: var(--mono); font-size: 0.8rem; color: var(--terracotta); font-weight: 700; padding-top: 2px; }
+    .steps-list h3 { font-size: 0.96rem; margin-bottom: 4px; }
+    .steps-list p { font-size: 0.86rem; color: var(--ink-2); }
+
+    .faq-stack { border-top: 1px solid var(--rule-strong); }
+    details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    summary { font-weight: 600; font-size: 0.94rem; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; font-family: var(--mono); font-size: 1rem; color: var(--muted); }
+    details[open] summary::after { content: "−"; }
+    details p { margin-top: 10px; font-size: 0.88rem; color: var(--ink-2); max-width: 62ch; }
+
+    .commission { padding: 64px 0; background: var(--paper-tint); border-bottom: 1px solid var(--rule-strong); }
+    .commission-grid { display: grid; grid-template-columns: 6fr 6fr; gap: 36px; align-items: center; }
+    .commission-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+    footer { padding: 28px 0; font-size: 0.8rem; color: var(--muted); }
+    .foot-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; width: 100%; }
+
+    @media (max-width: 920px) {
+      .hero-grid, .sec-head, .worksheet, .split-2, .commission-grid { grid-template-columns: 1fr; gap: 28px; }
+      .ledger-hdr { display: none; }
+      .ledger-row { grid-template-columns: 1fr; gap: 12px; }
+      .ledger-fee { text-align: left; }
+      .commission-links { justify-content: flex-start; }
+      .brand-sub, .nav a:not(.lang-switch):not(.btn) { display: none; }
+      .sheet-titleblock { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="container nav">
-      <div class="brand">DRAFT<span>PRO</span> STUDIO</div>
-      <nav class="nav-links">
-        <a href="demo-en.html">Live 3D Demo</a>
-        <a href="#services">Pricing</a>
-        <a href="#estimator">Instant Quote</a>
-        <a href="#faq">FAQ</a>
-        <a href="index.html">🇹🇼 繁體中文</a>
-        <a href="#contact" class="btn btn-primary btn-sm">Start a Project</a>
+    <div class="wrap topbar">
+      <div class="brand-lockup">
+        <a href="en.html" class="brand-mark">DRAFT<b>PRO</b></a>
+        <span class="brand-sub">ARCHITECTURAL CAD &amp; 3D STUDIO</span>
+      </div>
+      <nav class="nav">
+        <a href="demo-en.html">Interactive Drawing</a>
+        <a href="#schedule">Fee Schedule</a>
+        <a href="#worksheet">Estimate</a>
+        <a href="#process">Process</a>
+        <a href="index.html" class="lang-switch">繁體 / TWD</a>
+        <a href="#contact" class="btn btn-ink btn-sm">Commission</a>
       </nav>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="container">
-        <div class="badge">6 Slots Open This Month · 48–72h Turnaround</div>
-        <h1>Turn Floor Plan Sketches into Clean AutoCAD DWGs &amp; Interactive 3D Web Apps in 48 Hours</h1>
-        <p>Built for interior design studios, contractors, and real estate teams. Stop wasting hours cleaning CAD layers or fighting heavy 3D software—get editable DWGs, print-ready A3 PDFs, and a standalone 3D walkthrough link clients can explore on any phone.</p>
-        <div class="hero-actions">
-          <a href="demo-en.html" class="btn btn-primary">▶ Launch Interactive 3D Demo (100㎡ / 1,076 sq ft)</a>
-          <a href="#estimator" class="btn btn-outline">30-Second USD Quote</a>
-          <a href="https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?template=order-quote.yml" target="_blank" rel="noopener" class="btn btn-outline">Submit Sketch via GitHub Form</a>
+      <div class="wrap hero-grid">
+        <div>
+          <div class="spec-kicker">DWG 2018 · A3 1:50 · WEBGL 2D/3D</div>
+          <h1>From Field Sketch to Standardized AutoCAD DWG &amp; 3D Spatial Model in 48 Hours</h1>
+          <p class="hero-lead">
+            Production drafting support for interior design practices, general contractors, and property teams. We reconstruct measured sketches and legacy PDFs into layered AutoCAD DWGs alongside a standalone single-file 3D browser model with toggleable furniture, ceiling, and MEP routing.
+          </p>
+          <div class="hero-actions">
+            <a href="demo-en.html" class="btn btn-ink">Open 1,076 sq ft Live Drawing</a>
+            <a href="#worksheet" class="btn btn-paper">Calculate Project Fee</a>
+          </div>
+          <dl class="spec-strip">
+            <div class="spec-cell">
+              <dt>240 / 120 mm</dt>
+              <dd>True structural bearing &amp; interior partition wall thicknesses</dd>
+            </div>
+            <div class="spec-cell">
+              <dt>AIA / ISO Layers</dt>
+              <dd>Clean lineweights, unlocked blocks, A3 sheet formatting</dd>
+            </div>
+            <div class="spec-cell">
+              <dt>50 / 50 Milestone</dt>
+              <dd>Verify live 2D/3D preview before settling final balance</dd>
+            </div>
+          </dl>
         </div>
-        <div class="trust-row">
-          <div class="trust-item">
-            <strong>Architectural-Grade CAD</strong>
-            <span>True bearing/partition wall thicknesses, clean layers, standardized A3 dimensions &amp; blocks</span>
-          </div>
-          <div class="trust-item">
-            <strong>Zero-Install 3D Web App</strong>
-            <span>Single standalone HTML file with 2D CAD, 3D bird's-eye, walkthrough, ceiling &amp; MEP toggles</span>
-          </div>
-          <div class="trust-item">
-            <strong>Preview Before Final Payment</strong>
-            <span>Inspect interactive preview &amp; QA report before paying the 50% balance—zero risk</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="services">
-      <div class="container">
-        <div class="section-kicker">Transparent Fixed Pricing</div>
-        <h2 class="section-title">No hourly surprises. Clear deliverables &amp; turnaround.</h2>
-        <p class="section-sub">Every package includes automated spatial &amp; electrical clearance QA verification before delivery.</p>
-
-        <div class="grid-3">
-          <div class="card">
-            <h3>Single Sheet CAD Redraw</h3>
-            <div class="price">$120 <small>/ sheet</small></div>
-            <p class="card-desc">Ideal for redlining, legacy plan cleanup, permit floor plans, or stair details.</p>
-            <ul class="checklist">
-              <li>Hand sketch / PDF / scan to layered AutoCAD DWG</li>
-              <li>Standardized layers, lineweights &amp; dimension styles</li>
-              <li>Editable DWG (2018+) + A3 print-ready PDF</li>
-              <li>48-hour delivery, 2 rounds of revisions included</li>
-            </ul>
-            <a href="#contact" class="btn btn-outline">Book Single Sheet</a>
+        <div class="sheet-frame">
+          <div class="sheet-bar">
+            <div class="sheet-tabs" role="tablist">
+              <button type="button" class="active" data-plate="assets/plan-en.png" data-alt="100 sqm 3BR/2BA Architectural 2D Floor Plan">2D Floor Plan</button>
+              <button type="button" class="data-3d-btn" data-plate="assets/maquette-3d.png" data-alt="100 sqm 3BR/2BA Architectural 3D Cutaway Maquette">3D Cutaway Model</button>
+            </div>
+            <a href="demo-en.html" class="sheet-open">Launch Workspace ↗</a>
           </div>
-
-          <div class="card featured">
-            <span class="pill">Most Popular · Client Closer</span>
-            <h3>2D CAD + Interactive 3D Pack</h3>
-            <div class="price">$300 <small>/ unit</small></div>
-            <p class="card-desc">Help homeowners and buyers immediately feel scale, furniture fit, and lighting.</p>
-            <ul class="checklist">
-              <li>Complete dimensioned 2D floor plan DWG + DXF</li>
-              <li>Custom standalone 3D interactive web app (mobile/desktop)</li>
-              <li>Toggleable furniture, ceiling, flooring &amp; MEP layers</li>
-              <li>Bonus: automated quantity takeoff CSV + PDF set</li>
-              <li>72-hour delivery, 3 layout revisions included</li>
-            </ul>
-            <a href="#contact" class="btn btn-primary">Book 3D Interactive Pack</a>
+          <div class="sheet-canvas">
+            <img id="heroPlateImg" src="assets/plan-en.png" alt="100 sqm 3BR/2BA Architectural 2D Floor Plan" />
           </div>
-
-          <div class="card">
-            <h3>Studio Monthly Retainer</h3>
-            <div class="price">$890 <small>/ month</small></div>
-            <p class="card-desc">Dedicated drafting capacity at a fraction of a full-time CAD technician.</p>
-            <ul class="checklist">
-              <li>Up to 10 standardized CAD construction sheets / month</li>
-              <li>Includes 2 custom interactive 3D web presentations</li>
-              <li>Matched to your studio's title block &amp; layer standard</li>
-              <li>Priority queue (24-hour first draft turnaround)</li>
-            </ul>
-            <a href="#contact" class="btn btn-outline">Inquire for Retainer</a>
+          <div class="sheet-titleblock">
+            <div>SHEET NO.<strong>A-101 / 3BR-2BA RESIDENCE</strong></div>
+            <div>NET AREA<strong>100.01 m² (1,076 SQ FT)</strong></div>
+            <div>CLEARANCE QA<strong>0 CONFLICTS</strong></div>
+            <div>SCALE / UNIT<strong>1:50 (MM)</strong></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="estimator">
-      <div class="container">
-        <div class="section-kicker">Instant Quote Calculator</div>
-        <h2 class="section-title">Estimate Your Project in 30 Seconds</h2>
-        <p class="section-sub">Configure your scope below and send the pre-filled summary straight to our drafting desk.</p>
-
-        <div class="estimator">
+    <section id="schedule">
+      <div class="wrap">
+        <div class="sec-head">
           <div>
+            <div class="sec-num">01 / Schedule of Services</div>
+            <h2 class="sec-title">Drafting Scope &amp; Fixed Fee Schedule</h2>
+          </div>
+          <p class="sec-desc">Transparent per-sheet and per-unit fees rather than open-ended hourly billing. Every deliverable undergoes automated spatial and MEP clearance checks.</p>
+        </div>
+
+        <div class="ledger">
+          <div class="ledger-hdr">
+            <div>Item &amp; Scope</div>
+            <div>Deliverables &amp; Drafting Standards</div>
+            <div>Turnaround</div>
+            <div style="text-align:right;">Fixed Fee</div>
+          </div>
+
+          <div class="ledger-row">
+            <div>
+              <div class="ledger-code">ITEM 01</div>
+              <div class="ledger-name">Single Sheet CAD Redraw</div>
+              <div class="ledger-fit">Field survey digitization, legacy plan cleanup, permit floor plans, or stair details</div>
+            </div>
+            <ul class="ledger-deliverables">
+              <li>Hand sketch, PDF, or scan drafted to scale in AutoCAD 2018+ DWG</li>
+              <li>Organized wall, door/window, fixture, and dimension layers</li>
+              <li>Editable DWG source file + print-ready A3 PDF sheet</li>
+            </ul>
+            <div class="ledger-turnaround">48 Hours<span>Includes 2 revisions</span></div>
+            <div class="ledger-fee">
+              <span class="ledger-price">$120 USD</span>
+              <span class="ledger-unit">per sheet</span>
+              <a href="#contact" class="btn btn-paper btn-sm">Commission</a>
+            </div>
+          </div>
+
+          <div class="ledger-row">
+            <div>
+              <div class="ledger-code">ITEM 02</div>
+              <div class="ledger-name">2D Plan + Interactive 3D Spatial Model</div>
+              <div class="ledger-fit">Client design presentations, renovation feasibility, and property marketing</div>
+            </div>
+            <ul class="ledger-deliverables">
+              <li>Complete dimensioned 2D floor plan in DWG and DXF formats</li>
+              <li>Standalone single-file 3D HTML workspace (bird's-eye, first-person walk, sun study)</li>
+              <li>Toggleable layout, MEP electrical/plumbing, reflected ceiling, and flooring layers</li>
+              <li>Includes itemized quantity takeoff schedule (CSV) + A3 PDF set</li>
+            </ul>
+            <div class="ledger-turnaround">72 Hours<span>Includes 3 revisions</span></div>
+            <div class="ledger-fee">
+              <span class="ledger-price">$300 USD</span>
+              <span class="ledger-unit">per unit (up to 1,200 sq ft)</span>
+              <a href="#contact" class="btn btn-ink btn-sm">Commission</a>
+            </div>
+          </div>
+
+          <div class="ledger-row">
+            <div>
+              <div class="ledger-code">ITEM 03</div>
+              <div class="ledger-name">Studio Monthly Drafting Retainer</div>
+              <div class="ledger-fit">Dedicated production capacity for active interior &amp; architectural practices</div>
+            </div>
+            <ul class="ledger-deliverables">
+              <li>Up to 10 standardized construction sheets or millwork details per month</li>
+              <li>Includes 2 full 2D + 3D interactive spatial models per month</li>
+              <li>Synchronized with your practice's title block, CTB plot style, and layer naming</li>
+            </ul>
+            <div class="ledger-turnaround">24h Priority<span>Dedicated queue</span></div>
+            <div class="ledger-fee">
+              <span class="ledger-price">$890 USD</span>
+              <span class="ledger-unit">per month</span>
+              <a href="#contact" class="btn btn-paper btn-sm">Inquire</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="worksheet">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <div class="sec-num">02 / Fee Worksheet</div>
+            <h2 class="sec-title">Project Fee Calculator</h2>
+          </div>
+          <p class="sec-desc">Select your required deliverables and floor area below to generate an itemized fee slip ready for email or form submission.</p>
+        </div>
+
+        <div class="worksheet">
+          <div class="ws-controls">
             <div class="field">
-              <label for="serviceType">1. Select Core Deliverable</label>
+              <label for="serviceType"><span>1. Primary Deliverable</span></label>
               <select id="serviceType">
                 <option value="120" data-days="2">Single Sheet AutoCAD Redraw ($120)</option>
-                <option value="300" data-days="3" selected>2D CAD + Interactive 3D Floor Plan Web App ($300)</option>
+                <option value="300" data-days="3" selected>2D CAD Plan + Interactive 3D Spatial Model ($300)</option>
                 <option value="520" data-days="5">Full Interior Construction Set: Plan/RCP/MEP/Elevations ($520)</option>
               </select>
             </div>
 
             <div class="field">
-              <label for="areaRange">2. Floor Area: <strong id="areaLabel">1,000 sq ft (~93 m²)</strong></label>
+              <label for="areaRange">
+                <span>2. Net Floor Area</span>
+                <strong id="areaLabel" style="font-family:var(--mono);">1,000 sq ft (~93 m²)</strong>
+              </label>
               <input id="areaRange" type="range" min="400" max="4000" step="200" value="1000" />
             </div>
 
             <div class="field">
-              <label>3. Optional Add-Ons</label>
-              <div class="checks">
-                <label class="check-opt"><input type="checkbox" class="addon" value="80" data-label="Automated Electrical & Plumbing (MEP) Layout" /> Electrical &amp; Plumbing (MEP) Routing Layer (+$80)</label>
-                <label class="check-opt"><input type="checkbox" class="addon" value="65" data-label="Stair / Millwork Detail Sheet" /> Stair / Custom Millwork Detail Sheet (+$65)</label>
-                <label class="check-opt"><input type="checkbox" class="addon" value="95" data-label="24-Hour Rush Delivery" /> 24-Hour Rush Priority Turnaround (+$95)</label>
+              <label><span>3. Supplemental Sheets &amp; Priority</span></label>
+              <div class="addon-list">
+                <label class="addon-item">
+                  <span class="addon-left"><input type="checkbox" class="addon" value="80" data-label="Electrical & Plumbing (MEP) Routing Sheet" /> Electrical &amp; Plumbing (MEP) Sheet</span>
+                  <span class="addon-cost">+$80</span>
+                </label>
+                <label class="addon-item">
+                  <span class="addon-left"><input type="checkbox" class="addon" value="65" data-label="Stair Section or Custom Millwork Details" /> Stair / Custom Millwork Detail Sheet</span>
+                  <span class="addon-cost">+$65</span>
+                </label>
+                <label class="addon-item">
+                  <span class="addon-left"><input type="checkbox" class="addon" value="95" data-label="24-Hour Rush Priority Delivery" /> 24-Hour Priority Turnaround</span>
+                  <span class="addon-cost">+$95</span>
+                </label>
               </div>
             </div>
           </div>
 
-          <div class="quote-box">
-            <div>
-              <div style="font-size:0.88rem;color:var(--muted);">Estimated Fixed Price</div>
-              <div class="quote-total" id="quoteTotal">$300 USD</div>
-              <div class="quote-meta" id="quoteMeta">Turnaround: 3 business days · 50% deposit, 50% on preview approval</div>
-              <div id="quoteSummary" style="font-size:0.88rem;color:#cbd5e1;background:#141c28;padding:12px;border-radius:8px;margin-bottom:18px;"></div>
+          <div class="ws-slip">
+            <div class="slip-hdr">
+              <strong>ESTIMATE SUMMARY</strong>
+              <span id="quoteMeta">Turnaround: 3 business days</span>
             </div>
-            <button type="button" class="btn btn-primary" id="copyQuoteBtn">Copy Quote Summary</button>
+            <div class="slip-lines" id="slipLines"></div>
+            <div class="slip-total-row">
+              <span>Estimated Total</span>
+              <div class="slip-total" id="quoteTotal">$300 USD</div>
+            </div>
+            <div class="slip-terms">Terms: 50% deposit initiates drafting; remaining 50% due upon approval of online 2D/3D preview prior to DWG/HTML release.</div>
+            <div id="quoteSummary" hidden></div>
+            <div class="slip-actions">
+              <a id="emailInquiryLink" href="mailto:topjgapadsup804@gmail.com" class="btn btn-ink">Send Estimate via Email</a>
+              <button type="button" class="btn btn-paper" id="copyQuoteBtn">Copy Summary Text</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="guarantee">
-      <div class="container">
-        <div class="guarantee">
-          <div>
-            <div class="section-kicker" style="color:var(--success);">Risk-Free Guarantee</div>
-            <h2 style="font-size:1.5rem;margin-bottom:8px;">Review the live preview first. Free revisions until it matches your spec.</h2>
-            <p style="color:var(--muted);font-size:0.95rem;">
-              Every order starts with a 50% deposit and settles the remaining 50% only after you inspect the screenshots and interactive 3D preview. Missing dimensions or layer mismatches are fixed at zero cost.
-            </p>
+    <section id="process">
+      <div class="wrap split-2">
+        <div>
+          <div class="sec-num">03 / Workflow &amp; Verification</div>
+          <h2 class="sec-title" style="margin-bottom:24px;">Three-Stage Delivery</h2>
+          <ol class="steps-list">
+            <li>
+              <span class="step-no">01</span>
+              <div>
+                <h3>Submit Field Sketch &amp; Reference Span</h3>
+                <p>Send a photo of your measured sketch, builder brochure, or PDF with at least one known dimension. Schedule and fixed fee are confirmed within 2 hours.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-no">02</span>
+              <div>
+                <h3>Online 2D/3D Preview &amp; Redline Review</h3>
+                <p>Inspect wall thicknesses, door swings, and circulation clearances directly in the browser. Any dimensional discrepancy against your brief is revised at no charge.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-no">03</span>
+              <div>
+                <h3>Final Settlement &amp; Source Handover</h3>
+                <p>Upon sign-off, receive unencrypted AutoCAD 2018+ DWG files, A3 PDF sheets, and the standalone single-file 3D HTML model.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <div class="sec-num">04 / Technical FAQ</div>
+          <h2 class="sec-title" style="margin-bottom:24px;">Technical Questions</h2>
+          <div class="faq-stack">
+            <details open>
+              <summary>Can you draft accurately from a hand-drawn survey photo?</summary>
+              <p>Yes. Provide at least one verified field measurement (such as entry door width or overall room span) and we calibrate the entire plan geometry with standard structural and partition wall thicknesses.</p>
+            </details>
+            <details>
+              <summary>Are DWG layers and blocks unlocked for editing in AutoCAD?</summary>
+              <p>Yes. Files are saved in native AutoCAD 2018 DWG format with separated structural walls, partitions, openings, furniture, MEP symbols, and dimension styles—nothing is locked or exploded.</p>
+            </details>
+            <details>
+              <summary>Does the 3D spatial model require ongoing hosting subscriptions?</summary>
+              <p>No. It is compiled as a single self-contained `.html` file with zero external dependencies. Open it offline on any laptop or host it free on any static web server.</p>
+            </details>
+            <details>
+              <summary>Can I purchase a self-service Pro License for the web workspace?</summary>
+              <p>Yes. You can draw and explore 3D free inside the live workspace, and unlock unlimited self-service DXF and A3 PDF exports anytime with a one-time $19 USD Pro License key.</p>
+            </details>
           </div>
-          <a href="#contact" class="btn btn-primary">Book a Slot</a>
         </div>
       </div>
     </section>
 
-    <section id="faq">
-      <div class="container">
-        <div class="section-kicker">FAQ</div>
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <div class="faq-list">
-          <details open>
-            <summary>Can I just send a phone photo of a hand-drawn sketch or builder brochure?</summary>
-            <p>Yes. Include at least one known dimension (such as a doorway width or total room length) and we will scale and draft the entire floor plan cleanly in AutoCAD and 3D.</p>
-          </details>
-          <details>
-            <summary>Will the DWG file open cleanly in my AutoCAD without locked blocks?</summary>
-            <p>100%. We deliver standard AutoCAD 2018+ DWG files (or any version you specify) with organized layers, proper wall thicknesses, and completely editable blocks.</p>
-          </details>
-          <details>
-            <summary>Do I have to pay monthly fees to host the 3D interactive floor plan?</summary>
-            <p>No. You receive a standalone single-file HTML web app with zero external dependencies—open it locally or upload it to any free static host.</p>
-          </details>
+    <section id="contact" class="commission">
+      <div class="wrap commission-grid">
+        <div>
+          <div class="sec-num">Start a Commission</div>
+          <h2 class="sec-title" style="margin-bottom:8px;">Send your drawing brief today</h2>
+          <p class="sec-desc">Attach your sketch or PDF via email or GitHub form. Confirmed turnaround and invoice link returned within 2 hours.</p>
         </div>
-      </div>
-    </section>
-
-    <section id="contact" style="border-bottom:none;">
-      <div class="container" style="text-align:center;">
-        <div class="section-kicker">Get Started Today</div>
-        <h2 class="section-title">Send your sketch—we start drafting within hours</h2>
-        <p class="section-sub" style="margin:0 auto 28px;">Email your floor plan or submit via our structured GitHub order form. We confirm exact pricing and delivery time within 2 hours.</p>
-        <div class="hero-actions" style="justify-content:center;">
-          <a id="emailInquiryLink" href="mailto:topjgapadsup804@gmail.com?subject=%5BCAD%20Quote%5D%20Floor%20Plan%20Project" class="btn btn-primary">Email Sketch (topjgapadsup804@gmail.com)</a>
-          <a href="https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?template=order-quote.yml" target="_blank" rel="noopener" class="btn btn-outline">Open Structured Order Form (Drag &amp; Drop Sketch)</a>
-          <a href="demo-en.html" class="btn btn-outline">Inspect Live 3D Demo</a>
+        <div class="commission-links">
+          <a href="mailto:topjgapadsup804@gmail.com?subject=%5BCAD%20Commission%5D%20Project%20Brief" class="btn btn-ink">Email: topjgapadsup804@gmail.com</a>
+          <a href="https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?template=order-quote.yml" target="_blank" rel="noopener" class="btn btn-paper">Upload Sketch via Form</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      © 2026 DraftPro Studio · AutoCAD Drafting &amp; Interactive 3D Floor Plan Studio · <a href="index.html" style="color:var(--accent);">繁體中文</a> · <a href="demo-en.html" style="color:var(--accent);">English 3D Demo</a> · <a href="llms.txt" style="color:var(--muted);">llms.txt</a>
+    <div class="wrap foot-row">
+      <span>© 2026 DraftPro Studio · Architectural CAD &amp; 3D Spatial Modeling</span>
+      <span>
+        <a href="demo-en.html">English 3D Workspace</a> ·
+        <a href="demo.html">繁體 3D 圖紙</a> ·
+        <a href="index.html">繁體中文 (TWD)</a> ·
+        <a href="llms.txt">llms.txt</a>
+      </span>
     </div>
   </footer>
 
   <script>
+    const plateImg = document.getElementById('heroPlateImg');
+    document.querySelectorAll('[data-plate]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-plate]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        plateImg.src = btn.dataset.plate;
+        plateImg.alt = btn.dataset.alt;
+      });
+    });
+
     const serviceEl = document.getElementById('serviceType');
     const areaEl = document.getElementById('areaRange');
     const areaLabel = document.getElementById('areaLabel');
     const addons = Array.from(document.querySelectorAll('.addon'));
+    const slipLines = document.getElementById('slipLines');
     const quoteTotal = document.getElementById('quoteTotal');
     const quoteMeta = document.getElementById('quoteMeta');
     const quoteSummary = document.getElementById('quoteSummary');
@@ -383,6 +560,7 @@
     function updateQuote() {
       const base = Number(serviceEl.value);
       const baseDays = Number(serviceEl.selectedOptions[0].dataset.days);
+      const svcName = serviceEl.selectedOptions[0].text.split(' (')[0];
       const sqft = Number(areaEl.value);
       const sqm = Math.round(sqft * 0.0929);
       areaLabel.textContent = `${sqft.toLocaleString('en-US')} sq ft (~${sqm} m²)`;
@@ -392,29 +570,40 @@
       const selectedAddons = [];
       let isRush = false;
 
+      const lines = [
+        `<div class="slip-line"><span>${svcName}</span><b>$${base}</b></div>`
+      ];
+      if (areaExtra > 0) {
+        lines.push(`<div class="slip-line"><span>Area bracket (${sqft.toLocaleString('en-US')} sq ft, above 1,200 sq ft)</span><b>+$${areaExtra}</b></div>`);
+      } else {
+        lines.push(`<div class="slip-line"><span>Floor area (${sqft.toLocaleString('en-US')} sq ft, standard bracket)</span><b>$0</b></div>`);
+      }
+
       addons.forEach(cb => {
         if (cb.checked) {
-          addonSum += Number(cb.value);
+          const val = Number(cb.value);
+          addonSum += val;
           selectedAddons.push(cb.dataset.label);
           if (cb.dataset.label.includes('24-Hour')) isRush = true;
+          lines.push(`<div class="slip-line"><span>${cb.dataset.label}</span><b>+$${val}</b></div>`);
         }
       });
 
       const total = base + areaExtra + addonSum;
       const days = isRush ? 1 : baseDays;
 
+      slipLines.innerHTML = lines.join('');
       quoteTotal.textContent = `$${total.toLocaleString('en-US')} USD`;
-      quoteMeta.textContent = `Turnaround: ${days} business day${days > 1 ? 's' : ''} · 50% deposit, 50% on preview approval`;
+      quoteMeta.textContent = `Turnaround: ${days} business day${days > 1 ? 's' : ''}`;
 
-      const svcName = serviceEl.selectedOptions[0].text.split(' (')[0];
       const addonText = selectedAddons.length ? selectedAddons.join(', ') : 'None';
-      const summary = `Package: ${svcName} | Area: ${sqft} sq ft (~${sqm} m²) | Add-ons: ${addonText} | Estimate: $${total} USD`;
+      const summary = `Scope: ${svcName} | Area: ${sqft} sq ft (~${sqm} m²) | Supplemental: ${addonText} | Estimate: $${total} USD (${days} business day${days > 1 ? 's' : ''})`;
       quoteSummary.textContent = summary;
 
       const emailLink = document.getElementById('emailInquiryLink');
       if (emailLink) {
-        const subject = encodeURIComponent(`[CAD Quote] ${svcName} (${sqft} sq ft)`);
-        const body = encodeURIComponent(`Hi DraftPro Studio,\n\nI'd like to request a drafting slot:\n${summary}\n\n(Attaching my floor plan sketch / PDF below)`);
+        const subject = encodeURIComponent(`[CAD Commission] ${svcName} (${sqft} sq ft)`);
+        const body = encodeURIComponent(`Hello DraftPro Studio,\n\nProject fee summary:\n${summary}\n\n(Attaching floor plan sketch / PDF below)`);
         emailLink.href = `mailto:topjgapadsup804@gmail.com?subject=${subject}&body=${body}`;
       }
     }
@@ -426,8 +615,8 @@
     copyBtn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(quoteSummary.textContent);
-        copyBtn.textContent = 'Copied! Paste into Email or Order Form';
-        setTimeout(() => { copyBtn.textContent = 'Copy Quote Summary'; }, 2500);
+        copyBtn.textContent = 'Summary Copied';
+        setTimeout(() => { copyBtn.textContent = 'Copy Summary Text'; }, 2200);
       } catch {
         alert(quoteSummary.textContent);
       }
