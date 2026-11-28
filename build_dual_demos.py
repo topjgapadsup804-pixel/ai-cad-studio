@@ -40,8 +40,77 @@ tw_room_names = {
     "公卫": "客衛",
 }
 
+# 2026 台灣室內裝修真實市場單價表（NTD，依連工帶料行情換算為引擎對應單位）
+TW_NTD_PRICES = {
+    "floor.oak": 1680,        # 超耐磨/橡木地板連工帶料 (~NT$5,550/坪)
+    "floor.custom": 2050,     # 客製排磚地磚連工帶料 (~NT$6,800/坪)
+    "floor.walnut": 2360,     # 胡桃實木複合地板 (~NT$7,800/坪)
+    "floor.herring": 2880,    # 人字拼木地板 (~NT$9,500/坪)
+    "floor.tile": 2050,       # 80x80 拋光石英磚 (~NT$6,800/坪)
+    "floor.marble": 5450,     # 大理石石材連工帶料 (~NT$18,000/坪)
+    "floor.cement": 3320,     # 磐多魔/微水泥無縫地坪 (~NT$11,000/坪)
+    "floor.carpet": 1050,     # 方塊地毯 (~NT$3,500/坪)
+    "floor.bath": 1960,       # 衛浴止滑地磚 (~NT$6,500/坪)
+    "floor.terrazzo": 2420,   # 水磨石磚 (~NT$8,000/坪)
+    "floor.deck": 2580,       # 戶外塑木地板 (~NT$8,500/坪)
+    "wall.latexWhite": 580,   # 得利/虹牌乳膠漆批土刷漆 (~NT$1,900/坪)
+    "wall.latexGrey": 620,    # 跳色乳膠漆批土刷漆 (~NT$2,050/坪)
+    "wall.latexSage": 620,
+    "wall.latexWarm": 620,
+    "wall.wallpaper": 850,    # 防焰壁布/壁紙含底處理 (~NT$2,800/坪)
+    "wall.wallTile": 2000,     # 衛浴/廚房壁磚鋪貼 (~NT$6,600/坪)
+    "wall.woodPanel": 3800,   # 科定木皮板/木飾面造型牆 (~NT$12,500/坪)
+    "wall.waterproof": 1350,  # 衛浴彈泥防水至1.8m高 (~NT$4,450/坪)
+    "skirting.wood": 320,     # 木作/實木踢腳板 (NT$/m)
+    "skirting.metal": 520,    # 鋁合金收邊踢腳板 (NT$/m)
+    "ceil.paint": 480,        # 原頂批土乳膠漆 (~NT$1,600/坪)
+    "ceil.flat": 1400,        # 日本麗仕矽酸鈣板平釘天花 (~NT$4,600/坪)
+    "ceil.edge": 1680,        # 造型包樑/雙眼皮邊吊天花 (~NT$5,550/坪)
+    "ceil.cove": 950,         # 間接照明層板燈槽 (NT$/m)
+    "ceil.tray": 2150,        # 疊級造型天花板 (~NT$7,100/坪)
+    "ceil.float": 2450,       # 懸浮造型天花含燈槽 (~NT$8,100/坪)
+    "ceil.alu": 1550,         # 廚衛鋁扣板防潮天花 (~NT$5,100/坪)
+    "ceil.wood": 3900,        # 實木格柵/木皮天花 (~NT$12,900/坪)
+    "ceil.cornice": 280,      # 線板收邊 (NT$/m)
+    "ceil.curtain": 1150,     # 木作窗簾盒 (NT$/m)
+    "light.strip": 420,       # LED 鋁槽燈帶含變壓器 (NT$/m)
+    "light.linear": 1250,     # 嵌入式線型燈 (NT$/m)
+    "light.track": 2200,      # 磁吸軌道燈含燈具 (NT$/m)
+    "demo.wall": 1100,        # 拆除隔間牆 (~NT$3,600/坪)
+    "build.wall": 2450,       # 新砌輕質磚/輕鋼架隔間牆 (~NT$8,100/坪)
+    "demo.waste": 14000,      # 廢棄物搬運清運車資 (NT$/車次)
+    "door.door": 12500,       # 室內木作/實木貼皮門含門框五金 (NT$/樘)
+    "door.double": 24000,     # 雙開門含框五金 (NT$/樘)
+    "door.sliding": 18500,    # 鋁框玻璃連動拉門 (NT$/樘)
+    "door.hole": 4800,        # 門洞木作包框收邊 (NT$/樘)
+    "door.unequal": 32000,    # 玄關防火子母門含電子鎖安裝 (NT$/樘)
+    "door.folding": 26000,    # 折疊門含五金軌道 (NT$/樘)
+    "door.pocket": 22000,     # 隱藏式口袋滑門含預埋軌道 (NT$/樘)
+    "win.rail": 2800,         # 陽台隱形鐵窗/欄杆 (NT$/m)
+    "elec.socket": 1200,      # 強電插座/開關迴路配管配線 (NT$/位)
+    "elec.light": 650,        # 燈具出線開孔安裝 (NT$/位)
+    "elec.weak": 1350,        # 弱電網路 Cat.6 / 電視點位 (NT$/位)
+    "elec.water": 2600,       # 冷熱給水不鏽鋼壓接管配置 (NT$/位)
+    "elec.waste": 2200,       # PVC 排水管移位配置 (NT$/位)
+    "elec.hvac": 1200,        # 冷氣洗孔/穿樑套管 (NT$/處)
+    "elec.gas": 3500,         # 瓦斯管線配置申請 (NT$/處)
+    "elec.panel": 9500,       # 士林/國際牌無熔絲開關分電盤更新 (NT$/組)
+    "elec.weakbox": 4500,     # 弱電整合箱 (NT$/組)
+    "cab.tall": 6200,         # E1-V313 系統高櫃/衣櫃 (~NT$580/才 投影計)
+    "cab.base": 6800,         # 系統矮櫃/地櫃 (NT$/m)
+    "cab.wall": 4800,         # 系統吊櫃 (NT$/m)
+    "kit.base": 8500,         # 廚具下櫃桶身五金 (NT$/m)
+    "kit.wall": 5500,         # 廚具吊櫃 (NT$/m)
+    "kit.top": 6500,          # 石英石/賽麗石廚具檯面 (NT$/m)
+    "kit.tall": 7200,         # 廚具電器高櫃 (NT$/㎡)
+    "fee.manage": 8,          # 台灣室內裝修工程監工管理費 (%)
+}
+
+EN_USD_PRICES = {k: (v if k == "fee.manage" else max(8, round(v / 31.5))) for k, v in TW_NTD_PRICES.items()}
+
 spec_tw = copy.deepcopy(base_spec)
 spec_tw["name"] = "DraftPro Studio · 30.2 坪標準三房兩廳兩衛"
+spec_tw["prices"] = TW_NTD_PRICES
 for r in spec_tw["rooms"]:
     if r["name"] in tw_room_names:
         r["name"] = tw_room_names[r["name"]]
@@ -66,6 +135,7 @@ en_room_names = {
 
 spec_en = copy.deepcopy(base_spec)
 spec_en["name"] = "DraftPro Studio · 100㎡ (1,076 sq ft) 3BR/2BA Floor Plan"
+spec_en["prices"] = EN_USD_PRICES
 for r in spec_en["rooms"]:
     if r["name"] in en_room_names:
         r["name"] = en_room_names[r["name"]]
@@ -83,6 +153,13 @@ tw_template = tw_template.replace(
     '"PingFang TC","Microsoft JhengHei","Noto Sans TC","PingFang SC"',
 )
 tw_terms = [
+    ('location.search.includes("debug")&&(window.__designer=', '(window.__designer='),
+    ('const Oo=t=>"¥"+Math.round(t).toLocaleString("en-US")', 'const Oo=t=>"NT$ "+Math.round(t).toLocaleString("en-US")'),
+    ("元/㎡", "NTD/㎡"),
+    ("單價（元）", "單價（NTD）"),
+    ("合價（元）", "小計（NTD）"),
+    ("单价（元）", "單價（NTD）"),
+    ("合价（元）", "小計（NTD）"),
     ("单价(元)", "單價(NTD)"),
     ("合价(元)", "小計(NTD)"),
     ("合价", "小計"),
@@ -109,6 +186,16 @@ tw_terms = [
 for src, dst in tw_terms:
     tw_template = tw_template.replace(src, dst)
 
+# 將 K2 預設單價表同步更新為台灣 NTD 行情（使「恢復預設單價」與新建空白圖紙皆預設為台灣 NTD）
+import re as _re
+for _k, _v in TW_NTD_PRICES.items():
+    tw_template = _re.sub(
+        rf'("{_re.escape(_k)}":\{{[^}}]*?price:)\d+(?:\.\d+)?',
+        rf"\g<1>{_v}",
+        tw_template,
+        count=1,
+    )
+
 tw_template_path = os.path.join(here, "template_zh_tw.html")
 with open(tw_template_path, "w", encoding="utf-8") as f:
     f.write(tw_template)
@@ -124,6 +211,15 @@ en_template = en_template.replace(
 )
 
 en_replacements = [
+    ('location.search.includes("debug")&&(window.__designer=', '(window.__designer='),
+    ('const Oo=t=>"¥"+Math.round(t).toLocaleString("en-US")', 'const Oo=t=>"$"+Math.round(t).toLocaleString("en-US")'),
+    ("元/㎡", "USD/㎡"),
+    ("单价（元）", "Unit ($)"),
+    ("合价（元）", "Subtotal ($)"),
+    ("单价(元)", "Unit ($)"),
+    ("合价(元)", "Subtotal ($)"),
+    ("导出 Excel (CSV)", "Export CSV"),
+    ("恢复默认单价", "Reset Unit Rates"),
     ("户型装修设计器", "3D Floor Plan Designer"),
     ("方案管理：多方案切换与对比", "Manage & compare design schemes"),
     ("· 方案 ▾", "· Schemes ▾"),
@@ -284,6 +380,14 @@ en_replacements = [
 
 for src, dst in en_replacements:
     en_template = en_template.replace(src, dst)
+
+for _k, _v in EN_USD_PRICES.items():
+    en_template = _re.sub(
+        rf'("{_re.escape(_k)}":\{{[^}}]*?price:)\d+(?:\.\d+)?',
+        rf"\g<1>{_v}",
+        en_template,
+        count=1,
+    )
 
 en_template_path = os.path.join(here, "template_en.html")
 with open(en_template_path, "w", encoding="utf-8") as f:
@@ -576,8 +680,57 @@ header { background: #FAF8F4 !important; border-bottom: 1px solid #DFDAD0 !impor
 .dp-acct-card { background: #F6F4EF; border: 1px solid #DFDAD0; border-radius: 3px; padding: 12px 14px; margin-bottom: 14px; font-size: 12.5px; }
 .dp-acct-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E5E0D5; }
 .dp-acct-row:last-child { border-bottom: none; }
-@media (max-width: 720px) {
-  .studio-global-nav .nav-spec, .studio-global-nav .nav-link-home { display: none; }
+.dp-luban-pop {
+  position: fixed;
+  top: 42px;
+  left: 248px;
+  width: 336px;
+  background: #FDFCFA;
+  border: 1px solid #C7C0B2;
+  border-radius: 4px;
+  box-shadow: 0 14px 36px rgba(24,24,27,0.16);
+  z-index: 95000;
+  display: none;
+  font-family: "Inter", "Noto Sans TC", -apple-system, sans-serif;
+  color: #18181B;
+  font-size: 12px;
+}
+.dp-luban-pop.open { display: block; }
+.dp-luban-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; background: #F6F4EF; border-bottom: 1px solid #DFDAD0;
+  font-weight: 700; font-size: 12.5px;
+}
+.dp-luban-body { padding: 12px; }
+.dp-luban-target {
+  font-size: 11px; color: #57534E; background: #F4F1EA; border: 1px solid #E2DDD2;
+  padding: 5px 8px; border-radius: 2px; margin-bottom: 9px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.dp-luban-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.dp-luban-grid label { display: block; font-size: 10.5px; color: #6E6A63; margin-bottom: 3px; font-weight: 600; }
+.dp-luban-grid input {
+  width: 100%; padding: 6px 8px; border: 1px solid #CFC8BA; border-radius: 2px;
+  background: #fff; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px;
+}
+.dp-luban-row {
+  padding: 8px 10px; border: 1px solid #E5E0D5; border-radius: 3px; margin-bottom: 8px; background: #FAF8F4;
+}
+.dp-luban-row-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.dp-badge-ji {
+  background: #9A2B2B; color: #FFF8F6; padding: 1px 7px; border-radius: 2px; font-weight: 700; font-size: 11px;
+}
+.dp-badge-xiong {
+  background: #27272A; color: #F4F4F5; padding: 1px 7px; border-radius: 2px; font-weight: 600; font-size: 11px;
+}
+.dp-sugg-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.dp-sugg-btn {
+  flex: 1; padding: 4px 7px; font-size: 11px; font-weight: 600; border-radius: 2px;
+  border: 1px solid #C99A8E; background: #FDF6F4; color: #8A2424; cursor: pointer;
+}
+.dp-sugg-btn:hover { background: #9A2B2B; color: #fff; border-color: #9A2B2B; }
+@media (max-width: 860px) {
+  .studio-global-nav .nav-spec, .studio-global-nav .nav-link-home, .studio-global-nav .hide-sm { display: none; }
   .studio-global-nav { padding: 0 8px; }
 }
 </style>
@@ -587,34 +740,38 @@ header { background: #FAF8F4 !important; border-bottom: 1px solid #DFDAD0 !impor
 def build_nav_and_auth_html(lang: str) -> str:
     is_en = lang == "en"
     t = {
-        "spec": "DWG 2018 · A3 1:50 · 2D/3D" if is_en else "DWG 2018 · A3 1:50 · 平立剖 3D",
+        "spec": "DWG 2018 · A3 1:50" if is_en else "DWG 2018 · A3 1:50",
+        "btn_blank": "+ Blank Plan" if is_en else "+ 新建空白圖紙",
+        "btn_trace": "Trace Underlay" if is_en else "匯入底圖描圖",
+        "btn_luban": "ft-in Scale" if is_en else "文公尺・台尺",
+        "luban_title": "Imperial / Metric Scale Inspector" if is_en else "台灣文公尺（魯班尺）與台尺檢核",
         "home_url": "en.html" if is_en else "index.html",
-        "home_txt": "Studio & Fees" if is_en else "返回事務所報價",
-        "upgrade_btn": "Upgrade Pro · $19" if is_en else "升級 Pro · NT$590",
+        "home_txt": "Studio & Fees" if is_en else "事務所報價",
+        "upgrade_btn": "Lifetime Pro · $19" if is_en else "終身 Pro · NT$590",
         "pro_active": "PRO Active" if is_en else "PRO 已授權",
         "login_btn": "Sign In" if is_en else "登入 / 註冊",
-        "modal_title": "Account & Pro License" if is_en else "帳號登入與 Pro 圖紙授權",
+        "modal_title": "Account & Lifetime Pro License" if is_en else "帳號登入與終身 Pro 買斷授權",
         "tab_login": "Sign In" if is_en else "登入",
         "tab_signup": "Register" if is_en else "建立帳號",
-        "tab_pro": "Pro License" if is_en else "Pro 授權啟用",
+        "tab_pro": "Lifetime Pro" if is_en else "終身 Pro 買斷",
         "email_lbl": "Email" if is_en else "電子信箱",
         "pwd_lbl": "Password (min 6 characters)" if is_en else "密碼（至少 6 碼）",
         "btn_login": "Sign In" if is_en else "登入",
         "btn_signup": "Create Account" if is_en else "建立免費帳號",
-        "pro_p1": "Editable AutoCAD DXF export (Standard / Interior / MEP)" if is_en else "可編輯 AutoCAD DXF 匯出（標準軸線／裝修四道尺寸／水電圖）",
-        "pro_p2": "Full A3 Construction Drawing Set PDF (watermark-free)" if is_en else "整套 A3 施工圖冊 PDF 匯出（無浮水印）",
-        "pro_p3": "Standalone client review & markup package" if is_en else "業主審圖專用獨立分享檔匯出",
-        "pro_p4": "Commercial proposal & construction usage license" if is_en else "商業提案與工程放樣授權",
-        "buy_btn": "Purchase Pro License Key — $19 USD" if is_en else "購買 Pro 永久授權金鑰 — NT$590 ($19 USD)",
+        "pro_p1": "One-time payment ($19 USD) — lifetime access, zero monthly fees" if is_en else "一次買斷終身授權（NT$590 免月費，無每期自動扣款）",
+        "pro_p2": "Editable AutoCAD DXF (Standard / Interior 4-tier / MEP) + A3 PDF Set" if is_en else "解鎖可編輯 AutoCAD DXF（三道／四道尺寸／水電）與整套 A3 施工圖冊 PDF",
+        "pro_p3": "Itemized Renovation Cost Estimate CSV export" if is_en else "解鎖 2026 台灣真實裝修行情工程估價單 Excel (CSV) 匯出",
+        "pro_p4": "Photorealistic Path-Tracing Render & 720° VR Panorama export" if is_en else "解鎖光線追蹤寫實渲染（Path Tracing）與 720° 全景圖出圖",
+        "buy_btn": "Buy Lifetime Pro Key — $19 USD (One-Time)" if is_en else "購買終身 Pro 買斷金鑰 — NT$590（一次付清免月費）",
         "key_lbl": "Enter License Key" if is_en else "輸入授權金鑰解鎖",
         "key_ph": "DPRO-XXXX-XXXX-XXXX",
-        "activate_btn": "Verify & Activate" if is_en else "驗證並啟用授權",
+        "activate_btn": "Verify & Activate" if is_en else "驗證並啟用終身授權",
         "logout_btn": "Sign Out" if is_en else "登出帳號",
         "acct_email": "Account" if is_en else "帳號",
         "acct_plan": "License Tier" if is_en else "授權等級",
         "acct_key": "License Key" if is_en else "金鑰編號",
-        "msg_need_login": "Sign in or register an account before exporting CAD/PDF drawings." if is_en else "匯出商業施工圖檔前，請先登入或建立帳號。",
-        "msg_need_pro": "AutoCAD DXF, A3 PDF sets, and Client Review packages require an active Pro License." if is_en else "匯出 AutoCAD DXF、整套 A3 施工圖冊與業主分享檔需具備 Pro 授權。",
+        "msg_need_login": "Sign in or create a free account before exporting commercial CAD/PDF/CSV deliverables." if is_en else "匯出商業施工圖、報價單 CSV 或高階渲染前，請先登入或免費建立帳號。",
+        "msg_need_pro": "DXF, A3 PDF sets, Cost CSV, Path Tracing, and 720° Panorama require the $19 Lifetime Pro license (zero monthly subscription)." if is_en else "AutoCAD DXF、A3 施工圖冊、台灣行情估價單 CSV、光線追蹤寫實渲染與 720° 全景需啟用終身 Pro 授權（NT$590 一次買斷免月費）。",
         "msg_bad_cred": "Incorrect email or password." if is_en else "信箱或密碼不正確。",
         "msg_exists": "Email already registered. Switch to Sign In." if is_en else "此信箱已註冊，請切換至「登入」。",
         "msg_short_pwd": "Enter a valid email and at least 6 characters for password." if is_en else "請填寫有效信箱與至少 6 位字元密碼。",
@@ -639,6 +796,9 @@ def build_nav_and_auth_html(lang: str) -> str:
   <div class="nav-left">
     <span class="nav-brand">DRAFT<b>PRO</b></span>
     <span class="nav-spec">{t['spec']}</span>
+    <button type="button" class="nav-btn" id="dpNewBlankBtn" title="Free blank canvas — no login required">{t['btn_blank']}</button>
+    <button type="button" class="nav-btn hide-sm" id="dpTraceBtn">{t['btn_trace']}</button>
+    <button type="button" class="nav-btn" id="dpLubanBtn">{t['btn_luban']}</button>
   </div>
   <div class="nav-right">
     <div class="nav-lang">
@@ -650,6 +810,26 @@ def build_nav_and_auth_html(lang: str) -> str:
     <a href="{t['home_url']}" class="nav-link-home">{t['home_txt']}</a>
   </div>
 </nav>
+<div class="dp-luban-pop" id="dpLubanPop">
+  <div class="dp-luban-hdr">
+    <span>{t['luban_title']}</span>
+    <button type="button" class="dp-modal-close" id="dpLubanClose" style="font-size:16px;">×</button>
+  </div>
+  <div class="dp-luban-body">
+    <div class="dp-luban-target" id="dpLubanTarget">{'Select any door/window/cabinet or enter mm' if is_en else '點選畫布門窗／櫃體自動帶入，或直接輸入尺寸'}</div>
+    <div class="dp-luban-grid">
+      <div>
+        <label>{'Millimeters (mm)' if is_en else '公釐 (mm)'}</label>
+        <input type="number" id="dpMmIn" value="900" min="50" max="20000" step="5" />
+      </div>
+      <div>
+        <label>{'Centimeters (cm)' if is_en else '公分 (cm)'}</label>
+        <input type="number" id="dpCmIn" value="90" min="5" max="2000" step="0.5" />
+      </div>
+    </div>
+    <div id="dpLubanResult"></div>
+  </div>
+</div>
 <div class="dp-modal-backdrop" id="dpModal">
   <div class="dp-modal" role="dialog" aria-modal="true">
     <div class="dp-modal-hdr">
@@ -957,25 +1137,277 @@ def build_nav_and_auth_html(lang: str) -> str:
     switchTab("account");
   }});
 
-  // Capture-phase paywall guard for PRO CAD/PDF exports
-  document.addEventListener("click", e => {{
-    const btn = e.target && e.target.closest && e.target.closest("#exportMenu [data-exp]");
-    if (!btn) return;
-    if (!window.DRAFTPRO_CONFIG.proExports.includes(btn.dataset.exp)) return;
+  // Capture-phase paywall guard for PRO deliverables (DXF, A3 PDF, Share, Cost CSV, Path Tracing, 720 Pano)
+  function requireProAccess(e) {{
     const user = getCurrentUser();
     if (!user) {{
       e.preventDefault();
       e.stopImmediatePropagation();
       openModal("login", "info", MSG.msg_need_login);
-      return;
+      return false;
     }}
     if (!user.pro) {{
       e.preventDefault();
       e.stopImmediatePropagation();
       openModal("pro", "info", MSG.msg_need_pro);
+      return false;
+    }}
+    return true;
+  }}
+
+  document.addEventListener("click", e => {{
+    const tEl = e.target && e.target.closest ? e.target : null;
+    if (!tEl) return;
+    const expBtn = tEl.closest("#exportMenu [data-exp]");
+    if (expBtn && window.DRAFTPRO_CONFIG.proExports.includes(expBtn.dataset.exp)) {{
+      requireProAccess(e);
       return;
     }}
+    if (tEl.closest("#qCsv") || tEl.closest("#panoBtn")) {{
+      requireProAccess(e);
+      return;
+    }}
+    if (tEl.closest("#renderBtn")) {{
+      const rm = document.getElementById("rendMode");
+      if (rm && rm.value === "pt") {{
+        requireProAccess(e);
+        return;
+      }}
+    }}
   }}, true);
+
+  // ==========================================
+  // Quick Actions: Blank Plan (No Login), Underlay Trace, Lu Ban Ruler & Dual Area Units
+  // ==========================================
+  const IS_EN = { "true" if is_en else "false" };
+
+  $("dpNewBlankBtn").addEventListener("click", () => {{
+    const planTab = document.querySelector('#leftPanel .tabs [data-tab="plan"]');
+    if (planTab) planTab.click();
+    setTimeout(() => {{
+      const np = document.getElementById("newPlan");
+      if (np) np.click();
+    }}, 60);
+  }});
+
+  $("dpTraceBtn").addEventListener("click", () => {{
+    const planTab = document.querySelector('#leftPanel .tabs [data-tab="plan"]');
+    if (planTab) planTab.click();
+    setTimeout(() => {{
+      const D = window.__designer;
+      if (D && D.app && D.app.underlay) {{
+        D.setTool("calibrate");
+      }} else {{
+        const uf = document.getElementById("ulFile");
+        if (uf) uf.click();
+      }}
+    }}, 60);
+  }});
+
+  // Lu Ban Ruler (門公尺 429.6mm / 丁蘭尺 388.8mm) + Taiwanese Foot (台尺 303.03mm) / Imperial ft-in
+  const MENGONG_CYCLE = 429.6;
+  const MENGONG = [
+    {{ w: "財", good: true, subs: ["財德","寶庫","六合","迎福"] }},
+    {{ w: "病", good: false, subs: ["退財","公事","牢執","孤寡"] }},
+    {{ w: "離", good: false, subs: ["長庫","劫財","官鬼","失脫"] }},
+    {{ w: "義", good: true, subs: ["添丁","益利","貴子","大吉"] }},
+    {{ w: "官", good: true, subs: ["順科","橫財","進益","富貴"] }},
+    {{ w: "劫", good: false, subs: ["死別","退口","離鄉","財失"] }},
+    {{ w: "害", good: false, subs: ["災至","死絕","病臨","口舌"] }},
+    {{ w: "本", good: true, subs: ["財至","登科","進寶","興旺"] }}
+  ];
+  const DINGLAN_CYCLE = 388.8;
+  const DINGLAN = [
+    {{ w: "丁", good: true, sub: "福星・及第" }},
+    {{ w: "害", good: false, sub: "口舌・病臨" }},
+    {{ w: "旺", good: true, sub: "天德・納福" }},
+    {{ w: "苦", good: false, sub: "失脫・劫財" }},
+    {{ w: "義", good: true, sub: "大吉・益利" }},
+    {{ w: "官", good: true, sub: "富貴・順科" }},
+    {{ w: "死", good: false, sub: "退丁・失財" }},
+    {{ w: "興", good: true, sub: "登科・興旺" }},
+    {{ w: "失", good: false, sub: "孤寡・退財" }},
+    {{ w: "財", good: true, sub: "六合・進寶" }}
+  ];
+
+  function evalMengong(mm) {{
+    const pos = ((mm % MENGONG_CYCLE) + MENGONG_CYCLE) % MENGONG_CYCLE;
+    const seg = MENGONG_CYCLE / 8;
+    const idx = Math.min(7, Math.floor(pos / seg));
+    const subIdx = Math.min(3, Math.floor((pos - idx * seg) / (seg / 4)));
+    return {{ ...MENGONG[idx], sub: MENGONG[idx].subs[subIdx] }};
+  }}
+
+  function evalDinglan(mm) {{
+    const pos = ((mm % DINGLAN_CYCLE) + DINGLAN_CYCLE) % DINGLAN_CYCLE;
+    const seg = DINGLAN_CYCLE / 10;
+    const idx = Math.min(9, Math.floor(pos / seg));
+    return DINGLAN[idx];
+  }}
+
+  function nearestGoodMengong(mm) {{
+    const out = [];
+    for (let d = 5; d <= 260 && out.length < 2; d += 5) {{
+      for (const cand of [Math.round((mm - d) / 10) * 10, Math.round((mm + d) / 10) * 10]) {{
+        if (cand < 120 || out.some(x => x.mm === cand)) continue;
+        const r = evalMengong(cand);
+        if (r.good) out.push({{ mm: cand, label: `${{cand}}mm（${{r.w}}・${{r.sub}}）` }});
+        if (out.length >= 2) break;
+      }}
+    }}
+    return out;
+  }}
+
+  function toTaichi(mm) {{
+    const totalFen = mm / 3.030303;
+    const chi = Math.floor(totalFen / 100);
+    const cun = Math.floor((totalFen - chi * 100) / 10);
+    const fen = Math.round(totalFen - chi * 100 - cun * 10);
+    return `${{chi}} 尺 ${{cun}} 寸 ${{fen}} 分`;
+  }}
+
+  function toFtIn(mm) {{
+    const totalIn = mm / 25.4;
+    const ft = Math.floor(totalIn / 12);
+    const inch = (totalIn - ft * 12).toFixed(1);
+    return `${{ft}}' - ${{inch}}"`;
+  }}
+
+  let _lastSelKey = "";
+  function applyDimensionToSelected(newMm) {{
+    const D = window.__designer;
+    if (!D || !D.app || !D.app.sel) return;
+    const sel = D.app.sel;
+    if (sel.kind === "opening") {{
+      const op = D.app.plan.openings.find(o => o.id === sel.id);
+      if (op) {{
+        const w = D.app.plan.walls.find(x => x.id === op.wall);
+        const a = w && D.app.plan.nodes.find(n => n.id === w.a);
+        const b = w && D.app.plan.nodes.find(n => n.id === w.b);
+        const wallLen = (a && b) ? Math.hypot(b.x - a.x, b.y - a.y) : 99999;
+        const half = newMm / 2;
+        if (op.pos - half >= 60 && op.pos + half <= wallLen - 60) {{
+          op.width = Math.round(newMm);
+          D.commit();
+          D.requestDraw();
+          renderLuban(newMm);
+        }}
+      }}
+    }} else if (sel.kind === "furn") {{
+      const fn = D.app.plan.furniture.find(f => f.id === sel.id);
+      if (fn) {{
+        fn.w = Math.round(newMm);
+        D.commit();
+        D.requestDraw();
+        renderLuban(newMm);
+      }}
+    }}
+  }}
+
+  function renderLuban(mmVal) {{
+    const mm = Math.max(10, Number(mmVal) || 900);
+    $("dpMmIn").value = Math.round(mm);
+    $("dpCmIn").value = +(mm / 10).toFixed(1);
+    const box = $("dpLubanResult");
+    if (IS_EN) {{
+      const sqSample = ((mm / 1000) * (mm / 1000) * 10.7639).toFixed(1);
+      box.innerHTML = `
+        <div class="dp-luban-row">
+          <div class="dp-luban-row-top"><b>Imperial Architectural</b><span style="font-family:monospace;font-weight:700;">${{toFtIn(mm)}}</span></div>
+          <div style="color:#57534E;">Inches: <b>${{(mm / 25.4).toFixed(2)}} in</b> · Meters: <b>${{(mm / 1000).toFixed(3)}} m</b></div>
+        </div>
+        <div class="dp-luban-row" style="margin-bottom:0;">
+          <div class="dp-luban-row-top"><b>Standard Door / Clearances</b></div>
+          <div class="dp-sugg-row">
+            <button type="button" class="dp-sugg-btn" data-setmm="762">30" (762mm)</button>
+            <button type="button" class="dp-sugg-btn" data-setmm="813">32" (813mm)</button>
+            <button type="button" class="dp-sugg-btn" data-setmm="914">36" ADA (914mm)</button>
+          </div>
+        </div>`;
+    }} else {{
+      const mg = evalMengong(mm);
+      const dl = evalDinglan(mm);
+      const suggs = nearestGoodMengong(mm);
+      box.innerHTML = `
+        <div class="dp-luban-row">
+          <div class="dp-luban-row-top"><span>台灣營建台尺</span><b style="font-family:monospace;font-size:13px;">${{toTaichi(mm)}}</b></div>
+          <div style="color:#6E6A63;font-size:11px;">1 台尺 = 30.303 cm｜目前 = ${{(mm / 303.0303).toFixed(2)}} 台尺</div>
+        </div>
+        <div class="dp-luban-row">
+          <div class="dp-luban-row-top">
+            <b>門公尺（陽宅門窗・魯班尺）</b>
+            <span class="${{mg.good ? 'dp-badge-ji' : 'dp-badge-xiong'}}">${{mg.w}}・${{mg.sub}}（${{mg.good ? '紅字吉' : '黑字凶'}}）</span>
+          </div>
+          ${{!mg.good && suggs.length ? `<div style="font-size:11px;color:#57534E;margin-top:3px;">一鍵改為鄰近紅字吉數：</div><div class="dp-sugg-row">${{suggs.map(s => `<button type="button" class="dp-sugg-btn" data-setmm="${{s.mm}}">${{s.label}}</button>`).join("")}}</div>` : `<div style="font-size:11px;color:#234236;">符合傳統陽宅門窗紅字吉數。</div>`}}
+        </div>
+        <div class="dp-luban-row" style="margin-bottom:0;">
+          <div class="dp-luban-row-top">
+            <b>丁蘭尺（系統櫃／書桌／神明桌）</b>
+            <span class="${{dl.good ? 'dp-badge-ji' : 'dp-badge-xiong'}}">${{dl.w}}・${{dl.sub}}（${{dl.good ? '紅字吉' : '黑字凶'}}）</span>
+          </div>
+        </div>`;
+    }}
+    box.querySelectorAll("[data-setmm]").forEach(b => {{
+      b.addEventListener("click", () => applyDimensionToSelected(Number(b.dataset.setmm)));
+    }});
+  }}
+
+  $("dpLubanBtn").addEventListener("click", () => {{
+    $("dpLubanPop").classList.toggle("open");
+    if ($("dpLubanPop").classList.contains("open")) renderLuban($("dpMmIn").value);
+  }});
+  $("dpLubanClose").addEventListener("click", () => $("dpLubanPop").classList.remove("open"));
+  $("dpMmIn").addEventListener("input", () => renderLuban($("dpMmIn").value));
+  $("dpCmIn").addEventListener("input", () => renderLuban(Number($("dpCmIn").value) * 10));
+
+  // Sync selection -> Lu Ban Ruler & Dual-Unit Area (m² + 坪 / sq ft)
+  function syncDesignerHUD() {{
+    const D = window.__designer;
+    if (D && D.app && D.app.sel) {{
+      const sel = D.app.sel;
+      const key = (sel.kind || "") + ":" + (sel.id || "");
+      if (key !== _lastSelKey) {{
+        _lastSelKey = key;
+        if (sel.kind === "opening") {{
+          const op = D.app.plan.openings.find(o => o.id === sel.id);
+          if (op) {{
+            const w = Math.round(op.width);
+            $("dpLubanTarget").textContent = IS_EN ? `Selected Opening Width: ${{w}} mm` : `已選取門窗洞口寬度：${{w}} mm（可一鍵套用紅字）`;
+            renderLuban(w);
+          }}
+        }} else if (sel.kind === "furn") {{
+          const fn = D.app.plan.furniture.find(f => f.id === sel.id);
+          if (fn) {{
+            $("dpLubanTarget").textContent = IS_EN ? `Selected: ${{fn.name}} (W ${{fn.w}} mm)` : `已選取「${{fn.name}}」寬度：${{fn.w}} mm`;
+            renderLuban(fn.w);
+          }}
+        }} else {{
+          $("dpLubanTarget").textContent = IS_EN ? "Select any door/window/cabinet or enter mm" : "點選畫布門窗／櫃體自動帶入，或直接輸入尺寸";
+        }}
+      }}
+    }}
+
+    // Append 坪 (TC) or sq ft (EN) to status bar & right inspector area readouts
+    const stArea = document.getElementById("stArea");
+    if (stArea && stArea.textContent && !stArea.textContent.includes("坪") && !stArea.textContent.includes("sq ft")) {{
+      stArea.textContent = stArea.textContent.replace(/(\d+(?:\.\d+)?)\s*(?:m²|㎡)/, (_, m2) => {{
+        return IS_EN ? `${{m2}} m² (${{Math.round(Number(m2) * 10.7639).toLocaleString("en-US")}} sq ft)` : `${{m2}} m²（${{(Number(m2) * 0.3025).toFixed(1)}} 坪）`;
+      }});
+    }}
+    const insp = document.getElementById("inspector");
+    if (insp) {{
+      insp.querySelectorAll("b, span, td, div").forEach(el => {{
+        if (el.children.length === 0 && el.textContent && /^\d+(?:\.\d+)?\s*(?:m²|㎡)$/.test(el.textContent.trim())) {{
+          const m2 = parseFloat(el.textContent);
+          if (!isNaN(m2)) {{
+            el.textContent = IS_EN ? `${{m2.toFixed(2)}} m² (${{Math.round(m2 * 10.7639)}} sf)` : `${{m2.toFixed(2)}} m² · ${{(m2 * 0.3025).toFixed(1)}} 坪`;
+          }}
+        }}
+      }});
+    }}
+  }}
+  setInterval(syncDesignerHUD, 350);
+  renderLuban(900);
 
   let _sbClient = null;
   function loadScript(src) {{
