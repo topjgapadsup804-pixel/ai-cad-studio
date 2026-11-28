@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🌐 Live Interactive 3D Floor Plan Demo
+    url: https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo.html
+    about: Try our 2D CAD + 3D interactive walkthrough directly in your browser.
+  - name: 💰 Instant Quote Calculator (EN / 繁體)
+    url: https://topjgapadsup804-pixel.github.io/ai-cad-studio/en.html#estimator
+    about: Calculate exact fixed-price cost and turnaround in 30 seconds.
+  - name: 📩 Direct Email Inquiry
+    url: mailto:topjgapadsup804@gmail.com
+    about: Send private sketches or NDA floor plans directly to topjgapadsup804@gmail.com.
