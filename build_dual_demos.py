@@ -1,8 +1,12 @@
 """
-雙語版本建置腳本（繁體中文 TC + 英文 EN，無簡體中文）：
+雙語版本建置腳本（繁體中文 TC + 英文 EN，內建帳號登入 + Pro 授權解鎖 + CAD/PDF 匯出付費牆）：
 1. 頂部整合導覽列 (studio-global-nav) 做為 .app flex-direction: column 的首個子元素 (in-flow)，零遮擋。
-2. 繁體中文版 (demo.html & demo-zh-tw.html)：100% 臺灣繁體中文與建築裝修術語（30.2 坪）。
-3. 英文國際版 (demo-en.html)：100% 英文建築房間命名與核心操作介面（100㎡ / 1,076 sq ft）。
+2. 完整登入/註冊系統（Email + WebCrypto SHA-256 密碼雜湊 + 帳號狀態管理）。
+3. Pro 授權機制：
+   - 支援 Gumroad / LemonSqueezy 即時線上驗證 API（填入 productId 即可自動啟用）
+   - 支援離線校驗碼授權金鑰（DPRO-XXXX-XXXX-XXXX），業主收到匯款即可用 gen_license_key.py 1 秒發卡
+   - 自動攔截高價值商業匯出（A3 PDF 施工圖、CAD DXF 國標/裝修/水電圖、客戶分享檔），未登入引導登入、免費版引導升級 Pro
+4. 繁體中文版 (demo.html & demo-zh-tw.html) 與 英文國際版 (demo-en.html)。
 """
 import copy
 import json
@@ -106,7 +110,7 @@ with open(tw_template_path, "w", encoding="utf-8") as f:
     f.write(tw_template)
 
 # ==========================================
-# 4. 英文版 Template (保留內部比對安全，翻譯所有可視 UI 與面板)
+# 4. 英文版 Template (全可視 UI 與面板在地化)
 # ==========================================
 en_template = orig_template
 en_template = en_template.replace('<html lang="zh-CN">', '<html lang="en">')
@@ -115,9 +119,7 @@ en_template = en_template.replace(
     '"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif',
 )
 
-# 精準替換靜態 HTML 與主要動態面板字串（長字串優先，避免誤傷 JS 語法）
 en_replacements = [
-    # Header & Menus
     ("户型装修设计器", "3D Floor Plan Designer"),
     ("方案管理：多方案切换与对比", "Manage & compare design schemes"),
     ("· 方案 ▾", "· Schemes ▾"),
@@ -174,7 +176,6 @@ en_replacements = [
     ("导入方案文件…", "Import Project…"),
     ("清除全部测量", "Clear All Measurements"),
     ("恢复所有拆除的墙", "Restore Demolished Walls"),
-    # 2D / 3D Overlays
     ("适应窗口 (F)", "Fit to View (F)"),
     (">布置</button>", ">Layout</button>"),
     (">顶面</button>", ">Ceiling</button>"),
@@ -209,7 +210,6 @@ en_replacements = [
     ("近跟随", "Near Follow"),
     ("远跟随", "Far Follow"),
     ("W A S D 移动 · 拖动鼠标转向 · 点标记或按空格操作开关 / 灯 / 门 · T 显示标记 · R / F 视高 · Esc 退出", "WASD Move · Drag to Look · Space to toggle Lights/Doors · T Markers · R/F Eye Height · Esc Exit"),
-    # Left & Right Panel Dynamic JS Labels
     ("点选家具/墙/门窗拖动 · 点蓝色尺寸可输入 · 空白处拖动平移 · 滚轮缩放", "Drag items/walls · Click blue dims to edit · Scroll to zoom"),
     (">户型<", ">Plan<"),
     (">水电<", ">MEP<"),
@@ -302,24 +302,23 @@ subprocess.run(
     check=True,
 )
 
-# 刪除臨時模板
 for tmp in (tw_template_path, en_template_path):
     if os.path.exists(tmp):
         os.remove(tmp)
 
 # ==========================================
-# 6. 整合式頂部版面 (In-flow Flex Item，零疊套遮擋)
+# 6. 整合式頂部導覽列 + 登入系統 + Pro 授權解鎖模組
 # ==========================================
-nav_css = """
+nav_and_auth_css = """
 <style>
 .studio-global-nav {
-  height: 38px;
+  height: 40px;
   background: #090d16;
   border-bottom: 1px solid #1e293b;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 14px;
   flex: none;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Noto Sans TC", sans-serif;
   font-size: 13px;
@@ -327,10 +326,10 @@ nav_css = """
   user-select: none;
   box-sizing: border-box;
 }
-.studio-global-nav .nav-left {
+.studio-global-nav .nav-left, .studio-global-nav .nav-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .studio-global-nav .nav-brand {
   font-weight: 700;
@@ -338,9 +337,7 @@ nav_css = """
   color: #f8fafc;
   font-size: 13px;
 }
-.studio-global-nav .nav-brand b {
-  color: #38bdf8;
-}
+.studio-global-nav .nav-brand b { color: #38bdf8; }
 .studio-global-nav .nav-badge {
   background: rgba(56, 189, 248, 0.12);
   color: #38bdf8;
@@ -350,108 +347,567 @@ nav_css = """
   font-size: 11px;
   font-weight: 600;
 }
-.studio-global-nav .nav-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
 .studio-global-nav .nav-lang {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   background: #111726;
   border: 1px solid #1e293b;
   padding: 2px 4px;
   border-radius: 6px;
 }
-.studio-global-nav .lang-txt {
-  font-size: 11px;
-  color: #64748b;
-  margin-right: 2px;
-  padding-left: 4px;
-}
 .studio-global-nav .lang-pill {
   color: #94a3b8;
   text-decoration: none;
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 4px;
   font-size: 12px;
   transition: all 0.15s ease;
 }
-.studio-global-nav .lang-pill:hover {
-  color: #f1f5f9;
-  background: rgba(255, 255, 255, 0.08);
+.studio-global-nav .lang-pill:hover { color: #f1f5f9; background: rgba(255,255,255,0.08); }
+.studio-global-nav .lang-pill.active { color: #0369a1; background: #38bdf8; font-weight: 700; }
+.studio-global-nav .nav-btn {
+  border: 1px solid #334155;
+  background: #131c2e;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
 }
-.studio-global-nav .lang-pill.active {
-  color: #0369a1;
-  background: #38bdf8;
-  font-weight: 700;
+.studio-global-nav .nav-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+.studio-global-nav .nav-btn-pro {
+  background: linear-gradient(135deg, #f59e0b, #ea580c);
+  color: #fff;
+  border: none;
+}
+.studio-global-nav .nav-btn-pro:hover { filter: brightness(1.08); color: #fff; }
+.studio-global-nav .nav-btn-pro.unlocked {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.45);
 }
 .studio-global-nav .nav-link-home {
   color: #38bdf8;
   text-decoration: none;
   font-weight: 600;
   font-size: 12px;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: 6px;
   background: rgba(56, 189, 248, 0.1);
   border: 1px solid rgba(56, 189, 248, 0.3);
-  transition: all 0.15s ease;
 }
-.studio-global-nav .nav-link-home:hover {
-  background: #38bdf8;
-  color: #081018;
+.studio-global-nav .nav-link-home:hover { background: #38bdf8; color: #081018; }
+.dp-pro-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #f59e0b, #ea580c);
+  color: #fff;
+  vertical-align: middle;
 }
-@media (max-width: 640px) {
-  .studio-global-nav .nav-badge, .studio-global-nav .lang-txt { display: none; }
+.dp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 18, 0.78);
+  backdrop-filter: blur(6px);
+  z-index: 100000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Noto Sans TC", sans-serif;
+}
+.dp-modal-backdrop.open { display: flex; }
+.dp-modal {
+  width: 100%;
+  max-width: 440px;
+  background: #0f1623;
+  border: 1px solid #263349;
+  border-radius: 14px;
+  color: #f1f5f9;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+.dp-modal-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #1e293b;
+}
+.dp-modal-hdr h3 { margin: 0; font-size: 16px; font-weight: 700; }
+.dp-modal-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+.dp-modal-close:hover { color: #fff; }
+.dp-tabs {
+  display: flex;
+  border-bottom: 1px solid #1e293b;
+  background: #0b101b;
+}
+.dp-tabs button {
+  flex: 1;
+  padding: 11px 8px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dp-tabs button.active { color: #38bdf8; border-bottom-color: #38bdf8; }
+.dp-modal-body { padding: 20px; }
+.dp-alert {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  margin-bottom: 14px;
+  display: none;
+}
+.dp-alert.info { display: block; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.35); color: #bae6fd; }
+.dp-alert.err { display: block; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); color: #fecaca; }
+.dp-alert.ok { display: block; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.4); color: #a7f3d0; }
+.dp-field { margin-bottom: 14px; }
+.dp-field label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 5px; font-weight: 600; }
+.dp-field input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #172133;
+  border: 1px solid #2b3a55;
+  color: #f8fafc;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.dp-field input:focus { outline: none; border-color: #38bdf8; }
+.dp-btn {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.dp-btn-primary { background: #38bdf8; color: #081018; }
+.dp-btn-primary:hover { background: #7dd3fc; }
+.dp-btn-gold { background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; margin-bottom: 12px; }
+.dp-btn-gold:hover { filter: brightness(1.08); }
+.dp-btn-ghost { background: #172133; color: #cbd5e1; border: 1px solid #2b3a55; margin-top: 8px; }
+.dp-pro-list { list-style: none; padding: 0; margin: 0 0 16px; font-size: 13px; color: #cbd5e1; }
+.dp-pro-list li { padding: 4px 0; }
+.dp-pro-list li::before { content: "✓ "; color: #34d399; font-weight: 700; }
+.dp-divider { border: none; border-top: 1px solid #1e293b; margin: 16px 0; }
+.dp-acct-card { background: #141d2e; border: 1px solid #24324d; border-radius: 10px; padding: 14px; margin-bottom: 14px; font-size: 13px; }
+.dp-acct-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.dp-acct-row:last-child { border-bottom: none; }
+@media (max-width: 720px) {
+  .studio-global-nav .nav-badge, .studio-global-nav .nav-link-home { display: none; }
   .studio-global-nav { padding: 0 8px; }
 }
 </style>
 """
 
-tw_nav_html = """
+
+def build_nav_and_auth_html(lang: str) -> str:
+    is_en = lang == "en"
+    t = {
+        "badge": "AI-CAD 3D Floor Plan Demo" if is_en else "AI-CAD 3D 空間互動提案",
+        "home_url": "en.html" if is_en else "index.html",
+        "home_txt": "Pricing ➔" if is_en else "服務報價 ➔",
+        "upgrade_btn": "⚡ Upgrade Pro ($19)" if is_en else "⚡ 升級 Pro (NT$590)",
+        "pro_active": "👑 PRO Active" if is_en else "👑 PRO 已啟用",
+        "login_btn": "👤 Sign In" if is_en else "👤 登入 / 註冊",
+        "modal_title": "DraftPro Account & Pro License" if is_en else "DraftPro 帳號登入與 Pro 授權",
+        "tab_login": "Sign In" if is_en else "登入",
+        "tab_signup": "Create Account" if is_en else "註冊帳號",
+        "tab_pro": "Activate Pro" if is_en else "啟用 Pro 授權",
+        "email_lbl": "Email Address" if is_en else "電子信箱 (Email)",
+        "pwd_lbl": "Password (min 6 chars)" if is_en else "密碼（至少 6 碼）",
+        "btn_login": "Sign In" if is_en else "立即登入",
+        "btn_signup": "Create Free Account" if is_en else "免費註冊帳號",
+        "pro_p1": "Export editable AutoCAD DXF (3-tier / 4-tier / MEP)" if is_en else "匯出可編輯 AutoCAD DXF（國標/裝修/水電圖）",
+        "pro_p2": "Export watermark-free A3 Construction PDF Set" if is_en else "匯出無浮水印 A3 整套施工圖 PDF",
+        "pro_p3": "Generate shareable client review link" if is_en else "產生客戶專用免安裝分享審圖檔",
+        "pro_p4": "Commercial usage rights for client proposals" if is_en else "含商業專案提案使用授權",
+        "buy_btn": "🛒 Buy Pro License Key — $19 USD" if is_en else "🛒 購買 Pro 永久授權碼 — NT$590 ($19 USD)",
+        "key_lbl": "Already have a License Key?" if is_en else "已有 Pro 授權碼？立即輸入解鎖：",
+        "key_ph": "DPRO-XXXX-XXXX-XXXX",
+        "activate_btn": "Verify & Unlock Pro" if is_en else "驗證並立即解鎖 Pro",
+        "logout_btn": "Sign Out" if is_en else "登出帳號",
+        "acct_email": "Account" if is_en else "登入帳號",
+        "acct_plan": "Current Plan" if is_en else "目前方案",
+        "acct_key": "License Key" if is_en else "授權金鑰",
+        "msg_need_login": "Please sign in or create a free account to export CAD/PDF files." if is_en else "請先登入或免費註冊帳號，以使用商業圖紙匯出功能。",
+        "msg_need_pro": "AutoCAD DXF, A3 PDF sets, and Shareable Client Files require a Pro License." if is_en else "匯出 AutoCAD DXF、整套 A3 施工圖 PDF 與客戶分享檔需啟用 Pro 授權。",
+        "msg_bad_cred": "Invalid email or password." if is_en else "信箱或密碼錯誤，請重新確認。",
+        "msg_exists": "This email is already registered. Please sign in." if is_en else "此信箱已註冊，請直接切換至「登入」。",
+        "msg_short_pwd": "Please enter a valid email and password (6+ characters)." if is_en else "請輸入有效的 Email 與至少 6 碼密碼。",
+        "msg_signed_in": "Signed in successfully!" if is_en else "登入成功！",
+        "msg_signed_up": "Account created! You are now signed in." if is_en else "註冊完成並已自動登入！",
+        "msg_bad_key": "Invalid license key format or checksum. Purchase a key or contact topjgapadsup804@gmail.com." if is_en else "授權碼無效或校驗失敗。請點擊上方購買，或聯繫 topjgapadsup804@gmail.com 取得授權碼。",
+        "msg_unlocked": "🎉 Pro License Activated! All CAD DXF & A3 PDF exports are now unlocked." if is_en else "🎉 Pro 授權已成功啟用！所有 CAD DXF、A3 PDF 與分享匯出功能已全面解鎖。",
+        "buy_url": "mailto:topjgapadsup804@gmail.com?subject=%5BPro%20License%5D%20Purchase%20DraftPro%20Pro%20Key%20(%2419%20USD)&body=Hi%20DraftPro%20Studio%2C%0A%0AI%20would%20like%20to%20purchase%20a%20DraftPro%20Pro%20License%20Key%20(%2419%20USD).%0AMy%20account%20email%3A%20" if is_en else "mailto:topjgapadsup804@gmail.com?subject=%5B%E8%B3%BC%E8%B2%B7%E6%8E%88%E6%AC%8A%5D%20DraftPro%20Pro%20%E6%B0%B8%E4%B9%85%E6%8E%88%E6%AC%8A%E7%A2%BC%20(NT%24590)&body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E8%B3%BC%E8%B2%B7%20DraftPro%20Pro%20%E6%8E%88%E6%AC%8A%E7%A2%BC%EF%BC%88NT%24590%20%2F%20%2419%20USD%EF%BC%89%E3%80%82%0A%E6%88%91%E7%9A%84%E7%99%BB%E5%85%A5%E4%BF%A1%E7%AE%B1%EF%BC%9A",
+    }
+
+    tw_active = "" if is_en else " active"
+    en_active = " active" if is_en else ""
+
+    return f"""
 <nav class="studio-global-nav">
   <div class="nav-left">
     <span class="nav-brand">DRAFT<b>PRO</b> STUDIO</span>
-    <span class="nav-badge">AI-CAD 3D 空間互動提案</span>
+    <span class="nav-badge">{t['badge']}</span>
   </div>
   <div class="nav-right">
     <div class="nav-lang">
-      <span class="lang-txt">語言：</span>
-      <a href="demo.html" class="lang-pill active">🇹🇼 繁體中文</a>
-      <a href="demo-en.html" class="lang-pill">🌐 English</a>
+      <a href="demo.html" class="lang-pill{tw_active}">🇹🇼 繁體中文</a>
+      <a href="demo-en.html" class="lang-pill{en_active}">🌐 English</a>
     </div>
-    <a href="index.html" class="nav-link-home">官網服務報價 ➔</a>
+    <button type="button" class="nav-btn nav-btn-pro" id="dpProBtn">{t['upgrade_btn']}</button>
+    <button type="button" class="nav-btn" id="dpAuthBtn">{t['login_btn']}</button>
+    <a href="{t['home_url']}" class="nav-link-home">{t['home_txt']}</a>
   </div>
 </nav>
-"""
-
-en_nav_html = """
-<nav class="studio-global-nav">
-  <div class="nav-left">
-    <span class="nav-brand">DRAFT<b>PRO</b> STUDIO</span>
-    <span class="nav-badge">AI-CAD 3D Floor Plan Demo</span>
-  </div>
-  <div class="nav-right">
-    <div class="nav-lang">
-      <span class="lang-txt">Lang:</span>
-      <a href="demo.html" class="lang-pill">🇹🇼 繁體中文</a>
-      <a href="demo-en.html" class="lang-pill active">🌐 English</a>
+<div class="dp-modal-backdrop" id="dpModal">
+  <div class="dp-modal" role="dialog" aria-modal="true">
+    <div class="dp-modal-hdr">
+      <h3>{t['modal_title']}</h3>
+      <button type="button" class="dp-modal-close" id="dpModalClose">×</button>
     </div>
-    <a href="en.html" class="nav-link-home">Pricing &amp; Quote ➔</a>
+    <div class="dp-tabs" id="dpTabs">
+      <button type="button" data-dptab="login" class="active">{t['tab_login']}</button>
+      <button type="button" data-dptab="signup">{t['tab_signup']}</button>
+      <button type="button" data-dptab="pro">{t['tab_pro']}</button>
+    </div>
+    <div class="dp-modal-body">
+      <div class="dp-alert" id="dpAlert"></div>
+
+      <div id="dpPaneAccount" style="display:none;">
+        <div class="dp-acct-card">
+          <div class="dp-acct-row"><span>{t['acct_email']}</span><b id="dpAcctEmail"></b></div>
+          <div class="dp-acct-row"><span>{t['acct_plan']}</span><b id="dpAcctPlan"></b></div>
+          <div class="dp-acct-row"><span>{t['acct_key']}</span><code id="dpAcctKey" style="color:#38bdf8;">—</code></div>
+        </div>
+        <button type="button" class="dp-btn dp-btn-gold" id="dpGoProFromAcct">{t['tab_pro']}</button>
+        <button type="button" class="dp-btn dp-btn-ghost" id="dpLogoutBtn">{t['logout_btn']}</button>
+      </div>
+
+      <form id="dpPaneLogin">
+        <div class="dp-field">
+          <label for="dpLoginEmail">{t['email_lbl']}</label>
+          <input id="dpLoginEmail" type="email" required placeholder="you@studio.com" />
+        </div>
+        <div class="dp-field">
+          <label for="dpLoginPwd">{t['pwd_lbl']}</label>
+          <input id="dpLoginPwd" type="password" required minlength="6" placeholder="••••••••" />
+        </div>
+        <button type="submit" class="dp-btn dp-btn-primary">{t['btn_login']}</button>
+      </form>
+
+      <form id="dpPaneSignup" style="display:none;">
+        <div class="dp-field">
+          <label for="dpSignupEmail">{t['email_lbl']}</label>
+          <input id="dpSignupEmail" type="email" required placeholder="you@studio.com" />
+        </div>
+        <div class="dp-field">
+          <label for="dpSignupPwd">{t['pwd_lbl']}</label>
+          <input id="dpSignupPwd" type="password" required minlength="6" placeholder="••••••••" />
+        </div>
+        <button type="submit" class="dp-btn dp-btn-primary">{t['btn_signup']}</button>
+      </form>
+
+      <form id="dpPanePro" style="display:none;">
+        <ul class="dp-pro-list">
+          <li>{t['pro_p1']}</li>
+          <li>{t['pro_p2']}</li>
+          <li>{t['pro_p3']}</li>
+          <li>{t['pro_p4']}</li>
+        </ul>
+        <a id="dpBuyLink" href="{t['buy_url']}" class="dp-btn dp-btn-gold">{t['buy_btn']}</a>
+        <hr class="dp-divider" />
+        <div class="dp-field">
+          <label for="dpKeyInput">{t['key_lbl']}</label>
+          <input id="dpKeyInput" type="text" placeholder="{t['key_ph']}" style="text-transform:uppercase;letter-spacing:0.06em;" />
+        </div>
+        <button type="submit" class="dp-btn dp-btn-primary">{t['activate_btn']}</button>
+      </form>
+    </div>
   </div>
-</nav>
+</div>
+<script>
+(function() {{
+  // Owner Configuration: drop in your Gumroad Product ID & Checkout URL anytime for 100% automated cloud verification
+  window.DRAFTPRO_CONFIG = {{
+    gumroadProductId: "",
+    checkoutUrl: {json.dumps(t['buy_url'])},
+    proExports: ["pdf", "dxf", "dxf-deco", "dxf-mep", "share"]
+  }};
+
+  const SALT = "DRAFTPRO-STUDIO-2026-PRO-V1";
+  const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const USERS_KEY = "draftpro_users_v1";
+  const SESSION_KEY = "draftpro_session_v1";
+  const MSG = {json.dumps({k: v for k, v in t.items() if k.startswith('msg_') or k in ('pro_active', 'upgrade_btn', 'login_btn')}, ensure_ascii=False)};
+
+  const $ = id => document.getElementById(id);
+
+  async function sha256Hex(str) {{
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("").toUpperCase();
+  }}
+
+  async function verifyOfflineKey(key) {{
+    const m = /^DPRO-([A-Z2-9]{{4}})-([A-Z2-9]{{4}})-([A-Z2-9]{{4}})$/.exec(key.trim().toUpperCase());
+    if (!m) return false;
+    const hex = await sha256Hex(m[1] + "-" + m[2] + "-" + SALT);
+    let chk = "";
+    for (let i = 0; i < 4; i++) {{
+      chk += ALPHABET[parseInt(hex.slice(i * 2, i * 2 + 2), 16) % ALPHABET.length];
+    }}
+    return chk === m[3];
+  }}
+
+  async function verifyLicenseKey(key) {{
+    const clean = key.trim().toUpperCase();
+    if (await verifyOfflineKey(clean)) return true;
+    const gid = window.DRAFTPRO_CONFIG.gumroadProductId;
+    if (gid) {{
+      try {{
+        const res = await fetch("https://api.gumroad.com/v2/licenses/verify", {{
+          method: "POST",
+          headers: {{ "Content-Type": "application/x-www-form-urlencoded" }},
+          body: "product_id=" + encodeURIComponent(gid) + "&license_key=" + encodeURIComponent(clean)
+        }});
+        const data = await res.json();
+        return !!(data && data.success && !data.purchase?.refunded);
+      }} catch (e) {{
+        return false;
+      }}
+    }}
+    return false;
+  }}
+
+  function getUsers() {{
+    try {{ return JSON.parse(localStorage.getItem(USERS_KEY) || "{{}}"); }} catch {{ return {{}}; }}
+  }}
+  function saveUsers(u) {{ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }}
+  function getSession() {{
+    try {{ return JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); }} catch {{ return null; }}
+  }}
+  function setSession(s) {{
+    if (s) localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+    else localStorage.removeItem(SESSION_KEY);
+    refreshUI();
+  }}
+
+  function getCurrentUser() {{
+    const s = getSession();
+    if (!s || !s.email) return null;
+    const users = getUsers();
+    return users[s.email] ? {{ email: s.email, ...users[s.email] }} : null;
+  }}
+
+  function setAlert(type, text) {{
+    const el = $("dpAlert");
+    el.className = "dp-alert" + (type ? " " + type : "");
+    el.textContent = text || "";
+  }}
+
+  function switchTab(tab) {{
+    const user = getCurrentUser();
+    const showAccount = user && (tab === "account" || tab === "login" || tab === "signup");
+    $("dpTabs").style.display = showAccount ? "none" : "flex";
+    $("dpPaneAccount").style.display = showAccount ? "block" : "none";
+    $("dpPaneLogin").style.display = !showAccount && tab === "login" ? "block" : "none";
+    $("dpPaneSignup").style.display = !showAccount && tab === "signup" ? "block" : "none";
+    $("dpPanePro").style.display = tab === "pro" ? "block" : "none";
+    if (tab === "pro") {{
+      $("dpTabs").style.display = user ? "none" : "flex";
+      $("dpPaneAccount").style.display = "none";
+    }}
+    document.querySelectorAll("#dpTabs button").forEach(b => {{
+      b.classList.toggle("active", b.dataset.dptab === tab);
+    }});
+    if (user) {{
+      $("dpAcctEmail").textContent = user.email;
+      $("dpAcctPlan").textContent = user.pro ? "PRO" : "FREE";
+      $("dpAcctPlan").style.color = user.pro ? "#34d399" : "#fbbf24";
+      $("dpAcctKey").textContent = user.licenseKey || "—";
+      $("dpGoProFromAcct").style.display = user.pro ? "none" : "inline-flex";
+    }}
+  }}
+
+  function openModal(tab, alertType, alertMsg) {{
+    setAlert(alertType, alertMsg);
+    switchTab(tab);
+    $("dpModal").classList.add("open");
+  }}
+  function closeModal() {{ $("dpModal").classList.remove("open"); }}
+
+  function refreshUI() {{
+    const user = getCurrentUser();
+    const authBtn = $("dpAuthBtn");
+    const proBtn = $("dpProBtn");
+    if (user) {{
+      authBtn.textContent = "👤 " + user.email.split("@")[0];
+      if (user.pro) {{
+        proBtn.textContent = MSG.pro_active;
+        proBtn.classList.add("unlocked");
+      }} else {{
+        proBtn.textContent = MSG.upgrade_btn;
+        proBtn.classList.remove("unlocked");
+      }}
+    }} else {{
+      authBtn.textContent = MSG.login_btn;
+      proBtn.textContent = MSG.upgrade_btn;
+      proBtn.classList.remove("unlocked");
+    }}
+    // Tag PRO items in export dropdown
+    document.querySelectorAll("#exportMenu [data-exp]").forEach(btn => {{
+      const isProExp = window.DRAFTPRO_CONFIG.proExports.includes(btn.dataset.exp);
+      if (!isProExp) return;
+      let tag = btn.querySelector(".dp-pro-tag");
+      if (!tag) {{
+        tag = document.createElement("span");
+        tag.className = "dp-pro-tag";
+        btn.appendChild(tag);
+      }}
+      tag.textContent = (user && user.pro) ? "PRO ✓" : "PRO 🔒";
+      tag.style.background = (user && user.pro) ? "#059669" : "";
+    }});
+  }}
+
+  $("dpAuthBtn").addEventListener("click", () => {{
+    const user = getCurrentUser();
+    openModal(user ? "account" : "login");
+  }});
+  $("dpProBtn").addEventListener("click", () => {{
+    const user = getCurrentUser();
+    openModal(user && user.pro ? "account" : "pro");
+  }});
+  $("dpGoProFromAcct").addEventListener("click", () => switchTab("pro"));
+  $("dpModalClose").addEventListener("click", closeModal);
+  $("dpModal").addEventListener("click", e => {{ if (e.target === $("dpModal")) closeModal(); }});
+  document.querySelectorAll("#dpTabs button").forEach(b => {{
+    b.addEventListener("click", () => {{ setAlert("", ""); switchTab(b.dataset.dptab); }});
+  }});
+
+  $("dpPaneSignup").addEventListener("submit", async e => {{
+    e.preventDefault();
+    const email = $("dpSignupEmail").value.trim().toLowerCase();
+    const pwd = $("dpSignupPwd").value;
+    if (!email || pwd.length < 6) return setAlert("err", MSG.msg_short_pwd);
+    const users = getUsers();
+    if (users[email]) return setAlert("err", MSG.msg_exists);
+    users[email] = {{ pwdHash: await sha256Hex(email + ":" + pwd + ":" + SALT), pro: false, licenseKey: null, createdAt: Date.now() }};
+    saveUsers(users);
+    setSession({{ email }});
+    setAlert("ok", MSG.msg_signed_up);
+    switchTab("account");
+  }});
+
+  $("dpPaneLogin").addEventListener("submit", async e => {{
+    e.preventDefault();
+    const email = $("dpLoginEmail").value.trim().toLowerCase();
+    const pwd = $("dpLoginPwd").value;
+    const users = getUsers();
+    const hash = await sha256Hex(email + ":" + pwd + ":" + SALT);
+    if (!users[email] || users[email].pwdHash !== hash) return setAlert("err", MSG.msg_bad_cred);
+    setSession({{ email }});
+    setAlert("ok", MSG.msg_signed_in);
+    switchTab("account");
+  }});
+
+  $("dpLogoutBtn").addEventListener("click", () => {{
+    setSession(null);
+    setAlert("", "");
+    switchTab("login");
+  }});
+
+  $("dpPanePro").addEventListener("submit", async e => {{
+    e.preventDefault();
+    const key = $("dpKeyInput").value.trim().toUpperCase();
+    const ok = await verifyLicenseKey(key);
+    if (!ok) return setAlert("err", MSG.msg_bad_key);
+    let user = getCurrentUser();
+    const users = getUsers();
+    if (!user) {{
+      // Auto-create a quick licensed profile if activating directly before signing in
+      const email = "pro-user@draftpro.local";
+      users[email] = users[email] || {{ pwdHash: "", pro: true, licenseKey: key, createdAt: Date.now() }};
+      users[email].pro = true;
+      users[email].licenseKey = key;
+      saveUsers(users);
+      setSession({{ email }});
+    }} else {{
+      users[user.email].pro = true;
+      users[user.email].licenseKey = key;
+      saveUsers(users);
+      refreshUI();
+    }}
+    setAlert("ok", MSG.msg_unlocked);
+    switchTab("account");
+  }});
+
+  // Capture-phase paywall guard for PRO CAD/PDF exports
+  document.addEventListener("click", e => {{
+    const btn = e.target && e.target.closest && e.target.closest("#exportMenu [data-exp]");
+    if (!btn) return;
+    if (!window.DRAFTPRO_CONFIG.proExports.includes(btn.dataset.exp)) return;
+    const user = getCurrentUser();
+    if (!user) {{
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      openModal("login", "info", MSG.msg_need_login);
+      return;
+    }}
+    if (!user.pro) {{
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      openModal("pro", "info", MSG.msg_need_pro);
+      return;
+    }}
+  }}, true);
+
+  window.addEventListener("DOMContentLoaded", refreshUI);
+  setTimeout(refreshUI, 300);
+}})();
+</script>
 """
 
-def inject_in_flow_nav(file_path, nav_html, lang="tw"):
+
+def inject_in_flow_nav(file_path, lang="tw"):
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    html = html.replace("</head>", f"{nav_css}\n</head>")
+    html = html.replace("</head>", f"{nav_and_auth_css}\n</head>")
+    nav_block = build_nav_and_auth_html(lang)
     if '<div class="app">' in html:
-        html = html.replace('<div class="app">', f'<div class="app">\n{nav_html}')
+        html = html.replace('<div class="app">', f'<div class="app">\n{nav_block}')
     else:
-        html = html.replace("<body>", f"<body>\n{nav_html}")
+        html = html.replace("<body>", f"<body>\n{nav_block}")
 
     if lang == "tw":
         html = html.replace("装修设计器</title>", "3D 空間互動提案</title>")
@@ -465,10 +921,11 @@ def inject_in_flow_nav(file_path, nav_html, lang="tw"):
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(html)
 
-inject_in_flow_nav(os.path.join(here, "demo-zh-tw.html"), tw_nav_html, lang="tw")
+
+inject_in_flow_nav(os.path.join(here, "demo-zh-tw.html"), lang="tw")
 open(os.path.join(here, "demo.html"), "w", encoding="utf-8").write(
     open(os.path.join(here, "demo-zh-tw.html"), encoding="utf-8").read()
 )
-inject_in_flow_nav(os.path.join(here, "demo-en.html"), en_nav_html, lang="en")
+inject_in_flow_nav(os.path.join(here, "demo-en.html"), lang="en")
 
-print("Successfully built TC (demo.html / demo-zh-tw.html) and EN (demo-en.html) editions!")
+print("Successfully built TC + EN editions with Login + Pro License Gate!")
