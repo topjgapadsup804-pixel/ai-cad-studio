@@ -3,390 +3,635 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DraftPro Studio｜AutoCAD 施工圖外包 × 戶型轉 3D 互動提案（48 小時快出）</title>
-  <meta name="description" content="48 小時將手繪草圖與舊圖面轉換為標準 AutoCAD DWG 施工圖、A3 PDF 與免裝軟體 3D 互動戶型網頁。單圖 NT$3,500 起，先看預覽再付尾款。" />
+  <title>DraftPro Studio｜建築室內 AutoCAD 施工圖轉繪與 3D 空間模型事務所</title>
+  <meta name="description" content="將現場手繪測繪稿、建商格局圖與舊圖紙，於 48 至 72 小時內轉繪為標準分層 AutoCAD DWG、A3 施工圖冊與單一檔案 3D 空間模型。明碼實價，先審閱預覽再付尾款。" />
   <link rel="canonical" href="https://topjgapadsup804-pixel.github.io/ai-cad-studio/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://topjgapadsup804-pixel.github.io/ai-cad-studio/" />
   <link rel="alternate" hreflang="en" href="https://topjgapadsup804-pixel.github.io/ai-cad-studio/en.html" />
-  <meta property="og:title" content="DraftPro Studio｜AutoCAD 施工圖 × 戶型轉 3D 互動提案" />
-  <meta property="og:description" content="專為室內設計工作室、統包工程行與房仲代銷打造。48 小時交付標準 DWG 與手機就能逛的 3D 空間互動網頁。" />
+  <meta property="og:title" content="DraftPro Studio｜建築室內 AutoCAD 施工圖與 3D 空間模型" />
+  <meta property="og:description" content="專責支援室內設計事務所、統包工程行與資產代銷團隊。交付標準分層 DWG、A3 PDF 與免安裝 3D 空間模型。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://topjgapadsup804-pixel.github.io/ai-cad-studio/" />
+  <meta property="og:image" content="https://topjgapadsup804-pixel.github.io/ai-cad-studio/assets/plan-tw.png" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "DraftPro Studio — AutoCAD 施工圖外包與 3D 互動戶型提案",
+    "name": "DraftPro Studio — AutoCAD 施工圖轉繪與 3D 空間模型服務",
     "provider": {
       "@type": "Organization",
       "name": "DraftPro Studio",
       "email": "topjgapadsup804@gmail.com",
       "url": "https://topjgapadsup804-pixel.github.io/ai-cad-studio/"
     },
-    "serviceType": "AutoCAD 建築室內製圖外包與 3D 空間互動網頁製作",
+    "serviceType": "建築與室內設計 CAD 製圖外包及 3D 空間模型建置",
     "areaServed": ["TW", "HK", "SG", "Worldwide"],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "製圖服務方案",
+      "name": "製圖收費明細",
       "itemListElement": [
-        { "@type": "Offer", "name": "單圖快出方案", "price": "3500", "priceCurrency": "TWD" },
-        { "@type": "Offer", "name": "戶型轉 3D 互動設計包", "price": "9800", "priceCurrency": "TWD" },
-        { "@type": "Offer", "name": "設計工作室包月外包", "price": "28000", "priceCurrency": "TWD" }
+        { "@type": "Offer", "name": "單張施工圖轉繪", "price": "3500", "priceCurrency": "TWD" },
+        { "@type": "Offer", "name": "平面配置與 3D 空間互動模型", "price": "9800", "priceCurrency": "TWD" },
+        { "@type": "Offer", "name": "設計事務所按月外包協力", "price": "28000", "priceCurrency": "TWD" }
       ]
     }
   }
   </script>
   <style>
     :root {
-      --bg: #0c0f14;
-      --surface: #141923;
-      --surface-2: #1b2230;
-      --border: #273142;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --accent-strong: #0ea5e9;
-      --success: #34d399;
-      --warn: #fbbf24;
+      --paper: #F6F4EF;
+      --vellum: #FDFCFA;
+      --paper-tint: #EFECE4;
+      --rule: #DFDAD0;
+      --rule-strong: #C7C0B2;
+      --ink: #18181B;
+      --ink-2: #44403C;
+      --muted: #78716C;
+      --terracotta: #9A4A2B;
+      --pine: #234236;
+      --sans: "Inter", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      --serif: "Noto Serif TC", "Songti TC", Georgia, serif;
+      --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
 
-    /* Nav */
+    /* Header */
     header {
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(12, 15, 20, 0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(246, 244, 239, 0.94);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--rule);
     }
-    .nav {
+    .topbar {
       display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
+      height: 60px;
     }
-    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; }
-    .brand span { color: var(--accent); }
-    .nav-links { display: flex; gap: 24px; align-items: center; font-size: 0.92rem; color: var(--muted); }
-    .nav-links a:hover { color: var(--text); }
+    .brand-lockup { display: flex; align-items: baseline; gap: 12px; }
+    .brand-mark { font-weight: 700; font-size: 0.96rem; letter-spacing: 0.1em; color: var(--ink); }
+    .brand-mark b { color: var(--terracotta); font-weight: 700; }
+    .brand-sub {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+      letter-spacing: 0.04em; border-left: 1px solid var(--rule-strong); padding-left: 12px;
+    }
+    .nav { display: flex; align-items: center; gap: 24px; font-size: 0.88rem; color: var(--ink-2); }
+    .nav a:hover { color: var(--ink); }
+    .lang-switch {
+      font-family: var(--mono); font-size: 0.76rem; padding: 3px 8px;
+      border: 1px solid var(--rule-strong); border-radius: 2px; color: var(--ink-2);
+    }
+    .lang-switch:hover { border-color: var(--ink); background: var(--vellum); }
 
     /* Buttons */
     .btn {
       display: inline-flex; align-items: center; justify-content: center;
-      padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 0.95rem;
-      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-      cursor: pointer; border: 1px solid transparent;
+      padding: 11px 20px; border-radius: 3px; font-weight: 600; font-size: 0.9rem;
+      border: 1px solid var(--ink); cursor: pointer; transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+      letter-spacing: 0.01em;
     }
-    .btn-primary { background: var(--accent); color: #081018; }
-    .btn-primary:hover { background: #7dd3fc; transform: translateY(-1px); }
-    .btn-outline { border-color: var(--border); color: var(--text); background: transparent; }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-sm { padding: 8px 16px; font-size: 0.88rem; }
+    .btn-ink { background: var(--ink); color: var(--vellum); }
+    .btn-ink:hover { background: #2E2D2A; border-color: #2E2D2A; }
+    .btn-paper { background: var(--vellum); color: var(--ink); border-color: var(--rule-strong); }
+    .btn-paper:hover { border-color: var(--ink); background: #fff; }
+    .btn-sm { padding: 7px 14px; font-size: 0.82rem; }
 
-    /* Hero */
-    .hero { padding: 88px 0 64px; border-bottom: 1px solid var(--border); }
-    .badge {
-      display: inline-block; padding: 5px 12px; border-radius: 999px;
-      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35);
-      color: var(--accent); font-size: 0.84rem; font-weight: 600; margin-bottom: 20px;
+    /* Asymmetric Hero */
+    .hero { padding: 64px 0 72px; border-bottom: 1px solid var(--rule); }
+    .hero-grid {
+      display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start;
     }
+    .spec-kicker {
+      font-family: var(--mono); font-size: 0.75rem; color: var(--terracotta);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .spec-kicker::before { content: ""; width: 22px; height: 1px; background: var(--terracotta); }
     .hero h1 {
-      font-size: clamp(2rem, 4.5vw, 3.25rem);
-      line-height: 1.2; letter-spacing: -0.02em; max-width: 820px; margin-bottom: 20px;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(1.85rem, 3.2vw, 2.55rem);
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+      color: var(--ink);
     }
-    .hero p {
-      font-size: 1.12rem; color: var(--muted); max-width: 680px; margin-bottom: 32px;
+    .hero-lead {
+      font-size: 0.98rem; color: var(--ink-2); margin-bottom: 28px; line-height: 1.75;
     }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 40px; }
-    .trust-row {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px; padding-top: 28px; border-top: 1px solid var(--border);
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 36px; }
+    .spec-strip {
+      border-top: 1px solid var(--rule-strong);
+      padding-top: 20px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
     }
-    .trust-item strong { display: block; font-size: 1rem; color: var(--text); }
-    .trust-item span { font-size: 0.88rem; color: var(--muted); }
+    .spec-cell dt {
+      font-family: var(--mono); font-size: 0.78rem; font-weight: 700; color: var(--ink); margin-bottom: 3px;
+    }
+    .spec-cell dd { font-size: 0.8rem; color: var(--muted); line-height: 1.45; }
 
-    /* Sections */
-    section { padding: 72px 0; border-bottom: 1px solid var(--border); }
-    .section-kicker { color: var(--accent); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-    .section-title { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 12px; }
-    .section-sub { color: var(--muted); max-width: 640px; margin-bottom: 40px; }
-
-    /* Cards Grid */
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 22px; }
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 28px; display: flex; flex-direction: column;
+    /* Architectural Drawing Sheet Frame */
+    .sheet-frame {
+      background: var(--vellum);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      overflow: hidden;
     }
-    .card.featured {
-      border-color: var(--accent);
-      background: linear-gradient(180deg, rgba(56,189,248,0.08) 0%, var(--surface) 45%);
+    .sheet-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 14px; background: var(--paper-tint); border-bottom: 1px solid var(--rule);
+      font-size: 0.78rem;
+    }
+    .sheet-tabs { display: inline-flex; border: 1px solid var(--rule-strong); border-radius: 2px; overflow: hidden; background: var(--vellum); }
+    .sheet-tabs button {
+      border: none; background: transparent; padding: 4px 11px; font-size: 0.76rem;
+      font-weight: 600; color: var(--ink-2); cursor: pointer; font-family: var(--sans);
+    }
+    .sheet-tabs button.active { background: var(--ink); color: var(--vellum); }
+    .sheet-open {
+      font-family: var(--mono); font-size: 0.74rem; color: var(--ink); font-weight: 600;
+      border-bottom: 1px solid var(--ink); padding-bottom: 1px;
+    }
+    .sheet-open:hover { color: var(--terracotta); border-color: var(--terracotta); }
+    .sheet-canvas {
+      aspect-ratio: 16 / 10.5;
+      background: #F4F2EC;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
       position: relative;
     }
-    .pill {
-      display: inline-block; align-self: flex-start; font-size: 0.78rem; font-weight: 700;
-      padding: 3px 10px; border-radius: 999px; background: var(--accent); color: #081018;
-      margin-bottom: 14px;
+    .sheet-canvas img {
+      width: 100%; height: 100%; object-fit: contain; display: block;
     }
-    .price { font-size: 2rem; font-weight: 800; margin: 12px 0 6px; }
-    .price small { font-size: 0.92rem; font-weight: 500; color: var(--muted); }
-    .card-desc { color: var(--muted); font-size: 0.94rem; margin-bottom: 20px; }
-    .checklist { list-style: none; margin-bottom: 26px; flex: 1; }
-    .checklist li { padding: 6px 0; font-size: 0.93rem; color: #dbe5f1; display: flex; gap: 10px; }
-    .checklist li::before { content: "✓"; color: var(--success); font-weight: 700; }
+    .sheet-titleblock {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
+      border-top: 1px solid var(--rule);
+      background: var(--vellum);
+      font-family: var(--mono); font-size: 0.7rem; color: var(--muted);
+    }
+    .sheet-titleblock > div {
+      padding: 8px 12px; border-right: 1px solid var(--rule);
+    }
+    .sheet-titleblock > div:last-child { border-right: none; }
+    .sheet-titleblock strong { display: block; color: var(--ink); font-size: 0.74rem; margin-top: 1px; }
 
-    /* Interactive Estimator */
-    .estimator {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 32px;
-      display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px;
+    /* Sections */
+    section { padding: 72px 0; border-bottom: 1px solid var(--rule); }
+    .sec-head {
+      display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: end;
+      margin-bottom: 40px;
     }
-    @media (max-width: 780px) { .estimator { grid-template-columns: 1fr; } .nav-links { display: none; } }
-    .field { margin-bottom: 20px; }
-    .field label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 8px; }
-    .field select, .field input[type="range"] { width: 100%; }
+    .sec-num {
+      font-family: var(--mono); font-size: 0.76rem; color: var(--terracotta);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .sec-title {
+      font-family: var(--serif); font-size: clamp(1.45rem, 2.5vw, 1.95rem);
+      line-height: 1.3; color: var(--ink);
+    }
+    .sec-desc { color: var(--ink-2); font-size: 0.94rem; }
+
+    /* Architectural Fee Ledger (Replaces AI 3-card layout) */
+    .ledger {
+      border-top: 2px solid var(--ink);
+      border-bottom: 1px solid var(--rule-strong);
+      background: var(--vellum);
+    }
+    .ledger-hdr {
+      display: grid; grid-template-columns: 2.3fr 3.6fr 1.2fr 1.8fr;
+      padding: 11px 20px; background: var(--paper-tint); border-bottom: 1px solid var(--rule-strong);
+      font-family: var(--mono); font-size: 0.73rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .ledger-row {
+      display: grid; grid-template-columns: 2.3fr 3.6fr 1.2fr 1.8fr;
+      padding: 26px 20px; border-bottom: 1px solid var(--rule); gap: 20px; align-items: start;
+    }
+    .ledger-row:last-child { border-bottom: none; }
+    .ledger-code { font-family: var(--mono); font-size: 0.74rem; color: var(--terracotta); margin-bottom: 4px; }
+    .ledger-name { font-size: 1.08rem; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+    .ledger-fit { font-size: 0.84rem; color: var(--muted); }
+    .ledger-deliverables { list-style: none; font-size: 0.88rem; color: var(--ink-2); }
+    .ledger-deliverables li { padding: 3px 0; display: flex; gap: 8px; }
+    .ledger-deliverables li::before { content: "—"; color: var(--muted); }
+    .ledger-turnaround { font-family: var(--mono); font-size: 0.84rem; color: var(--ink-2); padding-top: 2px; }
+    .ledger-turnaround span { display: block; font-family: var(--sans); font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+    .ledger-fee { text-align: right; }
+    .ledger-price { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+    .ledger-unit { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 12px; }
+
+    /* Fee Worksheet Estimator */
+    .worksheet {
+      display: grid; grid-template-columns: 6fr 6fr; gap: 36px; align-items: start;
+    }
+    .ws-controls {
+      background: var(--vellum); border: 1px solid var(--rule-strong); border-radius: 3px; padding: 28px;
+    }
+    .field { margin-bottom: 22px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: flex; justify-content: space-between; font-weight: 600; font-size: 0.88rem;
+      margin-bottom: 8px; color: var(--ink);
+    }
     select {
-      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px 12px; font-size: 0.95rem;
+      width: 100%; background: #fff; color: var(--ink); border: 1px solid var(--rule-strong);
+      border-radius: 2px; padding: 10px 12px; font-size: 0.9rem; font-family: var(--sans);
     }
-    .checks { display: grid; gap: 10px; }
-    .check-opt {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--surface-2); border: 1px solid var(--border);
-      padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 0.92rem;
+    select:focus { outline: none; border-color: var(--ink); }
+    input[type="range"] { width: 100%; accent-color: var(--ink); }
+    .addon-list { display: grid; gap: 8px; }
+    .addon-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 12px; border: 1px solid var(--rule); background: var(--paper);
+      border-radius: 2px; cursor: pointer; font-size: 0.87rem;
     }
-    .quote-box {
-      background: #0f1722; border: 1px solid rgba(56,189,248,0.4);
-      border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .quote-total { font-size: 2.3rem; font-weight: 800; color: var(--accent); margin: 8px 0; }
-    .quote-meta { font-size: 0.9rem; color: var(--muted); margin-bottom: 18px; }
+    .addon-item:hover { border-color: var(--rule-strong); }
+    .addon-left { display: flex; align-items: center; gap: 9px; }
+    .addon-cost { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); }
 
-    /* Guarantee Box */
-    .guarantee {
-      background: rgba(52, 211, 153, 0.07); border: 1px solid rgba(52, 211, 153, 0.35);
-      border-radius: 14px; padding: 28px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+    .ws-slip {
+      background: var(--vellum); border: 1px solid var(--ink); border-radius: 3px; padding: 28px;
     }
-    @media (max-width: 720px) { .guarantee { grid-template-columns: 1fr; } }
-
-    /* FAQ */
-    .faq-list { display: grid; gap: 14px; max-width: 820px; }
-    details {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 18px 20px;
+    .slip-hdr {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding-bottom: 12px; border-bottom: 1px solid var(--ink); margin-bottom: 16px;
     }
-    summary { font-weight: 600; cursor: pointer; }
-    details p { color: var(--muted); margin-top: 10px; font-size: 0.94rem; }
+    .slip-hdr strong { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em; }
+    .slip-hdr span { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
+    .slip-lines { font-size: 0.86rem; border-bottom: 1px solid var(--rule-strong); padding-bottom: 14px; margin-bottom: 16px; }
+    .slip-line { display: flex; justify-content: space-between; padding: 5px 0; color: var(--ink-2); }
+    .slip-line b { font-family: var(--mono); font-weight: 600; color: var(--ink); }
+    .slip-total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .slip-total-row span { font-weight: 700; font-size: 0.92rem; }
+    .slip-total { font-family: var(--mono); font-size: 1.9rem; font-weight: 700; color: var(--ink); }
+    .slip-terms { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
+    .slip-actions { display: grid; gap: 8px; }
 
-    /* Footer */
-    footer { padding: 48px 0; text-align: center; color: var(--muted); font-size: 0.9rem; }
+    /* Process & FAQ 2-column */
+    .split-2 { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
+    .steps-list { list-style: none; border-top: 1px solid var(--rule-strong); }
+    .steps-list li { padding: 18px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 44px 1fr; gap: 8px; }
+    .step-no { font-family: var(--mono); font-size: 0.8rem; color: var(--terracotta); font-weight: 700; padding-top: 2px; }
+    .steps-list h3 { font-size: 0.96rem; margin-bottom: 4px; }
+    .steps-list p { font-size: 0.86rem; color: var(--ink-2); }
+
+    .faq-stack { border-top: 1px solid var(--rule-strong); }
+    details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    summary {
+      font-weight: 600; font-size: 0.94rem; cursor: pointer; list-style: none;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; font-family: var(--mono); font-size: 1rem; color: var(--muted); }
+    details[open] summary::after { content: "−"; }
+    details p { margin-top: 10px; font-size: 0.88rem; color: var(--ink-2); max-width: 62ch; }
+
+    /* Contact Footer Band */
+    .commission {
+      padding: 64px 0; background: var(--paper-tint); border-bottom: 1px solid var(--rule-strong);
+    }
+    .commission-grid { display: grid; grid-template-columns: 6fr 6fr; gap: 36px; align-items: center; }
+    .commission-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+    footer {
+      padding: 28px 0; font-size: 0.8rem; color: var(--muted);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .foot-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; width: 100%; }
+
+    @media (max-width: 920px) {
+      .hero-grid, .sec-head, .worksheet, .split-2, .commission-grid { grid-template-columns: 1fr; gap: 28px; }
+      .ledger-hdr { display: none; }
+      .ledger-row { grid-template-columns: 1fr; gap: 12px; }
+      .ledger-fee { text-align: left; }
+      .commission-links { justify-content: flex-start; }
+      .brand-sub, .nav a:not(.lang-switch):not(.btn) { display: none; }
+      .sheet-titleblock { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="container nav">
-      <div class="brand">DRAFT<span>PRO</span> STUDIO</div>
-      <nav class="nav-links">
-        <a href="demo.html">🇹🇼 繁體 Demo</a>
-        <a href="demo-en.html">🌐 English Demo</a>
-        <a href="#services">服務方案</a>
-        <a href="#estimator">即時估價</a>
-        <a href="en.html">English (USD)</a>
-        <a href="#contact" class="btn btn-primary btn-sm">預約檔期</a>
+    <div class="wrap topbar">
+      <div class="brand-lockup">
+        <a href="index.html" class="brand-mark">DRAFT<b>PRO</b></a>
+        <span class="brand-sub">ARCHITECTURAL CAD &amp; 3D STUDIO</span>
+      </div>
+      <nav class="nav">
+        <a href="demo.html">3D 實機圖紙</a>
+        <a href="#schedule">收費明細</a>
+        <a href="#worksheet">費用試算</a>
+        <a href="#process">驗收流程</a>
+        <a href="en.html" class="lang-switch">EN / USD</a>
+        <a href="#contact" class="btn btn-ink btn-sm">委託製圖</a>
       </nav>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="container">
-        <div class="badge">每月限量接單 6 件｜目前開放預約</div>
-        <h1>把草圖與舊圖面，48 小時變成標準 AutoCAD 施工圖與可互動 3D 戶型頁</h1>
-        <p>專為室內設計工作室、統包工程行與房仲代銷打造。省下反覆整理圖層、補畫詳圖與製作簡報的時間，直接拿到符合出圖規範的 DWG、PDF 與客戶用手機就能逛的 3D 空間網頁。</p>
-        <div class="hero-actions">
-          <a href="demo.html" class="btn btn-primary">🇹🇼 體驗 3D 互動戶型 Demo（繁體版）</a>
-          <a href="demo-en.html" class="btn btn-outline" style="border-color:#38bdf8; color:#38bdf8;">🌐 Live 3D Floor Plan Demo (English)</a>
-          <a href="#estimator" class="btn btn-outline">30 秒線上試算報價</a>
+      <div class="wrap hero-grid">
+        <div>
+          <div class="spec-kicker">DWG 2018 · A3 1:50 · WEBGL 2D/3D</div>
+          <h1>手繪測繪稿與舊圖紙，48 小時轉繪為標準施工圖與 3D 空間模型</h1>
+          <p class="hero-lead">
+            支援室內設計事務所、統包工程行與房仲代銷團隊。依循建築牆厚、門窗開口與 A3 出圖字高規範整理分層 DWG，同步產出業主用手機瀏覽器即可自由漫遊、切換水電與天花圖層的單一檔案 3D 模型。
+          </p>
+          <div class="hero-actions">
+            <a href="demo.html" class="btn btn-ink">開啟 30.2 坪實機互動圖紙</a>
+            <a href="#worksheet" class="btn btn-paper">線上試算製圖費用</a>
+          </div>
+          <dl class="spec-strip">
+            <div class="spec-cell">
+              <dt>240 / 120 mm</dt>
+              <dd>區分結構承重剪力牆與輕質隔間牆真實壁厚</dd>
+            </div>
+            <div class="spec-cell">
+              <dt>A3 標準圖層</dt>
+              <dd>分色分層、不鎖圖塊，AutoCAD 直接開啟編修</dd>
+            </div>
+            <div class="spec-cell">
+              <dt>預覽後付尾款</dt>
+              <dd>線上核對尺寸與 3D 空間無誤後，再結清尾款取檔</dd>
+            </div>
+          </dl>
         </div>
-        <div class="trust-row">
-          <div class="trust-item">
-            <strong>規範化圖層與標註</strong>
-            <span>依 A3 出圖字高、標準圖層與圖塊整理，打開即可直接編修</span>
-          </div>
-          <div class="trust-item">
-            <strong>交付 2D + 3D 互動網頁</strong>
-            <span>單一 HTML 檔案，客戶免裝軟體即可看 3D 鳥瞰與水電配置</span>
-          </div>
-          <div class="trust-item">
-            <strong>先看預覽再付尾款</strong>
-            <span>確認尺寸、圖層與畫面無誤後交付原始檔，零踩雷風險</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="services">
-      <div class="container">
-        <div class="section-kicker">Pricing &amp; Packages</div>
-        <h2 class="section-title">透明報價，依專案階段直接挑選</h2>
-        <p class="section-sub">不收模糊工時費。每個方案都有明確交付清單、交期與免費修改次數。</p>
-
-        <div class="grid-3">
-          <div class="card">
-            <h3>單圖快出方案</h3>
-            <div class="price">NT$ 3,500 <small>/ 張起</small></div>
-            <p class="card-desc">適合急件放樣、舊圖翻畫、樓梯詳圖或單層平面圖整理。</p>
-            <ul class="checklist">
-              <li>手繪 / PDF / 掃描圖轉標準 AutoCAD DWG</li>
-              <li>統一圖層命名、線寬、字高與標註樣式</li>
-              <li>交付可編輯 DWG + A3 排版 PDF</li>
-              <li>48 小時內交初稿，含 2 次細部修正</li>
-            </ul>
-            <a href="#contact" class="btn btn-outline">預約單圖快出</a>
+        <div class="sheet-frame">
+          <div class="sheet-bar">
+            <div class="sheet-tabs" role="tablist">
+              <button type="button" class="active" data-plate="assets/plan-tw.png" data-alt="30.2 坪標準三房兩廳兩衛 2D 建築平面配置圖">2D 平面配置圖</button>
+              <button type="button" data-plate="assets/maquette-3d.png" data-alt="30.2 坪標準三房兩廳兩衛 3D 剖視建築模型">3D 剖視模型</button>
+            </div>
+            <a href="demo.html" class="sheet-open">開啟互動編輯器 ↗</a>
           </div>
-
-          <div class="card featured">
-            <span class="pill">最受歡迎｜提案成交利器</span>
-            <h3>戶型轉 3D 互動設計包</h3>
-            <div class="price">NT$ 9,800 <small>/ 戶</small></div>
-            <p class="card-desc">讓屋主在第一次提案就看懂空間感、家具尺寸與水電配置。</p>
-            <ul class="checklist">
-              <li>完整 2D 平面配置 DWG + 尺寸標註</li>
-              <li>專屬 3D 互動裝修網頁（支援手機/電腦漫遊）</li>
-              <li>內建家具擺放、水電管線與吊頂切換圖層</li>
-              <li>附贈：一頁式報價估算表 + PDF 施工參考圖</li>
-              <li>72 小時交件，含 3 次配置調整</li>
-            </ul>
-            <a href="#contact" class="btn btn-primary">預約 3D 互動方案</a>
+          <div class="sheet-canvas">
+            <img id="heroPlateImg" src="assets/plan-tw.png" alt="30.2 坪標準三房兩廳兩衛 2D 建築平面配置圖" />
           </div>
-
-          <div class="card">
-            <h3>設計工作室包月外包</h3>
-            <div class="price">NT$ 28,000 <small>/ 月</small></div>
-            <p class="card-desc">比請一位正職繪圖員省下超過一半人事成本，隨丟隨畫。</p>
-            <ul class="checklist">
-              <li>每月最高 10 張標準施工圖 / 詳圖額度</li>
-              <li>含 2 戶 3D 互動提案網頁製作</li>
-              <li>專屬工作室圖框與圖層標準同步</li>
-              <li>優先排程（急件 24 小時內交付初稿）</li>
-            </ul>
-            <a href="#contact" class="btn btn-outline">洽談包月合作</a>
+          <div class="sheet-titleblock">
+            <div>SHEET NO.<strong>A-101 / 住宅標準層配置</strong></div>
+            <div>NET AREA<strong>100.01 m² (30.2 坪)</strong></div>
+            <div>CLEARANCE QA<strong>0 CONFLICTS</strong></div>
+            <div>SCALE / UNIT<strong>1:50 (MM)</strong></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="estimator">
-      <div class="container">
-        <div class="section-kicker">Instant Quote</div>
-        <h2 class="section-title">30 秒即時估價試算</h2>
-        <p class="section-sub">勾選你的圖面需求，立即看到預估費用與交期，直接複製傳給我即可開工。</p>
-
-        <div class="estimator">
+    <section id="schedule">
+      <div class="wrap">
+        <div class="sec-head">
           <div>
+            <div class="sec-num">01 / Schedule of Services</div>
+            <h2 class="sec-title">製圖服務與標準收費明細</h2>
+          </div>
+          <p class="sec-desc">依專案階段固定計價，不另收模糊工時費。每張出圖均經空間淨寬與水電點位干涉檢查。</p>
+        </div>
+
+        <div class="ledger">
+          <div class="ledger-hdr">
+            <div>項目編號與名稱</div>
+            <div>交付圖資與作業規範</div>
+            <div>標準交期</div>
+            <div style="text-align:right;">固定收費</div>
+          </div>
+
+          <div class="ledger-row">
+            <div>
+              <div class="ledger-code">ITEM 01</div>
+              <div class="ledger-name">單張施工圖轉繪</div>
+              <div class="ledger-fit">適用現場丈量手稿數位化、舊圖重整、單層平面或樓梯詳圖</div>
+            </div>
+            <ul class="ledger-deliverables">
+              <li>手繪草圖、PDF 或掃描底圖按比例轉繪 AutoCAD 2018 DWG</li>
+              <li>統一牆線、門窗編號、家具圖塊與 A3 標準標註字高</li>
+              <li>交付可編輯 DWG 原始檔 ＋ A3 排版 PDF 出圖檔</li>
+            </ul>
+            <div class="ledger-turnaround">48 小時<span>含 2 次細部修正</span></div>
+            <div class="ledger-fee">
+              <span class="ledger-price">NT$ 3,500</span>
+              <span class="ledger-unit">每張起</span>
+              <a href="#contact" class="btn btn-paper btn-sm">委託此項</a>
+            </div>
+          </div>
+
+          <div class="ledger-row">
+            <div>
+              <div class="ledger-code">ITEM 02</div>
+              <div class="ledger-name">平面配置 ＋ 3D 空間互動模型</div>
+              <div class="ledger-fit">適用設計提案簡報、老屋翻修討論、預售客變與物件展示</div>
+            </div>
+            <ul class="ledger-deliverables">
+              <li>完整 2D 平面配置與三道尺寸標註 DWG / DXF 圖檔</li>
+              <li>獨立單檔 3D 互動網頁（支援鳥瞰、第一人稱漫遊、日照模擬）</li>
+              <li>內建平面布置、水電點位、天花吊頂、地坪鋪貼與拆改圖層切換</li>
+              <li>附工程數量估算明細表（CSV）與 A3 施工參考圖冊 PDF</li>
+            </ul>
+            <div class="ledger-turnaround">72 小時<span>含 3 次配置調整</span></div>
+            <div class="ledger-fee">
+              <span class="ledger-price">NT$ 9,800</span>
+              <span class="ledger-unit">每戶（35 坪內）</span>
+              <a href="#contact" class="btn btn-ink btn-sm">委託此項</a>
+            </div>
+          </div>
+
+          <div class="ledger-row">
+            <div>
+              <div class="ledger-code">ITEM 03</div>
+              <div class="ledger-name">設計事務所按月外包協力</div>
+              <div class="ledger-fit">適用案量穩定、需固定製圖產能但不想增聘全職繪圖員之工作室</div>
+            </div>
+            <ul class="ledger-deliverables">
+              <li>每月最高 10 張標準平立剖施工圖或系統櫃大樣詳圖額度</li>
+              <li>每月含 2 戶完整 2D＋3D 空間互動提案模型建置</li>
+              <li>完全對齊貴司專屬圖框（Title Block）、筆寬表（CTB）與圖層命名</li>
+            </ul>
+            <div class="ledger-turnaround">24 小時優先排程<span>固定協力窗口</span></div>
+            <div class="ledger-fee">
+              <span class="ledger-price">NT$ 28,000</span>
+              <span class="ledger-unit">每月固定費用</span>
+              <a href="#contact" class="btn btn-paper btn-sm">洽談包月</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="worksheet">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <div class="sec-num">02 / Fee Worksheet</div>
+            <h2 class="sec-title">線上圖面費用試算單</h2>
+          </div>
+          <p class="sec-desc">選擇製圖範圍與室內坪數，右側即時列出費用明細；複製摘要並附上現場草圖即可排入製圖檔期。</p>
+        </div>
+
+        <div class="worksheet">
+          <div class="ws-controls">
             <div class="field">
-              <label for="serviceType">1. 選擇主要服務</label>
+              <label for="serviceType"><span>1. 主要委託項目</span></label>
               <select id="serviceType">
-                <option value="3500" data-days="2">單張 CAD 平面 / 詳圖繪製（NT$ 3,500）</option>
-                <option value="9800" data-days="3" selected>戶型圖轉 2D + 3D 互動裝修網頁（NT$ 9,800）</option>
-                <option value="16000" data-days="5">全套室內施工圖（平面/天花/水電/立面，NT$ 16,000）</option>
+                <option value="3500" data-days="2">單張 AutoCAD 平面或詳圖轉繪（NT$ 3,500）</option>
+                <option value="9800" data-days="3" selected>2D 平面配置 ＋ 3D 空間互動模型（NT$ 9,800）</option>
+                <option value="16000" data-days="5">全套室內施工圖：平配／拆改／天花／水電／立面（NT$ 16,000）</option>
               </select>
             </div>
 
             <div class="field">
-              <label for="areaRange">2. 空間坪數：<strong id="areaLabel">30 坪</strong></label>
+              <label for="areaRange">
+                <span>2. 室內實際坪數</span>
+                <strong id="areaLabel" style="font-family:var(--mono);">30 坪（約 99 m²）</strong>
+              </label>
               <input id="areaRange" type="range" min="10" max="100" step="5" value="30" />
             </div>
 
             <div class="field">
-              <label>3. 加值項目（選填）</label>
-              <div class="checks">
-                <label class="check-opt"><input type="checkbox" class="addon" value="2500" data-label="水電 / 弱電管線自動排布圖" /> 水電 / 弱電管線配置圖（+NT$ 2,500）</label>
-                <label class="check-opt"><input type="checkbox" class="addon" value="2000" data-label="樓梯 / 櫃體大樣詳圖" /> 樓梯 / 櫃體大樣詳圖（+NT$ 2,000）</label>
-                <label class="check-opt"><input type="checkbox" class="addon" value="3000" data-label="24 小時急件優先交付" /> 24 小時急件優先排程（+NT$ 3,000）</label>
+              <label><span>3. 附加圖面與急件選項</span></label>
+              <div class="addon-list">
+                <label class="addon-item">
+                  <span class="addon-left"><input type="checkbox" class="addon" value="2500" data-label="全室強弱電與給排水管線配置圖" /> 全室強弱電與給排水管線圖</span>
+                  <span class="addon-cost">+NT$ 2,500</span>
+                </label>
+                <label class="addon-item">
+                  <span class="addon-left"><input type="checkbox" class="addon" value="2000" data-label="樓梯剖面或系統櫃大樣詳圖" /> 樓梯剖面／系統櫃大樣詳圖</span>
+                  <span class="addon-cost">+NT$ 2,000</span>
+                </label>
+                <label class="addon-item">
+                  <span class="addon-left"><input type="checkbox" class="addon" value="3000" data-label="24 小時急件優先出圖" /> 24 小時急件優先排程</span>
+                  <span class="addon-cost">+NT$ 3,000</span>
+                </label>
               </div>
             </div>
           </div>
 
-          <div class="quote-box">
-            <div>
-              <div style="font-size:0.88rem;color:var(--muted);">預估專案報價</div>
-              <div class="quote-total" id="quoteTotal">NT$ 9,800</div>
-              <div class="quote-meta" id="quoteMeta">預計交期：3 個工作天｜含 3 次免費修正</div>
-              <div id="quoteSummary" style="font-size:0.88rem;color:#cbd5e1;background:#141c28;padding:12px;border-radius:8px;margin-bottom:18px;"></div>
+          <div class="ws-slip">
+            <div class="slip-hdr">
+              <strong>ESTIMATE SUMMARY / 估價明細單</strong>
+              <span id="quoteMeta">預計交期：3 個工作天</span>
             </div>
-            <button type="button" class="btn btn-primary" id="copyQuoteBtn">複製這份估價摘要去詢價</button>
+            <div class="slip-lines" id="slipLines"></div>
+            <div class="slip-total-row">
+              <span>預估總計（未稅）</span>
+              <div class="slip-total" id="quoteTotal">NT$ 9,800</div>
+            </div>
+            <div class="slip-terms">付款條件：50% 訂金排程開工；線上核對截圖與 3D 預覽無誤後，結清 50% 尾款交付完整 DWG / HTML 原始檔。</div>
+            <div id="quoteSummary" hidden></div>
+            <div class="slip-actions">
+              <a id="emailInquiryLink" href="mailto:topjgapadsup804@gmail.com" class="btn btn-ink">帶入明細寄送 Email 詢價</a>
+              <button type="button" class="btn btn-paper" id="copyQuoteBtn">複製估價文字摘要</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="guarantee">
-      <div class="container">
-        <div class="guarantee">
-          <div>
-            <div class="section-kicker" style="color:var(--success);">Risk-Free Guarantee</div>
-            <h2 style="font-size:1.5rem;margin-bottom:8px;">交付前先看截圖與互動預覽，圖面規範不符免費改到過</h2>
-            <p style="color:var(--muted);font-size:0.95rem;">
-              每筆訂單採「50% 訂金啟動、預覽驗收通過後付 50% 尾款並交付完整 DWG / HTML 原始檔」。若尺寸漏標、圖層混亂或與原始草圖不符，無條件免費修改到符合約定規範為止。
-            </p>
+    <section id="process">
+      <div class="wrap split-2">
+        <div>
+          <div class="sec-num">03 / Workflow &amp; Verification</div>
+          <h2 class="sec-title" style="margin-bottom:24px;">三階段驗收流程</h2>
+          <ol class="steps-list">
+            <li>
+              <span class="step-no">01</span>
+              <div>
+                <h3>傳送底圖與基準尺寸</h3>
+                <p>提供現場手繪丈量稿、建商格局圖或舊版 PDF，標註至少一處基準尺寸（如大門寬度或單面總長），2 小時內回覆確認交期。</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-no">02</span>
+              <div>
+                <h3>線上互動預覽與圖說校對</h3>
+                <p>初稿完成後提供線上 2D/3D 預覽連結與尺寸檢核表，核對牆厚、門窗開向與動線淨寬；尺寸漏標或與底圖不符無條件修正。</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-no">03</span>
+              <div>
+                <h3>結清尾款並交付全套原始檔</h3>
+                <p>驗收確認後交付未加密 AutoCAD 2018 DWG、A3 PDF 圖冊與獨立單檔 3D 網頁模型。</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <div class="sec-num">04 / Technical FAQ</div>
+          <h2 class="sec-title" style="margin-bottom:24px;">常見技術問題</h2>
+          <div class="faq-stack">
+            <details open>
+              <summary>只有手機翻拍的手繪丈量草圖或建商DM，能準確還原比例嗎？</summary>
+              <p>可以。只要提供至少一組現場實測基準尺寸（例如玄關門寬 110cm 或客廳面寬 420cm），我們會以底圖比例校正搭配標準牆厚（外牆 240/200mm、隔間 120mm）精確重建軸線。</p>
+            </details>
+            <details>
+              <summary>交付的 DWG 圖檔可以在我們事務所自己的 AutoCAD 編輯嗎？</summary>
+              <p>完全可以。預設交付 AutoCAD 2018 相容格式（亦可指定更早版本），結構牆、輕隔間、門窗、活動家具、水電與標註獨立分層，不加密、不鎖圖塊。</p>
+            </details>
+            <details>
+              <summary>3D 空間互動網頁需要另外租主機或安裝軟體嗎？</summary>
+              <p>不需要。交付物為單一獨立 `.html` 檔案，零外部伺服器依賴，電腦雙擊即可離線開啟，亦可免費放置於任何靜態空間傳送網址給業主審閱。</p>
+            </details>
+            <details>
+              <summary>也可以購買設計器本身的 Pro 匯出授權自己畫圖嗎？</summary>
+              <p>可以。您可直接開啟上方「3D 實機圖紙」免費繪製與瀏覽 3D；若需自行匯出 DXF 與整套 A3 施工圖 PDF，可於設計器內直接申購 Pro 永久授權金鑰（NT$ 590）。</p>
+            </details>
           </div>
-          <a href="#contact" class="btn btn-primary">立即預約檔期</a>
         </div>
       </div>
     </section>
 
-    <section id="faq">
-      <div class="container">
-        <div class="section-kicker">FAQ</div>
-        <h2 class="section-title">常見問題</h2>
-        <div class="faq-list">
-          <details open>
-            <summary>我只有手機拍的手繪草圖或建商的模糊格局圖，也能做嗎？</summary>
-            <p>可以。只要提供至少一組參考尺寸（例如大門寬度或總面寬/總長），就能按比例還原精準的 CAD 平面圖與 3D 互動網頁。</p>
-          </details>
-          <details>
-            <summary>交付的 DWG 檔案能直接在我自己的 AutoCAD 打開編輯嗎？</summary>
-            <p>完全可以。預設存成 AutoCAD 2018 相容格式（也可指定版本），並依標準建築/室內圖層分色分類，不鎖圖塊、不加密。</p>
-          </details>
-          <details>
-            <summary>3D 互動網頁需要每個月付主機費嗎？</summary>
-            <p>不需要。交付的是單一獨立 HTML 檔，你可以直接用瀏覽器打開，或免費放上靜態空間傳連結給屋主看，沒有任何月費。</p>
-          </details>
+    <section id="contact" class="commission">
+      <div class="wrap commission-grid">
+        <div>
+          <div class="sec-num">Start a Commission</div>
+          <h2 class="sec-title" style="margin-bottom:8px;">傳送底圖，今日排入製圖檔期</h2>
+          <p class="sec-desc">來信請附上草圖或格局圖檔案，將於 2 小時內回覆正式報價單與預計交件時間。</p>
         </div>
-      </div>
-    </section>
-
-    <section id="contact" style="border-bottom:none;">
-      <div class="container" style="text-align:center;">
-        <div class="section-kicker">Start Now</div>
-        <h2 class="section-title">傳給我你的草圖，今天就能開始畫</h2>
-        <p class="section-sub" style="margin:0 auto 28px;">在上方試算器勾選需求後，可直接線上建立詢價單並附上草圖，我會在 2 小時內回覆確認交期。</p>
-        <div class="hero-actions" style="justify-content:center;">
-          <a id="emailInquiryLink" href="mailto:topjgapadsup804@gmail.com?subject=CAD%E8%A3%BD%E5%9C%96%E8%88%873D%E6%8F%90%E6%A1%88%E8%A9%A2%E5%83%B9" class="btn btn-primary">Email 傳圖詢價（topjgapadsup804@gmail.com）</a>
-          <a id="directInquiryLink" href="https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?template=order-quote.yml" target="_blank" rel="noopener" class="btn btn-outline">線上填寫詢價單（支援直接拖曳草圖）</a>
-          <a href="demo.html" class="btn btn-outline">先看 30.2 坪 3D 互動範例</a>
+        <div class="commission-links">
+          <a href="mailto:topjgapadsup804@gmail.com?subject=%5BCAD%E8%A3%BD%E5%9C%96%E5%A7%94%E8%A8%97%5D%20%E5%9C%96%E9%9D%A2%E8%A9%A2%E5%83%B9" class="btn btn-ink">Email 傳圖：topjgapadsup804@gmail.com</a>
+          <a id="directInquiryLink" href="https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?template=order-quote.yml" target="_blank" rel="noopener" class="btn btn-paper">線上表單上傳草圖</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      © 2026 DraftPro Studio｜AutoCAD 製圖外包 × 戶型轉 3D 互動提案｜<a href="en.html" style="color:var(--accent);">English (USD)</a> · <a href="llms.txt" style="color:var(--muted);">llms.txt</a>
+    <div class="wrap foot-row">
+      <span>© 2026 DraftPro Studio · Architectural CAD &amp; 3D Spatial Modeling</span>
+      <span>
+        <a href="demo.html">繁體 3D 實機圖紙</a> ·
+        <a href="demo-en.html">English 3D Demo</a> ·
+        <a href="en.html">English (USD)</a> ·
+        <a href="llms.txt">llms.txt</a>
+      </span>
     </div>
   </footer>
 
   <script>
+    // Drawing plate switcher
+    const plateImg = document.getElementById('heroPlateImg');
+    document.querySelectorAll('[data-plate]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-plate]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        plateImg.src = btn.dataset.plate;
+        plateImg.alt = btn.dataset.alt;
+      });
+    });
+
+    // Fee Worksheet calculator
     const serviceEl = document.getElementById('serviceType');
     const areaEl = document.getElementById('areaRange');
     const areaLabel = document.getElementById('areaLabel');
     const addons = Array.from(document.querySelectorAll('.addon'));
+    const slipLines = document.getElementById('slipLines');
     const quoteTotal = document.getElementById('quoteTotal');
     const quoteMeta = document.getElementById('quoteMeta');
     const quoteSummary = document.getElementById('quoteSummary');
@@ -395,37 +640,50 @@
     function updateQuote() {
       const base = Number(serviceEl.value);
       const baseDays = Number(serviceEl.selectedOptions[0].dataset.days);
+      const svcName = serviceEl.selectedOptions[0].text.split('（')[0];
       const area = Number(areaEl.value);
-      areaLabel.textContent = `${area} 坪`;
+      const sqm = Math.round(area * 3.3058);
+      areaLabel.textContent = `${area} 坪（約 ${sqm} m²）`;
 
       const areaExtra = area > 35 ? Math.ceil((area - 35) / 10) * 1500 : 0;
       let addonSum = 0;
       const selectedAddons = [];
       let isRush = false;
 
+      const lines = [
+        `<div class="slip-line"><span>${svcName}</span><b>NT$ ${base.toLocaleString('zh-TW')}</b></div>`
+      ];
+      if (areaExtra > 0) {
+        lines.push(`<div class="slip-line"><span>超坪級距調整（${area} 坪，超過 35 坪部分）</span><b>+NT$ ${areaExtra.toLocaleString('zh-TW')}</b></div>`);
+      } else {
+        lines.push(`<div class="slip-line"><span>空間面積（${area} 坪，35 坪標準範圍內）</span><b>NT$ 0</b></div>`);
+      }
+
       addons.forEach(cb => {
         if (cb.checked) {
-          addonSum += Number(cb.value);
+          const val = Number(cb.value);
+          addonSum += val;
           selectedAddons.push(cb.dataset.label);
           if (cb.dataset.label.includes('24 小時')) isRush = true;
+          lines.push(`<div class="slip-line"><span>${cb.dataset.label}</span><b>+NT$ ${val.toLocaleString('zh-TW')}</b></div>`);
         }
       });
 
       const total = base + areaExtra + addonSum;
       const days = isRush ? 1 : baseDays;
 
+      slipLines.innerHTML = lines.join('');
       quoteTotal.textContent = `NT$ ${total.toLocaleString('zh-TW')}`;
-      quoteMeta.textContent = `預計交期：${days} 個工作天｜確認預覽後再付尾款`;
+      quoteMeta.textContent = `預計交期：${days} 個工作天`;
 
-      const svcName = serviceEl.selectedOptions[0].text.split('（')[0];
       const addonText = selectedAddons.length ? selectedAddons.join('、') : '無';
-      const summary = `方案：${svcName}｜坪數：${area} 坪｜加值：${addonText}｜預估：NT$ ${total.toLocaleString('zh-TW')}`;
+      const summary = `委託項目：${svcName}｜面積：${area} 坪（約 ${sqm} m²）｜附加項目：${addonText}｜預估總計：NT$ ${total.toLocaleString('zh-TW')}（預計 ${days} 個工作天）`;
       quoteSummary.textContent = summary;
 
       const emailLink = document.getElementById('emailInquiryLink');
       if (emailLink) {
-        const subject = encodeURIComponent(`[製圖詢價] ${svcName} (${area}坪)`);
-        const body = encodeURIComponent(`你好，我想詢問製圖檔期與報價：\n\n${summary}\n\n（請附上草圖、格局圖或參考尺寸）`);
+        const subject = encodeURIComponent(`[CAD製圖委託] ${svcName}（${area}坪）`);
+        const body = encodeURIComponent(`您好，以下為線上試算之製圖需求明細：\n\n${summary}\n\n（請於信件夾帶現場丈量手稿、PDF 或格局底圖）`);
         emailLink.href = `mailto:topjgapadsup804@gmail.com?subject=${subject}&body=${body}`;
       }
     }
@@ -437,8 +695,8 @@
     copyBtn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(quoteSummary.textContent);
-        copyBtn.textContent = '已複製！請貼到 LINE 或 Email 詢價';
-        setTimeout(() => { copyBtn.textContent = '複製這份估價摘要去詢價'; }, 2500);
+        copyBtn.textContent = '已複製估價明細';
+        setTimeout(() => { copyBtn.textContent = '複製估價文字摘要'; }, 2200);
       } catch {
         alert(quoteSummary.textContent);
       }
