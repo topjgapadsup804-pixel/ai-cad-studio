@@ -11,7 +11,9 @@
 
 ## 🌐 線上即時展示 (Live Interactive Demos)
 
-- 🏠 **[服務官網與即時估價試算器 (Official Landing Page)](https://topjgapadsup804-pixel.github.io/ai-cad-studio/)**
+- 🏠 **[服務官網與即時估價試算器 (繁體中文 / TWD)](https://topjgapadsup804-pixel.github.io/ai-cad-studio/)**
+- 🌐 **[International Service & Instant USD Quote (English)](https://topjgapadsup804-pixel.github.io/ai-cad-studio/en.html)**
+- 📝 **[線上填寫製圖詢價單 / Submit Floor Plan Order Form](https://github.com/topjgapadsup804-pixel/ai-cad-studio/issues/new?template=order-quote.yml)**
 - 🇹🇼 **[3D 互動戶型 Demo（臺灣繁體中文版）](https://topjgapadsup804-pixel.github.io/ai-cad-studio/demo.html)**
   - 30.2 坪標準三房兩廳兩衛（客餐廳、雙陽台、主臥、次臥、書房、雙衛浴）
   - 完整 2D 平面配置圖層、天花吊頂、地坪鋪貼、水電管線與 3D 自由漫遊

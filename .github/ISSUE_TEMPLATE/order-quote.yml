@@ -1,0 +1,52 @@
+name: 📐 Request CAD Redraw / 3D Floor Plan Quote (製圖與 3D 戶型詢價)
+description: Submit your floor plan sketch or PDF for a fixed-price quote and 48–72h delivery slot.
+title: "[Quote] "
+labels: ["client-inquiry", "quote"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Welcome to **DraftPro Studio**! Fill out the fields below and drag-and-drop your floor plan sketch, photo, or PDF. We will reply within 2 hours with confirmation and delivery schedule.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Service Package (選擇方案)
+      options:
+        - "Single Sheet CAD Redraw ($120 USD / NT$3,500)"
+        - "2D CAD + Interactive 3D Web Floor Plan Pack ($300 USD / NT$9,800)"
+        - "Full Construction Drawing Set ($520 USD / NT$16,000)"
+        - "Studio Monthly Retainer ($890 USD / NT$28,000)"
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Drawing Standard & Language (圖說規範與語言)
+      options:
+        - "Traditional Chinese — Taiwan Standard (繁體中文 / 坪 / mm)"
+        - "Simplified Chinese — GB/T Standard (简体中文 / ㎡ / mm)"
+        - "English — International (sq ft or m²)"
+    validations:
+      required: true
+  - type: input
+    id: area
+    attributes:
+      label: Approximate Floor Area (空間面積)
+      placeholder: "e.g., 30 坪 / 100 m² / 1,200 sq ft"
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Floor Plan Attachment & Notes (請直接拖曳上傳草圖/格局圖與需求說明)
+      description: Drag and drop images or PDFs directly into this box. Include at least one reference dimension if available.
+      placeholder: "Paste or drop your floor plan image here, and mention any rush deadlines or special MEP/millwork needs..."
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Your Contact Email / LINE / WhatsApp (聯絡方式)
+      placeholder: "name@example.com"
+    validations:
+      required: true
