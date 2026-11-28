@@ -519,6 +519,42 @@ nav_and_auth_css = """
 .dp-pro-list li { padding: 4px 0; }
 .dp-pro-list li::before { content: "✓ "; color: #34d399; font-weight: 700; }
 .dp-divider { border: none; border-top: 1px solid #1e293b; margin: 16px 0; }
+.dp-oauth-group { display: grid; gap: 9px; margin-bottom: 14px; }
+.dp-oauth-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2b3a55;
+  background: #141d2e;
+  color: #f1f5f9;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.15s ease;
+}
+.dp-oauth-btn:hover { background: #1c2840; border-color: #38bdf8; }
+.dp-oauth-btn.google { background: #ffffff; color: #1f2937; border-color: #e2e8f0; }
+.dp-oauth-btn.google:hover { background: #f8fafc; border-color: #38bdf8; }
+.dp-oauth-btn svg { width: 18px; height: 18px; flex: none; }
+.dp-or {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+  color: #64748b;
+  font-size: 12px;
+}
+.dp-or::before, .dp-or::after { content: ""; flex: 1; height: 1px; background: #1e293b; }
+.dp-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 .dp-acct-card { background: #141d2e; border: 1px solid #24324d; border-radius: 10px; padding: 14px; margin-bottom: 14px; font-size: 13px; }
 .dp-acct-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .dp-acct-row:last-child { border-bottom: none; }
@@ -568,6 +604,12 @@ def build_nav_and_auth_html(lang: str) -> str:
         "msg_signed_up": "Account created! You are now signed in." if is_en else "註冊完成並已自動登入！",
         "msg_bad_key": "Invalid license key format or checksum. Purchase a key or contact topjgapadsup804@gmail.com." if is_en else "授權碼無效或校驗失敗。請點擊上方購買，或聯繫 topjgapadsup804@gmail.com 取得授權碼。",
         "msg_unlocked": "🎉 Pro License Activated! All CAD DXF & A3 PDF exports are now unlocked." if is_en else "🎉 Pro 授權已成功啟用！所有 CAD DXF、A3 PDF 與分享匯出功能已全面解鎖。",
+        "oauth_google": "Continue with Google" if is_en else "使用 Google 帳號繼續",
+        "oauth_github": "Continue with GitHub" if is_en else "使用 GitHub 帳號繼續",
+        "oauth_apple": "Continue with Apple" if is_en else "使用 Apple 帳號繼續",
+        "oauth_or": "or continue with email" if is_en else "或使用電子信箱",
+        "msg_oauth_setup": "OAuth keys (Supabase or Google Client ID) are not configured yet. Add them in DRAFTPRO_CONFIG (see OAUTH_SETUP_GUIDE.md), or sign in with Email below right now." if is_en else "尚未填入 Google / Supabase OAuth 金鑰（請參閱 OAUTH_SETUP_GUIDE.md 填入 2 行設定即可啟用一鍵登入）；您目前可直接用下方 Email 註冊登入。",
+        "msg_oauth_loading": "Redirecting to provider..." if is_en else "正在連線第三方登入驗證...",
         "buy_url": "mailto:topjgapadsup804@gmail.com?subject=%5BPro%20License%5D%20Purchase%20DraftPro%20Pro%20Key%20(%2419%20USD)&body=Hi%20DraftPro%20Studio%2C%0A%0AI%20would%20like%20to%20purchase%20a%20DraftPro%20Pro%20License%20Key%20(%2419%20USD).%0AMy%20account%20email%3A%20" if is_en else "mailto:topjgapadsup804@gmail.com?subject=%5B%E8%B3%BC%E8%B2%B7%E6%8E%88%E6%AC%8A%5D%20DraftPro%20Pro%20%E6%B0%B8%E4%B9%85%E6%8E%88%E6%AC%8A%E7%A2%BC%20(NT%24590)&body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E8%B3%BC%E8%B2%B7%20DraftPro%20Pro%20%E6%8E%88%E6%AC%8A%E7%A2%BC%EF%BC%88NT%24590%20%2F%20%2419%20USD%EF%BC%89%E3%80%82%0A%E6%88%91%E7%9A%84%E7%99%BB%E5%85%A5%E4%BF%A1%E7%AE%B1%EF%BC%9A",
     }
 
@@ -614,6 +656,24 @@ def build_nav_and_auth_html(lang: str) -> str:
         <button type="button" class="dp-btn dp-btn-ghost" id="dpLogoutBtn">{t['logout_btn']}</button>
       </div>
 
+      <div id="dpOAuthBlock">
+        <div class="dp-oauth-group">
+          <button type="button" class="dp-oauth-btn google" data-oauth="google">
+            <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/><path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58l3.7 2.87c2.16-2 3.72-4.94 3.72-8.69z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.7-2.87c-.98.66-2.23 1.06-3.58 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/></svg>
+            {t['oauth_google']}
+          </button>
+          <button type="button" class="dp-oauth-btn" data-oauth="github">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12c0 4.64 3.01 8.58 7.18 9.97.53.1.72-.23.72-.51v-1.8c-2.92.63-3.54-1.41-3.54-1.41-.48-1.21-1.17-1.53-1.17-1.53-.96-.65.07-.64.07-.64 1.06.07 1.62 1.09 1.62 1.09.94 1.61 2.47 1.15 3.07.88.1-.68.37-1.15.67-1.41-2.33-.26-4.78-1.17-4.78-5.19 0-1.15.41-2.09 1.08-2.82-.11-.27-.47-1.34.1-2.79 0 0 .88-.28 2.89 1.08a10.03 10.03 0 0 1 5.26 0c2-1.36 2.88-1.08 2.88-1.08.58 1.45.22 2.52.11 2.79.67.73 1.08 1.67 1.08 2.82 0 4.03-2.46 4.92-4.8 5.18.38.33.72.97.72 1.96v2.9c0 .28.19.62.73.51A10.51 10.51 0 0 0 22.5 12c0-5.8-4.7-10.5-10.5-10.5z"/></svg>
+            {t['oauth_github']}
+          </button>
+          <button type="button" class="dp-oauth-btn" data-oauth="apple">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>
+            {t['oauth_apple']}
+          </button>
+        </div>
+        <div class="dp-or">{t['oauth_or']}</div>
+      </div>
+
       <form id="dpPaneLogin">
         <div class="dp-field">
           <label for="dpLoginEmail">{t['email_lbl']}</label>
@@ -658,8 +718,14 @@ def build_nav_and_auth_html(lang: str) -> str:
 </div>
 <script>
 (function() {{
-  // Owner Configuration: drop in your Gumroad Product ID & Checkout URL anytime for 100% automated cloud verification
+  // Owner Configuration:
+  // 1) Set supabaseUrl + supabaseAnonKey for instant Google + GitHub + Apple OAuth (see OAUTH_SETUP_GUIDE.md)
+  // 2) Or set googleClientId for direct Google One-Tap / Sign In with Google
+  // 3) Set gumroadProductId + checkoutUrl for automated Pro license verification
   window.DRAFTPRO_CONFIG = {{
+    supabaseUrl: "",
+    supabaseAnonKey: "",
+    googleClientId: "",
     gumroadProductId: "",
     checkoutUrl: {json.dumps(t['buy_url'])},
     proExports: ["pdf", "dxf", "dxf-deco", "dxf-mep", "share"]
@@ -739,6 +805,7 @@ def build_nav_and_auth_html(lang: str) -> str:
     const user = getCurrentUser();
     const showAccount = user && (tab === "account" || tab === "login" || tab === "signup");
     $("dpTabs").style.display = showAccount ? "none" : "flex";
+    $("dpOAuthBlock").style.display = (!showAccount && (tab === "login" || tab === "signup")) ? "block" : "none";
     $("dpPaneAccount").style.display = showAccount ? "block" : "none";
     $("dpPaneLogin").style.display = !showAccount && tab === "login" ? "block" : "none";
     $("dpPaneSignup").style.display = !showAccount && tab === "signup" ? "block" : "none";
@@ -746,6 +813,7 @@ def build_nav_and_auth_html(lang: str) -> str:
     if (tab === "pro") {{
       $("dpTabs").style.display = user ? "none" : "flex";
       $("dpPaneAccount").style.display = "none";
+      $("dpOAuthBlock").style.display = "none";
     }}
     document.querySelectorAll("#dpTabs button").forEach(b => {{
       b.classList.toggle("active", b.dataset.dptab === tab);
@@ -891,7 +959,87 @@ def build_nav_and_auth_html(lang: str) -> str:
     }}
   }}, true);
 
-  window.addEventListener("DOMContentLoaded", refreshUI);
+  let _sbClient = null;
+  function loadScript(src) {{
+    return new Promise((resolve, reject) => {{
+      if (document.querySelector(`script[src="${{src}}"]`)) return resolve();
+      const s = document.createElement("script");
+      s.src = src; s.async = true; s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    }});
+  }}
+
+  async function getSupabase() {{
+    const cfg = window.DRAFTPRO_CONFIG;
+    if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) return null;
+    if (_sbClient) return _sbClient;
+    await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js");
+    _sbClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+    return _sbClient;
+  }}
+
+  function upsertOAuthUser(email, provider, avatar) {{
+    const users = getUsers();
+    users[email] = users[email] || {{ pwdHash: "", pro: false, licenseKey: null, createdAt: Date.now() }};
+    users[email].provider = provider;
+    if (avatar) users[email].avatar = avatar;
+    saveUsers(users);
+    setSession({{ email, provider, avatar }});
+  }}
+
+  async function restoreOAuthSession() {{
+    const sb = await getSupabase();
+    if (!sb) return;
+    const {{ data }} = await sb.auth.getSession();
+    const u = data && data.session && data.session.user;
+    if (u && u.email) {{
+      upsertOAuthUser(u.email.toLowerCase(), u.app_metadata?.provider || "oauth", u.user_metadata?.avatar_url || "");
+    }}
+  }}
+
+  document.querySelectorAll("[data-oauth]").forEach(btn => {{
+    btn.addEventListener("click", async () => {{
+      const provider = btn.dataset.oauth;
+      const cfg = window.DRAFTPRO_CONFIG;
+      // 1. Supabase OAuth (Google / GitHub / Apple)
+      if (cfg.supabaseUrl && cfg.supabaseAnonKey) {{
+        setAlert("info", MSG.msg_oauth_loading);
+        const sb = await getSupabase();
+        const {{ error }} = await sb.auth.signInWithOAuth({{
+          provider,
+          options: {{ redirectTo: window.location.origin + window.location.pathname }}
+        }});
+        if (error) setAlert("err", error.message);
+        return;
+      }}
+      // 2. Direct Google Identity Services (GIS)
+      if (provider === "google" && cfg.googleClientId) {{
+        setAlert("info", MSG.msg_oauth_loading);
+        await loadScript("https://accounts.google.com/gsi/client");
+        window.google.accounts.id.initialize({{
+          client_id: cfg.googleClientId,
+          callback: resp => {{
+            try {{
+              const payload = JSON.parse(atob(resp.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+              if (payload.email) {{
+                upsertOAuthUser(payload.email.toLowerCase(), "google", payload.picture || "");
+                setAlert("ok", MSG.msg_signed_in);
+                switchTab("account");
+              }}
+            }} catch (err) {{
+              setAlert("err", "Google token parse error");
+            }}
+          }}
+        }});
+        window.google.accounts.id.prompt();
+        return;
+      }}
+      // 3. Not configured yet -> clear guidance
+      setAlert("info", MSG.msg_oauth_setup);
+    }});
+  }});
+
+  window.addEventListener("DOMContentLoaded", () => {{ refreshUI(); restoreOAuthSession(); }});
   setTimeout(refreshUI, 300);
 }})();
 </script>
